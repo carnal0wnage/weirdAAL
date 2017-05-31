@@ -1,6 +1,12 @@
 #s3 functions go here
 
-def get_s3bucket_policy(access_key, secret_key, bucket):
+import boto3
+import botocore
+import pprint
+
+pp = pprint.PrettyPrinter(indent=5, width=80)
+
+def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
     client = boto3.client(
             's3',
             aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -74,7 +80,7 @@ def get_s3bucket_policy(access_key, secret_key, bucket):
         else:
             print "Unexpected error: %s" % e
 
- def get_s3object_acl(access_key, secret_key, bucket, myfile):
+def get_s3object_acl(access_key, secret_key, bucket, myfile):
     client = boto3.client(
             's3',
             aws_access_key_id=AWS_ACCESS_KEY_ID,
