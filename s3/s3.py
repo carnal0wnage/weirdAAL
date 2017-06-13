@@ -26,13 +26,13 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
             print "KeyError havent tracked down reason yet"
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'AccessDenied':
-                print('%s : cant list s3 bucket [AccessDenied]' % AWS_ACCESS_KEY_ID)
+                print('{} : cant list s3 bucket [AccessDenied]' .format(AWS_ACCESS_KEY_ID))
             elif e.response['Error']['Code'] == 'NoSuchBucketPolicy':
                 print('%s: Has No S3 Policy!' % bucket['Name'])
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
-                print('%s : cant list s3 bucket [AllAccessDisabled]' % AWS_ACCESS_KEY_ID)
+                print('{} : cant list s3 bucket [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
-                print "Unexpected error: %s" % e
+                print "Unexpected error: {}" .format(e)
             
         try:
             policy = client.get_bucket_policy(Bucket=bucket)
@@ -44,14 +44,14 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
                 pass
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'AccessDenied':
-                print('%s : cant list s3 bucket policy [AccessDenied]' % AWS_ACCESS_KEY_ID)
+                print('{} : cant list s3 bucket policy [AccessDenied]' .format(AWS_ACCESS_KEY_ID))
             elif e.response['Error']['Code'] == 'NoSuchBucketPolicy':
-                print('%s: Has No S3 Policy!' % bucket)
+                print('{}: Has No S3 Policy!' .format(bucket))
                 print("\n")
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
-                print('%s : cant list s3 bucket policy [AllAccessDisabled]' % AWS_ACCESS_KEY_ID)
+                print('{} : cant list s3 bucket policy [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
-                print "Unexpected error: %s" % e
+                print "Unexpected error: {}" .format(e)
                     
         try:
             acl = client.get_bucket_acl(Bucket=bucket)
@@ -63,22 +63,22 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
                 pass
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'AccessDenied':
-                print('%s : cant list s3 bucket acl [AccessDenied]' % AWS_ACCESS_KEY_ID)
+                print('{} : cant list s3 bucket acl [AccessDenied]' .format(AWS_ACCESS_KEY_ID))
             elif e.response['Error']['Code'] == 'NoSuchBucketPolicy':
-                print('%s: Has No S3 Policy!' % bucket)
+                print('{}: Has No S3 Policy!' .format(bucket))
                 print("\n")
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
-                print('%s : cant list s3 bucket acl [AllAccessDisabled]' % AWS_ACCESS_KEY_ID)
+                print('{} : cant list s3 bucket acl [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
-                print "Unexpected error: %s" % e
+                print "Unexpected error: {}" .format(e)
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
-            print('%s : doesnt have s3 access' % AWS_ACCESS_KEY_ID)
+            print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: %s" % e
+            print "Unexpected error: {}" .format(e)
 
 #specifically get the acl on a file in a buckeet
 def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
@@ -105,7 +105,7 @@ def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
             print "Unexpected error: {}" .format(e)
 
 #given an aws keypair what s3 assets does it have permission to
-def get_s3objects_foraccount(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.resource(
             's3',
             aws_access_key_id=AWS_ACCESS_KEY_ID,
