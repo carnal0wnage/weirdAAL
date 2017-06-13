@@ -4,17 +4,17 @@ Weird AWS Attack Library (AAL)
 Weird AAL?  yup because he's awesome :-)
 
 
-#IAM
+# IAM
 
 -
 
-#S3
+# S3
 
 -
 
 
 
-#EC2
+# EC2
 -
 
 
