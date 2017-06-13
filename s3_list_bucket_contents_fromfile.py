@@ -14,6 +14,7 @@ from s3.s3 import *
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY =''
 
+#open a list of possible buckets and attempt to list the contents
 f = open('test.txt', 'r')
 for line in f:
     line = line.strip()
