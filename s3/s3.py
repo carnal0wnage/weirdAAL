@@ -80,7 +80,8 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
         else:
             print "Unexpected error: %s" % e
 
-def get_s3object_acl(access_key, secret_key, bucket, myfile):
+#specifically get the acl on a file in a buckeet
+def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
     client = boto3.client(
             's3',
             aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -91,7 +92,7 @@ def get_s3object_acl(access_key, secret_key, bucket, myfile):
     try:
         bucket = bucket
         myobject = myfile
-        print('#### Trying to enumate s3 ACL for %s:%s ####\n ' % (bucket, myfile))
+        print('#### Trying to enumate s3 ACL for {}:{} ####\n '.format(bucket, myfile))
         acl = client.get_object_acl(Bucket=bucket,Key=myfile)
         print acl
         
@@ -99,10 +100,11 @@ def get_s3object_acl(access_key, secret_key, bucket, myfile):
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
-            print('%s : doesnt have s3 access' % AWS_ACCESS_KEY_ID)
+            print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: %s" % e
+            print "Unexpected error: {}" .format(e)
 
+#given an aws keypair what s3 assets does it have permission to
 def get_s3objects_foraccount(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.resource(
             's3',
@@ -120,6 +122,6 @@ def get_s3objects_foraccount(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
-            print('%s : doesnt have s3 access' % AWS_ACCESS_KEY_ID)
+            print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: %s" % e
+            print "Unexpected error: {}" .format(e)
