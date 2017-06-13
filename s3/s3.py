@@ -102,3 +102,24 @@ def get_s3object_acl(access_key, secret_key, bucket, myfile):
             print('%s : doesnt have s3 access' % AWS_ACCESS_KEY_ID)
         else:
             print "Unexpected error: %s" % e
+
+def get_s3objects_foraccount(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    client = boto3.resource(
+            's3',
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            region_name='us-east-1'
+    )
+    
+    try:
+        print('#### Trying to list s3 bucketsfor {} ####\n '.format(AWS_ACCESS_KEY_ID))
+        for bucket in client.buckets.all():
+            print(bucket.name)
+        
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'NotSignedUp':
+            print('%s : doesnt have s3 access' % AWS_ACCESS_KEY_ID)
+        else:
+            print "Unexpected error: %s" % e
