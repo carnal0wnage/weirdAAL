@@ -15,4 +15,5 @@ from s3.s3 import *
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY =''
 
+#Attempt to list the contents of the bucket
 get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,'myfuckingbucket')
