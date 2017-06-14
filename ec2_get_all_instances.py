@@ -1,6 +1,5 @@
-
 '''
-This file is used to list EBS volumes and whether or not they are encrypted. This is only for "in-use" (running) volumes.
+This file is used to list ec2 instances
 '''
 
 import boto3
@@ -21,4 +20,4 @@ from ec2.ec2 import *
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''
 
-review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)

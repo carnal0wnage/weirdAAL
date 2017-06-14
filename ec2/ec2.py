@@ -6,7 +6,8 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-regions = ['us-east-1', 'us-west-2', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'eu-central-1', 'eu-west-1']
+#from http://docs.aws.amazon.com/general/latest/gr/rande.html
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
 
 # right now this will print a file with nothing if bad key, should fix at some point --otherwise can assume its a valid key 
 # we are past the enumeration stage at this point
@@ -52,4 +53,64 @@ def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 			print e
 
 
+def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+	try:
+		for region in regions:
+			client = boto3.client(
+				'ec2',
+				aws_access_key_id = AWS_ACCESS_KEY_ID,
+				aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
+				region_name=region
+			)
+
+			instances = client.describe_instances()
+			for r in instances['Reservations']:
+				for i in r['Instances']:
+					pp.pprint(i)
+
+	except botocore.exceptions.ClientError as e:
+		print e
+
+#show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
+def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+	try:
+		for region in regions:
+			client = boto3.client(
+				'ec2',
+				aws_access_key_id = AWS_ACCESS_KEY_ID,
+				aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
+				region_name=region
+			)
+
+			instances = client.describe_instances()
+			for r in instances['Reservations']:
+				for i in r['Instances']:
+					volumes = client.describe_instance_attribute(InstanceId=i['InstanceId'], Attribute='blockDeviceMapping')
+					print ("Instance ID: {} \n" .format(i['InstanceId']))
+					pp.pprint(volumes)
+				
+	except botocore.exceptions.ClientError as e:
+		print e
+
+#show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of ID but more details.
+def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+	try:
+		for region in regions:
+			client = boto3.client(
+				'ec2',
+				aws_access_key_id = AWS_ACCESS_KEY_ID,
+				aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
+				region_name=region
+			)
+			response = client.describe_volumes(Filters=[{
+					'Name' : 'status',
+					'Values' : ['in-use']
+				}])['Volumes']
+			for volume in response:
+				print("InstandID:{} \n" .format(volume['Attachments'][0]['InstanceId']))
+				pp.pprint(volume)
+				print("\n")
+	
+	except botocore.exceptions.ClientError as e:
+		print e
 
