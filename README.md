@@ -1,4 +1,4 @@
-# weird AAL
+# Weird AAL
 Weird AWS Attack Library (AAL) 
 
 <img src="http://earnthis.net/wp-content/uploads/2013/12/150490_large.jpg"  align="center" height="240" width="350">
