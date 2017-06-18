@@ -1,11 +1,52 @@
 import boto3
 import botocore
 import pprint
+import sys
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
+
+def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name='us-east-1')
+    
+    try:
+        acct_summary = client.get_account_summary()
+        if acct_summary:
+            print("Root Key!!! [or IAM access]")
+            print("Printing Account Summary")
+            pp.pprint(acct_summary['SummaryMap'])
+
+        client_list = client.list_users()
+        if client_list:
+            print("Printing Users")
+            pp.pprint(client_list['Users'])
+        
+        print("Checking for console access")
+        for user in client_list['Users']:
+            
+            try:
+                profile = client.get_login_profile(UserName=user['UserName'])
+                if profile:
+                    print('User %s likely has console access and the password can be reset :-)' % user['UserName'])
+                    print("Checking for MFA on account")
+                    mfa = client.list_mfa_devices(UserName=user['UserName'])
+                    print mfa['MFADevices']
+            
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'NoSuchEntity':
+                    print("[-]: user '%s' likely doesnt have console access" % user['UserName'])
+                else:
+                    print "Unexpected error: %s" % e
+
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('%s : Is NOT a root key' % AWS_ACCESS_KEY_ID)
+        else:
+            print "Unexpected error: %s" % e
 
 def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests):
     actions = []
@@ -37,6 +78,9 @@ def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'DryRunOperation':
                 print('{} IS allowed' .format(api_action))
+                actions.append(api_action)
+            if e.response['Error']['Code'] == 'ClusterNotFoundException':
+                print('{} IS allowed but you need to specify a cluster name' .format(api_action))
                 actions.append(api_action)
             else:
                 print e
@@ -120,8 +164,8 @@ def brute_cloudformation_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating CLoudFormation Permissions ###")
     tests = [('ListStacks', 'list_stacks', (), {} ),
              ('DescribeStacks', 'describe_stacks', (), {} ), 
-             ('DescribeStackEvents', 'describe_stack_events', (), {} ), 
-             ('DescribeStackResources', 'describe_stack_resources', (), {} ),
+             #('DescribeStackEvents', 'describe_stack_events', (), {} ), 
+             #('DescribeStackResources', 'describe_stack_resources', (), {} ),
              ('ListExports', 'list_exports', (), {} ),
              ('DescribeAccountLimits', 'describe_account_limits', (), {} ),
             ]
@@ -388,6 +432,28 @@ def brute_ec2_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'ec2', tests)
 
+
+#http://boto3.readthedocs.io/en/latest/reference/services/ecr.html
+#TODO
+
+
+#http://boto3.readthedocs.io/en/latest/reference/services/ecs.html
+def brute_ecs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating EC2 Container Service Permissions ###")
+    tests = [('ListClusters', 'list_clusters', (), {}),
+             ('DescribeClusters', 'describe_clusters', (), {}),
+             ('ListContainerInstances', 'list_container_instances', (), {}),
+             ('ListTaskDefinitions', 'list_task_definitions', (), {}),
+             ('ListTasks', 'list_tasks', (), {}), #needs a cluster name
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'ecs', tests) 
+
+#http://boto3.readthedocs.io/en/latest/reference/services/efs.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/elasticache.html
+# TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/elasticbeanstalk.html
 def brute_elasticbeanstalk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating ElasticBeanstalk Permissions ###")
@@ -395,15 +461,103 @@ def brute_elasticbeanstalk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
              ('DescribeApplicationVersions', 'describe_application_versions', (), {}),
              ('DescribeConfigurationOptions', 'describe_configuration_options', (), {}),
              ('DescribeEnvironments', 'describe_environments', (), {}),
-             ('DescribeEnvironmentHealth', 'describe_environment_health', (), {}, ),
-             ('DescribeEnvironmentManagedActionHistory', 'describe_environment_managed_action_history', (), {}),
-             ('DescribeEnvironmentManagedActions', 'describe_environment_managed_actions', (), {}),
+             #('DescribeEnvironmentHealth', 'describe_environment_health', (), {}, ),
+             #('DescribeEnvironmentManagedActionHistory', 'describe_environment_managed_action_history', (), {}),
+             #('DescribeEnvironmentManagedActions', 'describe_environment_managed_actions', (), {}),
              ('DescribeEvents', 'describe_events', (), {}),
-             ('DescribeInstancesHealth', 'describe_instances_health', (), {}),
+             #('DescribeInstancesHealth', 'describe_instances_health', (), {}),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'elasticbeanstalk', tests)
 
+def brute_elastictranscoder_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating ElasticTranscoder Permissions ###")
+    tests = [('ListPipelines', 'list_pipelines', (), {}),
+             ('ListPresets', 'list_presets', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'elastictranscoder', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/elb.html
+def brute_elasticloadbalancing_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating ElasticLoadBalancing Permissions ###")
+    tests = [('DescribeLoadBalancers', 'describe_load_balancers', (), {}), 
+             ('DescribeAccountLimits', 'describe_account_limits', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'elb', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/elbv2.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/emr.html
+def brute_emr_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Elastic MapReduce (EMR) Permissions ###")
+    tests = [('ListClusters', 'list_clusters', (), {})
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'emr', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/es.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/events.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/firehose.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/gamelift.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/glacier.html
+def brute_glacier_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Glacier Permissions ###")
+    tests = [('ListVaults', 'list_vaults', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'glacier', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/greengrass.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/health.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/iam.html
+#TODO chop out the ARN/username and make some more fun function calls
+def brute_iam_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating IAM Permissions ###")
+    tests = [('GetUser', 'get_user', (), {}),
+             ('ListGroups', 'list_groups', (), {}),
+             ('GetCredentialReport', 'get_credential_report', (), {}), 
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'iam', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/importexport.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/inspector.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/iot.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/iot-data.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/kinesis.html
+def brute_kinesis_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Kinesis Permissions ###")
+    tests = [('ListStreams', 'list_streams', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'kinesis', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/kinesisanalytics.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/kms.html
+def brute_kms_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Key Management Service (KMS) Permissions ###")
+    tests = [('ListKeys', 'list_keys', (), {}),
+             ('ListAliases', 'list_aliases', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'kms', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/lambda.html
 def brute_lambda_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -413,8 +567,128 @@ def brute_lambda_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'lambda', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/lex-models.html
+#TODO
 
-    #('', '', (), {'DryRun':True}, ),
+#http://boto3.readthedocs.io/en/latest/reference/services/lex-runtime.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/lightsail.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/logs.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/machinelearning.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/marketplace-entitlement.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/marketplacecommerceanalytics.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/meteringmarketplace.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/mturk.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/opsworks.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/opsworkscm.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/organizations.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/pinpoint.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/polly.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/rds.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/redshift.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/rekognition.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/resourcegroupstaggingapi.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/route53.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/route53domains.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/s3.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/sdb.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/ses.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/shield.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/sms.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/snowball.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/sns.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/sqs.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/ssm.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/stepfunctions.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/storagegateway.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/sts.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/support.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/swf.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/waf.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/waf-regional.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/workdocs.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/workspaces.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/xray.html
+#TODO
+
+
+
 
 
 
