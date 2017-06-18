@@ -8,10 +8,18 @@ pp = pprint.PrettyPrinter(indent=5, width=80)
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
 
+region = 'us-east-1'
 def get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     account_id = client.get_caller_identity()["Account"]
     return account_id
+
+#NOT QUITE WORKING YET
+#def get_username(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY):
+#    client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+#    username = client.get_caller_identity()["Arn"].split(':')[5]
+#    print username
+#    return username
 
 def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
@@ -44,7 +52,6 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                     print("[-]: user '%s' likely doesnt have console access" % user['UserName'])
                 else:
                     print "Unexpected error: %s" % e
-
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -56,9 +63,10 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests):
     actions = []
     try:
-        client = boto3.client(service, aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY)
+        client = boto3.client(service, aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
     except Exception as e:
-        print('Failed to connect: "{}"' .format(e.error_message))
+        #print('Failed to connect: "{}"' .format(e.error_message))
+        print('Failed to connect: "{}"' .format(e))
         return actions
     
     actions = generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests)
@@ -69,12 +77,11 @@ def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, ser
     else:
         print ("\n[-] No {} actions allowed [-]" .format(service))
         print ("\n")
-
     return actions
 
 def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests):
     actions = []
-    client = boto3.client(service, aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY)
+    client = boto3.client(service, aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
     for api_action, method_name, args, kwargs in tests:
         try:
             method = getattr(client, method_name)
@@ -316,6 +323,7 @@ def brute_datapipeline_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'datapipeline', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/devicefarm.html
+#http://docs.aws.amazon.com/general/latest/gr/rande.html#devicefarm_region
 def brute_devicefarm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating DeviceFarm Permissions ###")
     tests = [('ListProjects', 'list_projects', (), {}, ), 
@@ -433,7 +441,6 @@ def brute_ec2_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('DescribeVpnGateways', 'describe_vpn_gateways', (), {'DryRun':True}, ),
              ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'ec2', tests)
-
 
 #http://boto3.readthedocs.io/en/latest/reference/services/ecr.html
 def brute_ecr_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -570,32 +577,72 @@ def brute_glacier_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'glacier', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/greengrass.html
-#TODO
+#TODO  #doesnt seem to be in the codebase for python ??
+def brute_greengrass_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Greegrass Permissions ###")
+    tests = [('ListGroups', 'list_groups', (), {}),
+             ('ListLoggerDefinitions', 'list_logger_definitions', (), {}),
+             ('ListSubscriptionDefinitions', 'list_subscription_definitions', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'greengrass', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/health.html
-#TODO
+def brute_health_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Health Permissions ###")
+    tests = [('DescribeEvents', 'describe_events', (), {}),
+             ('DescribeEntityAggregates', 'describe_entity_aggregates', (), {}),
+             ('DescribeEventTypes', 'describe_event_types', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'health', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/iam.html
-#TODO chop out the ARN/username and make some more fun function calls
+#TODO chop out the ARN/username and make some more fun function calls must chop up ARN to get username
 def brute_iam_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating IAM Permissions ###")
-    tests = [('GetUser', 'get_user', (), {}),
-             ('ListGroups', 'list_groups', (), {}),
-             ('GetCredentialReport', 'get_credential_report', (), {}), 
+    #account_username = get_username(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+    tests = [('GetUser', 'get_user', (), {} ), 
+             #('ListUserPolicies', 'list_user_policies', (), {'UserName':'root'} ),
+             ('ListGroups', 'list_groups', (), {} ),
+             #('ListGroupsForUser', 'list_groups_for_user', (), {'UserName':account_username} ),
+             ('GetCredentialReport', 'get_credential_report', (), {}) , 
+             ('GetAccountSummary', 'get_account_summary', (), {} ),  
+             ('GetAccountAuthorizationDetails', 'get_account_authorization_details', (), {} ), 
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'iam', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/importexport.html
-#TODO
+def brute_importexport_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Import/Export Permissions ###")
+    tests = [('ListJobs', 'list_jobs', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'importexport', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/inspector.html
-#TODO
+def brute_inspector_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Inspector Permissions ###")
+    tests = [('ListFindings', 'list_findings', (), {} ),
+             ('ListEventSubscriptions', 'list_event_subscriptions', (), {} ), 
+             ('ListAssessmentRuns', 'list_assessment_runs', (), {} ),
+             ('ListAssessmentTargets', 'list_assessment_targets', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'inspector', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/iot.html
-#TODO
+def brute_iot_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating IoT Permissions ###")
+    tests = [('ListThings', 'list_things', (), {} ),
+             ('ListPolicies', 'list_policies', (), {} ), 
+             ('ListCertificates', 'list_certificates', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'iot', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/iot-data.html
-#TODO
+#NO functions to call without data
+def brute_iotdata_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating IoT Data Plane Permissions ###")
+    tests = [('', '', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'iot-data', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/kinesis.html
 def brute_kinesis_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -640,7 +687,13 @@ def brute_lambda_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/machinelearning.html
-#TODO
+#http://docs.aws.amazon.com/general/latest/gr/rande.html#machinelearning_region <--allows regions for ML
+def brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Machine Learning Permissions ###")
+    tests = [('DescribeDataSources', 'describe_data_sources', (), {}), 
+             ('DescribeEvaluations', 'describe_evaluations', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'machinelearning', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/marketplace-entitlement.html
 #TODO
@@ -653,6 +706,13 @@ def brute_lambda_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mturk.html
 #TODO
+def brute_mturk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Mechanical Turk (MTurk) Permissions ###")
+    tests = [('GetAccountBalance', 'get_account_balance', (), {}), 
+             ('ListHits', 'list_hits', (), {}), 
+             ('ListWorkerBlocks', 'list_worker_blocks', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'mturk', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/opsworks.html
 #TODO
