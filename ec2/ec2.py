@@ -9,8 +9,7 @@ pp = pprint.PrettyPrinter(indent=5, width=80)
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
 
-# right now this will print a file with nothing if bad key, should fix at some point --otherwise can assume its a valid key 
-# we are past the enumeration stage at this point
+# we are past the enumeration stage at this point assume you have key that works
 def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 	print("Reviewing EC2 Volumes... This may take a few....")
 	not_encrypted = []

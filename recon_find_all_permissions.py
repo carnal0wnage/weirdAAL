@@ -10,13 +10,9 @@ import pprint
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 from brute.brute import *
+from s3.s3 import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
-
-
-
-
-
 
 
 check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
@@ -91,3 +87,6 @@ brute_route53_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_sts_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 
 brute_workspaces_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
+#S3 bucket's while we are here...
+get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)

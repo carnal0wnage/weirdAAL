@@ -786,7 +786,15 @@ def brute_redshift_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/route53.html
-#TODO
+def brute_route53_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Route53 Permissions ###")
+    tests = [('ListHostedZones', 'list_hosted_zones', (), {}), 
+             ('ListHostedZonesByName', 'list_hosted_zones_by_name', (), {}),
+             ('ListGeoLocations', 'list_geo_locations', (), {}),
+             ('ListHealthChecks', 'list_health_checks', (), {}), 
+             ('ListTrafficPolicies', 'list_traffic_policies', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'route53', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/route53domains.html
 #TODO
@@ -795,13 +803,23 @@ def brute_redshift_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/sdb.html
-#TODO
+def brute_sdb_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating SimpleDB Permissions ###")
+    tests = [('ListDomains', 'list_domains', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'sdb', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/ses.html
-#TODO
+def brute_ses_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Simple Email Service (SES) Permissions ###")
+    tests = [('ListIdentities', 'list_identities', (), {}),
+             ('GetSendStatistics', 'get_send_statistics', (), {}), 
+             ('ListConfigurationSets', 'list_configuration_sets', (), {}),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'ses', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/shield.html
 #TODO
@@ -816,10 +834,10 @@ def brute_redshift_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/sqs.html
-#TODO
 def brute_sqs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Simple Queue Service (SQS) Permissions ###")
-    tests = [('ListQueues', 'list_queues', (), {}),]
+    tests = [('ListQueues', 'list_queues', (), {}),
+            ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'sqs', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/ssm.html
@@ -854,14 +872,19 @@ def brute_sts_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/workspaces.html
-#TODO
+def brute_workspaces_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating WorkSpaces Permissions ###")
+    tests = [('DescribeWorkspaceBundles', 'describe_workspace_bundles', (), {} ),
+             ('DescribeWorkspaceDirectories', 'describe_workspace_directories', (), {} ),
+             ('DescribeWorkspaces', 'describe_workspaces', (), {} ),
+             ('DescribeWorkspacesConnectionStatus', 'describe_workspaces_connection_status', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'workspaces', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/xray.html
-#TODO
-
-
-
-
-
-
-
+#NO functions that dont take any arguements 
+def brute_xray_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating X-Ray Permissions ###")
+    tests = [('GetTraceSummaries', 'get_trace_summaries', (), {}), #requires start/end times
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'xray', tests)
