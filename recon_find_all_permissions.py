@@ -13,11 +13,13 @@ from brute.brute import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
 
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY =''
 
 
 
+
+
+
+check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_acm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_apigateway_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_appstream_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
@@ -37,15 +39,55 @@ AWS_SECRET_ACCESS_KEY =''
 #brute_cognitoidentity_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_cognitoidp_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_cognitosync_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+brute_configservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+	##### brute_costandusagereportservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) #Could not connect to the endpoint URL: "https://cur.us-west-2.amazonaws.com/"
 #brute_datapipeline_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-#brute_devicefarm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)  #Could not connect to the endpoint URL: "https://devicefarm.us-east-1.amazonaws.com/"
+#brute_devicefarm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_directconnect_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-#brute_discovery_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)	#Could not connect to the endpoint URL: "https://discovery.us-east-1.amazonaws.com/"
-brute_dms_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-
-brute_dynamodbstreams_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-#brute_configservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-#brute_costandusagereportservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) #doesnt work
+#brute_applicationdiscoveryservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)	
+#brute_dms_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_directoryservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_dynamodb_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_dynamodbstreams_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_ec2_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_ecr_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_ecs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_efs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_elasticache_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_elasticbeanstalk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_elastictranscoder_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_elasticloadbalancing_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_elasticloadbalancingv2_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_emr_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_es_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_cloudwatchevents_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_firehose_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_gamelift_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_glacier_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+	#####brute_greengrass_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) #in the docs but not in the codebase?
+#brute_health_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_iam_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_importexport_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_inspector_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_iot_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_kinesis_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_kinesisanalytics_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_kms_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #brute_lambda_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_lexmodels_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_lightsail_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_cloudwatchlogs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
+#brute_mturk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
+#brute_rds_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_redshift_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
+brute_route53_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_sdb_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_ses_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_sqs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+#brute_sts_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
+brute_workspaces_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
