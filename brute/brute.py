@@ -675,19 +675,44 @@ def brute_lambda_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'lambda', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/lex-models.html
-#TODO
+def brute_lexmodels_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Lex Model Building Service Permissions ###")
+    tests = [('GetBots', 'get_bots', (), {} ), 
+             ('GetIntents', 'get_intents', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'lex-models', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/lex-runtime.html
-#TODO
+#NO functions to call without data
+def brute_lexmruntime_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Lex Runtime Permissions ###")
+    tests = [('', '', (), {} ), 
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'lex-runtime', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/lightsail.html
-#TODO
+def brute_lightsail_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Lightsail Permissions ###")
+    tests = [('GetDomains', 'get_domains', (), {} ), 
+             ('GetBundles', 'get_bundles', (), {} ), 
+             ('GetInstances', 'get_instances', (), {} ), 
+             ('GetKeyPairs', 'get_key_pairs', (), {} ), 
+             ('GetOperations', 'get_operations', (), {} ), 
+             ('GetRegions', 'get_regions', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'lightsail', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/logs.html
-#TODO
+def brute_cloudwatchlogs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating CloudWatch Logs Permissions ###")
+    tests = [('DescribeDestinations', 'describe_destinations', (), {} ), 
+             ('DescribeExportTasks', 'describe_export_tasks', (), {} ),
+             ('DescribeLogGroups', 'describe_log_groups', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'logs', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/machinelearning.html
-#http://docs.aws.amazon.com/general/latest/gr/rande.html#machinelearning_region <--allows regions for ML
+#http://docs.aws.amazon.com/general/latest/gr/rande.html#machinelearning_region <--allowed regions for ML
 def brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Machine Learning Permissions ###")
     tests = [('DescribeDataSources', 'describe_data_sources', (), {}), 
@@ -705,7 +730,6 @@ def brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mturk.html
-#TODO
 def brute_mturk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Mechanical Turk (MTurk) Permissions ###")
     tests = [('GetAccountBalance', 'get_account_balance', (), {}), 
@@ -730,10 +754,30 @@ def brute_mturk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/rds.html
-#TODO
+def brute_rds_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating RDS Permissions ###")
+    tests = [('DescribeDBInstances', 'describe_db_instances', (), {} ),
+             ('DescribeDBSecurityGroups', 'describe_db_security_groups', (), {} ),
+             ('DescribeDBSnapshots', 'describe_db_snapshots', (), {} ), 
+             ('DescribeDBClusters', 'describe_db_clusters', (), {} ), 
+             ('DescribeDBClusterSnapshots', 'describe_db_cluster_snapshots', (), {} ),
+             ('DescribeAccountAttributes', 'describe_account_attributes', (), {} ),
+             ('DescribeEvents', 'describe_events', (), {} ), 
+             ('DescribeReservedDBInstances', 'describe_reserved_db_instances', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'rds', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/redshift.html
-#TODO
+def brute_redshift_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Redshift Permissions ###")
+    tests = [('DescribeClusters', 'describe_clusters', (), {}),
+             ('DescribeClusterSecurityGroups', 'describe_cluster_security_groups', (), {}), 
+             ('DescribeClusterSnapshots', 'describe_cluster_snapshots', (), {}), 
+             ('DescribeClusterParameterGroup', 'describe_cluster_parameter_groups', (), {}),
+             ('DescribeEvents', 'describe_events', (), {}),  
+             ('DescribeHSMConfigurations', 'describe_hsm_configurations', (), {}), 
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'redshift', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/rekognition.html
 #TODO
@@ -773,6 +817,10 @@ def brute_mturk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 #http://boto3.readthedocs.io/en/latest/reference/services/sqs.html
 #TODO
+def brute_sqs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Simple Queue Service (SQS) Permissions ###")
+    tests = [('ListQueues', 'list_queues', (), {}),]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'sqs', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/ssm.html
 #TODO
