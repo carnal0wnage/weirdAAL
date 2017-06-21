@@ -148,6 +148,3 @@ def get_s3objects_for_account_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
-
-AWS_ACCESS_KEY_ID = 'AKIAJJCVMZFWKXUY2RYA'
-AWS_SECRET_ACCESS_KEY = '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'
