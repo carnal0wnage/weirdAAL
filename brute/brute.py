@@ -715,34 +715,47 @@ def brute_cloudwatchlogs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #http://docs.aws.amazon.com/general/latest/gr/rande.html#machinelearning_region <--allowed regions for ML
 def brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Machine Learning Permissions ###")
-    tests = [('DescribeDataSources', 'describe_data_sources', (), {}), 
-             ('DescribeEvaluations', 'describe_evaluations', (), {}),
+    tests = [('DescribeDataSources', 'describe_data_sources', (), {} ), 
+             ('DescribeEvaluations', 'describe_evaluations', (), {} ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'machinelearning', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/marketplace-entitlement.html
-#TODO
+#NO functions to call without arguements
 
 #http://boto3.readthedocs.io/en/latest/reference/services/marketplacecommerceanalytics.html
-#TODO
+#NO functions to call without arguements
 
 #http://boto3.readthedocs.io/en/latest/reference/services/meteringmarketplace.html
-#TODO
+#NO functions to call without arguements
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mturk.html
 def brute_mturk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Mechanical Turk (MTurk) Permissions ###")
-    tests = [('GetAccountBalance', 'get_account_balance', (), {}), 
-             ('ListHits', 'list_hits', (), {}), 
-             ('ListWorkerBlocks', 'list_worker_blocks', (), {}),
+    tests = [('GetAccountBalance', 'get_account_balance', (), {} ), 
+             ('ListHits', 'list_hits', (), {} ), 
+             ('ListWorkerBlocks', 'list_worker_blocks', (), {} ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'mturk', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/opsworks.html
-#TODO
+#Everything else requires a stackID to get the instance/app/volume info per stack
+def brute_opsworks_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating OpsWorks Permissions ###")
+    tests = [('DescribeUserProfiles', 'describe_user_profiles', (), {} ),
+             ('DescribeStacks', 'describe_stacks', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'opsworks', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/opsworkscm.html
 #TODO
+def brute_opsworkscm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating OpsWorks for Chef Automate Permissions ###")
+    tests = [('DescribeAccountAttributes', 'describe_account_attributes', (), {} ),
+             ('DescribeBackups', 'describe_backups', (), {} ),
+             ('DescribeServers', 'describe_servers', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'opsworkscm', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/organizations.html
 #TODO
