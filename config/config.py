@@ -5,6 +5,7 @@ Config Library
 import boto3
 import botocore
 import pprint
+import sys
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -13,19 +14,22 @@ regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', '
 
 
 def describe_configuration_recorders(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, region):
-	response = []
+	response = {}
 	try:
 		client = boto3.client("config", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name=region)
 
 		response = client.describe_configuration_recorders()
+		#print response
 	except botocore.exceptions.ClientError as e:
 		if e.response['Error']['Code'] == 'InvalidClientTokenId':
 			sys.exit("The AWS KEY IS INVALID. Exiting")
+		elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+			sys.exit("The AWS KEY IS INVALID. Exiting")
 		elif e.response['Error']['Code'] == 'AccessDenied':
-			print('%s : does not have config access. Did you check first?' % AWS_ACCESS_KEY_ID)
+			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
 			pass
 		elif e.response['Error']['Code'] == 'AccessDeniedException':
-			print('%s : does not have config access. Did you check first?' % AWS_ACCESS_KEY_ID)
+			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
 			pass
 		else:
 			print "Unexpected error: %s" % e
