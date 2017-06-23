@@ -1,4 +1,6 @@
-#should be using boto3
+'''
+IAM library
+'''
 
 import boto3
 import botocore
@@ -132,7 +134,7 @@ def delete_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, access
         else:
             print "Unexpected error: {}" .format(e)
 
-#untested :-/ TODO
+#untested :-/ but should work #TODO
 def delete_mfa_device(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, mfaserial):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
     try:
