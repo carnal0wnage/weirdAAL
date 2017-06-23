@@ -1,4 +1,6 @@
-#s3 functions go here
+'''
+S3 Library
+'''
 
 import boto3
 import botocore
@@ -121,6 +123,8 @@ def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : cant list s3 bucket policy [AccessDenied]' .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
