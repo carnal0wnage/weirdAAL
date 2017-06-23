@@ -42,23 +42,23 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             try:
                 profile = client.get_login_profile(UserName=user['UserName'])
                 if profile:
-                    print('User %s likely has console access and the password can be reset :-)' % user['UserName'])
+                    print('User {} likely has console access and the password can be reset :-)' .format(user['UserName']))
                     print("Checking for MFA on account")
                     mfa = client.list_mfa_devices(UserName=user['UserName'])
                     print mfa['MFADevices']
             
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'NoSuchEntity':
-                    print("[-]: user '%s' likely doesnt have console access" % user['UserName'])
+                    print("[-]: user '{}' likely doesnt have console access" .format(user['UserName']))
                 else:
-                    print "Unexpected error: %s" % e
+                    print "Unexpected error: {}" .format(e)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
-            sys.exit("The AWS KEY IS INVALID. Exiting")
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
-            print('%s : Is NOT a root key' % AWS_ACCESS_KEY_ID)
+            print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: %s" % e
+            print "Unexpected error: {}" .format(e)
 
 def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests):
     actions = []
@@ -748,7 +748,6 @@ def brute_opsworks_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'opsworks', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/opsworkscm.html
-#TODO
 def brute_opsworkscm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating OpsWorks for Chef Automate Permissions ###")
     tests = [('DescribeAccountAttributes', 'describe_account_attributes', (), {} ),
@@ -758,7 +757,17 @@ def brute_opsworkscm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'opsworkscm', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/organizations.html
-#TODO
+def brute_organizations_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Organizations Permissions ###")
+    tests = [('DescribeOrganization', 'describe_organization', (), {} ),
+             ('ListAccounts', 'list_accounts', (), {} ),
+             ('ListCreateAccountStatus', 'list_create_account_status', (), {} ),
+             ('ListHandshakesForAccount', 'list_handshakes_for_account', (), {} ),  
+             ('ListHandshakesForOrganization', 'list_handshakes_for_organization', (), {} ),
+             ('ListPolicies', 'list_policies', (), {'Filter':'SERVICE_CONTROL_POLICY'} ),
+             ('ListRoots', 'list_roots', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'organizations', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/pinpoint.html
 #TODO
