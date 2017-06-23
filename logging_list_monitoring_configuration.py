@@ -9,12 +9,6 @@ from config.config import *
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
 
 
-
-
-
-
-
-
 def print_section_header_and_footer(text, end=False):
 	print("-" * 50)
 	print(text)
@@ -37,11 +31,10 @@ for region in regions:
 	print(config_service_text)
 	print("Region:" + region)
 	print_config_text(config_service_text)
-
-	print response
-	print len(response['ConfigurationRecorders'])
 	
-	if len(response['ConfigurationRecorders']) <= 0:
+	if response.get('ConfigurationRecorders') is None:
+		print "{} likely does not have Config permissions\n" .format(AWS_ACCESS_KEY_ID)
+	elif len(response['ConfigurationRecorders']) <= 0:
 		print("NO CONFIGURATION DETECTED")
 	else:
 		for group in response['ConfigurationRecorders']:
