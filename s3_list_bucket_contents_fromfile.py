@@ -9,7 +9,7 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-from s3.s3 import *
+from libs.s3 import *
 
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY =''

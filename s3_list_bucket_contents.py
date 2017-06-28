@@ -9,7 +9,7 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-from s3.s3 import *
+from libs.s3 import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
 
