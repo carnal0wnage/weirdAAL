@@ -773,7 +773,6 @@ def brute_organizations_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #NO functions to call without arguements
 
 #http://boto3.readthedocs.io/en/latest/reference/services/polly.html
-#TODO
 def brute_polly_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Polly Permissions ###")
     tests = [('DescribeVoices', 'describe_voices', (), {} ),
@@ -798,20 +797,30 @@ def brute_rds_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #http://boto3.readthedocs.io/en/latest/reference/services/redshift.html
 def brute_redshift_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Redshift Permissions ###")
-    tests = [('DescribeClusters', 'describe_clusters', (), {}),
-             ('DescribeClusterSecurityGroups', 'describe_cluster_security_groups', (), {}), 
-             ('DescribeClusterSnapshots', 'describe_cluster_snapshots', (), {}), 
-             ('DescribeClusterParameterGroup', 'describe_cluster_parameter_groups', (), {}),
-             ('DescribeEvents', 'describe_events', (), {}),  
-             ('DescribeHSMConfigurations', 'describe_hsm_configurations', (), {}), 
+    tests = [('DescribeClusters', 'describe_clusters', (), {} ),
+             ('DescribeClusterSecurityGroups', 'describe_cluster_security_groups', (), {}) , 
+             ('DescribeClusterSnapshots', 'describe_cluster_snapshots', (), {} ), 
+             ('DescribeClusterParameterGroup', 'describe_cluster_parameter_groups', (), {} ),
+             ('DescribeEvents', 'describe_events', (), {} ),  
+             ('DescribeHSMConfigurations', 'describe_hsm_configurations', (), {} ), 
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'redshift', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/rekognition.html
-#TODO
+def brute_rekognition_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Rekognition Permissions ###")
+    tests = [('ListCollections', 'list_collections', (), {} ), 
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'rekognition', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/resourcegroupstaggingapi.html
 #TODO
+def brute_resourcegroupstaggingapi_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Resource Groups Tagging API Permissions ###")
+    tests = [('GetResources', 'get_resources', (), {} ),
+             ('GetResources', 'get_resources', (), {} ), 
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'resourcegroupstaggingapi', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/route53.html
 def brute_route53_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
