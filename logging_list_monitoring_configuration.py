@@ -3,11 +3,10 @@ list config and other logging info
 port of https://gist.github.com/cktricky/f19e8d55ea5dcb1fdade6ede588c6576
 '''
 
-from config.config import *
+from libs.config import *
 
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
-
 
 def print_section_header_and_footer(text, end=False):
 	print("-" * 50)
@@ -39,5 +38,11 @@ for region in regions:
 	else:
 		for group in response['ConfigurationRecorders']:
 			pp.pprint(group['recordingGroup'])
+			pp.pprint(group['recordingGroup']['resourceTypes'])
+			#for resourcetype in group['recordingGroup']:
+			#	pp.pprint(resourcetype['resourceTypes'][0])
+
+	ruleresponse = describe_configuration_recorders(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, region)
+	print ruleresponse
 			
 print_section_header_and_footer("END OF CONFIG SERVICE REVIEW", True)
