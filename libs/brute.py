@@ -577,7 +577,7 @@ def brute_glacier_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'glacier', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/greengrass.html
-#TODO  #doesnt seem to be in the codebase for python ??
+#If this one doesnt work make sure boto3 is up to date
 def brute_greengrass_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Greegrass Permissions ###")
     tests = [('ListGroups', 'list_groups', (), {}),
@@ -770,10 +770,16 @@ def brute_organizations_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'organizations', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/pinpoint.html
-#TODO
+#NO functions to call without arguements
 
 #http://boto3.readthedocs.io/en/latest/reference/services/polly.html
 #TODO
+def brute_polly_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Polly Permissions ###")
+    tests = [('DescribeVoices', 'describe_voices', (), {} ),
+             ('ListLexicons', 'list_lexicons', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'polly', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/rds.html
 def brute_rds_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
