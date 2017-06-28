@@ -13,7 +13,6 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-#from lambda.lambda import *
 from libs.aws_lambda import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
