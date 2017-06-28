@@ -13,7 +13,7 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-from iam.iam import *
+from libs.iam import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
 
