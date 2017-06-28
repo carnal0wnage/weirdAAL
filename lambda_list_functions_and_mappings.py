@@ -1,5 +1,5 @@
 '''
-This file is used to list volumes of ec2 instances
+This file is used to list lambda functions and event mappings
 '''
 
 import boto3
@@ -13,7 +13,8 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-from lib.ec2 import *
+#from lambda.lambda import *
+from libs.aws_lambda import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
 
@@ -21,5 +22,5 @@ AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''
 
 
-get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+list_functions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+list_event_source_mappings(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
