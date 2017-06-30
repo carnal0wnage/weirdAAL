@@ -39,6 +39,8 @@ def describe_applications(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def describe_application_versions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing ElasticBeanstalk Applications Versions ###")
@@ -67,7 +69,8 @@ def describe_application_versions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
-
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def describe_configuration_options(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing ElasticBeanstalk Configuration Options ###")
@@ -92,7 +95,6 @@ def describe_configuration_options(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
                 print "SolutionStackName: {}" .format(response['SolutionStackName'])
                 pp.pprint( "Options: {}" .format(response['Options']))
-              
         print("\n")
             
     except botocore.exceptions.ClientError as e:
@@ -102,6 +104,8 @@ def describe_configuration_options(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def describe_environments(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing ElasticBeanstalk Environments ###")
@@ -130,6 +134,8 @@ def describe_environments(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def describe_events(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing ElasticBeanstalk Environments ###")
@@ -158,4 +164,6 @@ def describe_events(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
