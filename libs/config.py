@@ -33,8 +33,8 @@ def describe_configuration_recorders(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, r
 			pass
 		else:
 			print "Unexpected error: {}" .format(e)
-    except KeyboardInterrupt:
-        print("CTRL-C received, exiting...")
+	except KeyboardInterrupt:
+		print("CTRL-C received, exiting...")
 
 	return response
 
@@ -58,7 +58,7 @@ def describe_configuration_rules(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, regio
 			pass
 		else:
 			print "Unexpected error: {}" .format(e)
-    except KeyboardInterrupt:
-        print("CTRL-C received, exiting...")
+	except KeyboardInterrupt:
+		print("CTRL-C received, exiting...")
 
 	return response
