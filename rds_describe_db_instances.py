@@ -13,7 +13,8 @@ pp = pprint.PrettyPrinter(indent=5, width=80)
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
 
-#AWS_ACCESS_KEY_ID = ''
-#AWS_SECRET_ACCESS_KEY =''
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY =''
+
 
 describe_db_instances(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
