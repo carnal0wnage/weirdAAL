@@ -14,7 +14,7 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-from lib.ec2 import *
+from libs.ec2 import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
 
