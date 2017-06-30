@@ -50,6 +50,8 @@ def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 			print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
 		else:
 			print e
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 
 def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -69,6 +71,8 @@ def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 	except botocore.exceptions.ClientError as e:
 		print e
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 #show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
 def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -90,6 +94,8 @@ def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 				
 	except botocore.exceptions.ClientError as e:
 		print e
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 #show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of ID but more details.
 def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -112,4 +118,6 @@ def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 	
 	except botocore.exceptions.ClientError as e:
 		print e
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 

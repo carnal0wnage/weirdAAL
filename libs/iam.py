@@ -53,6 +53,8 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
     
 def change_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
     client = boto3.client('iam', aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
@@ -68,6 +70,8 @@ def change_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, usern
             print("[-]: User likely doesnt have console access")
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 
 def create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
@@ -84,6 +88,8 @@ def create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, usern
             print("[-]: User likely doesnt have console access")
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 
 def get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -95,6 +101,8 @@ def get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         pp.pprint(pass_policy['PasswordPolicy'])
     except botocore.exceptions.ClientError as e:
         print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def create_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
@@ -110,6 +118,8 @@ def create_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
             print("ERROR: The provided user: {} already exists" .format(username))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
@@ -120,6 +130,8 @@ def create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
         pp.pprint(create_access_key['AccessKey'])
     except botocore.exceptions.ClientError as e:
         print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def delete_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, accesskey):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
@@ -133,6 +145,8 @@ def delete_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, access
             print("ERROR: The provided AccessKey doesnt exist")
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 #untested :-/ but should work #TODO
 def delete_mfa_device(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, mfaserial):
@@ -146,6 +160,8 @@ def delete_mfa_device(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, mfaser
             print("ERROR: The provided AccessKey doesnt exist")
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 
 def make_admin(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
@@ -161,6 +177,8 @@ def make_admin(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
             print("ERROR: Account does not have permissions to add the policy")
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def make_backdoor_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
@@ -174,3 +192,5 @@ def make_backdoor_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, pa
             
     except botocore.exceptions.ClientError as e:
         print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")

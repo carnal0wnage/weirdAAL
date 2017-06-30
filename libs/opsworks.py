@@ -40,3 +40,5 @@ def describe_stacks(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 			print "[-] Cant connect to the {} endpoint [-]" .format(region)
 		else:
 			print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")

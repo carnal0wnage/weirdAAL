@@ -13,6 +13,9 @@ AWS_SECRET_ACCESS_KEY = ''
 
 
 def get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
-    client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-    account_id = client.get_caller_identity()["Account"]
+	try:
+    	client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    	account_id = client.get_caller_identity()["Account"]
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
     return account_id

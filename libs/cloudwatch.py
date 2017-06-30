@@ -30,6 +30,8 @@ def describe_alarms(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def describe_alarm_history(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing Cloudwatch Alarm History Information ###")
@@ -55,6 +57,8 @@ def describe_alarm_history(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def list_metrics(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing Cloudwatch List Metrics ###")
@@ -80,3 +84,5 @@ def list_metrics(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")

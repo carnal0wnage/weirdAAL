@@ -35,6 +35,8 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
                 print('{} : cant list s3 bucket [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
                 print "Unexpected error: {}" .format(e)
+        except KeyboardInterrupt:
+            print("CTRL-C received, exiting...")
             
         try:
             policy = client.get_bucket_policy(Bucket=bucket)
@@ -81,6 +83,8 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 #specifically get the acl on a file in a buckeet
 def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
@@ -105,6 +109,8 @@ def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 #given an aws keypair what s3 assets does it have permission to
 def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -129,6 +135,8 @@ def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 
 def get_s3objects_for_account_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -152,3 +160,5 @@ def get_s3objects_for_account_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")

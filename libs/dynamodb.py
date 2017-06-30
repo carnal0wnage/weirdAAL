@@ -36,6 +36,8 @@ def list_dynamodb_tables(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def list_dynamodb_tables_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing DynamoDB Tables ###")
@@ -62,6 +64,8 @@ def list_dynamodb_tables_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def describe_table(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, table, region):
     print "### Describing DynamoDB Table: {} ###" .format(table)
@@ -92,4 +96,6 @@ def describe_table(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, table, region):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 

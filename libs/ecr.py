@@ -39,3 +39,5 @@ def describe_repositories(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
             print "Unexpected error: {}" .format(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")

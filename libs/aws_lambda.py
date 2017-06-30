@@ -36,6 +36,8 @@ def list_functions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 	except botocore.exceptions.ClientError as e:
 		print e
+    except KeyboardInterrupt:
+    	print("CTRL-C received, exiting...")
 
 def list_event_source_mappings(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 	print("### Listing Lambda Event Source Mappings ###")
@@ -61,3 +63,5 @@ def list_event_source_mappings(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 	except botocore.exceptions.ClientError as e:
 		print e
+    except KeyboardInterrupt:
+    	print("CTRL-C received, exiting...")
