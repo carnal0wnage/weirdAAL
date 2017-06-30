@@ -20,6 +20,5 @@ from libs.aws_lambda import *
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''
 
-
 list_functions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 list_event_source_mappings(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
