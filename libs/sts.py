@@ -9,9 +9,10 @@ regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', '
 
 def get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 	try:
-    	client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-    	account_id = client.get_caller_identity()["Account"]
-    	print account_id
-    except KeyboardInterrupt:
-        print("CTRL-C received, exiting...")
-    return account_id
+		client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+		account_id = client.get_caller_identity()["Account"]
+		print("Account Id: {}" .format(account_id))
+	except KeyboardInterrupt:
+		print("CTRL-C received, exiting...")
+
+	return account_id

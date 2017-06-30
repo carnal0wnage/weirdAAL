@@ -14,14 +14,15 @@ import pprint
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 from libs.iam import *
+from libs.sts import *
 
 #insert AWS key, will figure out how to pull this in from a single file for all scripts
 
-#AWS_ACCESS_KEY_ID = ''
-#AWS_SECRET_ACCESS_KEY =''
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY =''
 
 
-
+get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 #create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,'pythons3')

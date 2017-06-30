@@ -153,8 +153,8 @@ def delete_mfa_device(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, mfaser
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
     try:
         delete_mfa = client.deactivate_mfa_device(UserName=username, SerialNumber=mfaserial)
-         print("Deleting a MFA device: {} for: {}" .format(mfaserial, username))
-         print('Response to delete MFA devices was: {}' .format(delete_mfa['ResponseMetadata']['HTTPStatusCode']))
+        print("Deleting a MFA device: {} for: {}" .format(mfaserial, username))
+        print('Response to delete MFA devices was: {}' .format(delete_mfa['ResponseMetadata']['HTTPStatusCode']))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'NoSuchEntity':
             print("ERROR: The provided AccessKey doesnt exist")
