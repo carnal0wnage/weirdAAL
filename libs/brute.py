@@ -895,14 +895,23 @@ def brute_sms_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 #http://boto3.readthedocs.io/en/latest/reference/services/snowball.html
 #TODO
+def brute_snowball_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Snowball Permissions ###")
+    tests = [('DescribeAddresses', 'describe_addresses', (), {} ),
+             ('GetSnowballUsage', 'get_snowball_usage', (), {} ),
+             ('ListClusters', 'list_clusters', (), {} ),
+             ('ListJobs', 'list_jobs', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'snowball', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/sns.html
-#TODO
 def brute_sns_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Simple Notification Service (SNS) Permissions ###")
     tests = [('ListPlatformApplications', 'list_platform_applications', (), {} ), 
+             ('ListPhoneNumbersOptedOut', 'list_phone_numbers_opted_out', (), {} ),
              ('ListSubscriptions', 'list_subscriptions', (), {} ), 
-             ('ListTopics', 'list_topics', (), {} ),
+             ('ListTopics', 'list_topics', (), {} ), 
+             ('GetSmsAttributes', 'get_sms_attributes', (), {} ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'sns', tests)
 
