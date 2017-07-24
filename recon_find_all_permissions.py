@@ -11,10 +11,7 @@ pp = pprint.PrettyPrinter(indent=5, width=80)
 
 from libs.brute import *
 from libs.s3 import *
-
-#insert AWS key, will figure out how to pull this in from a single file for all scripts
-
-
+from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 brute_acm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)

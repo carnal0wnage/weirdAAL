@@ -15,9 +15,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 from libs.cloudwatch import *
-
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
+from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 describe_alarms(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 describe_alarm_history(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)

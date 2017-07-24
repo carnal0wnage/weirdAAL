@@ -10,13 +10,10 @@ import pprint
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 from libs.s3 import *
-
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY =''
-
+from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 #open a list of possible buckets and attempt to list the contents
-f = open('test.txt', 'r')
+f = open('bucket_list.txt', 'r')
 for line in f:
     line = line.strip()
     if not line:
