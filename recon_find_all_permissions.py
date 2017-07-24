@@ -1,20 +1,6 @@
-import boto3
-import botocore
-
-import json
-import urllib
-import logging
-import sys,os
-import pprint
-
-pp = pprint.PrettyPrinter(indent=5, width=80)
-
 from libs.brute import *
 from libs.s3 import *
-
-#insert AWS key, will figure out how to pull this in from a single file for all scripts
-
-
+from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 brute_acm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
@@ -37,7 +23,7 @@ brute_cognitoidentity_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 brute_cognitoidp_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 brute_cognitosync_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 brute_configservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-	 #brute_costandusagereportservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) #Could not connect to the endpoint URL: "https://cur.us-west-2.amazonaws.com/"
+#brute_costandusagereportservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) #Could not connect to the endpoint URL: "https://cur.us-west-2.amazonaws.com/"
 brute_datapipeline_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 brute_devicefarm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 brute_directconnect_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
