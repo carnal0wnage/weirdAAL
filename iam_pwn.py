@@ -1,19 +1,6 @@
 '''
 if you have root or IAM access gather user info, manipulate access keys or passwords, make backdoor account
 '''
-
-import boto3
-import botocore
-
-import json
-import logging
-import os
-import pprint
-import sys
-import urllib
-
-pp = pprint.PrettyPrinter(indent=5, width=80)
-
 from libs.iam import *
 from libs.sts import *
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
