@@ -16,3 +16,17 @@ def get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 		print("CTRL-C received, exiting...")
 
 	return account_id
+
+def get_accountid_all(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+	try:
+		client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+		account_id = client.get_caller_identity()["Account"]
+		account_userid = client.get_caller_identity()["UserId"]
+		account_arn = client.get_caller_identity()["Arn"]
+		print("Account Id: {}" .format(account_id))
+		print("Account UserID: {}" .format(account_userid) )
+		print("Account ARN: {}" .format(account_arn) )
+	except KeyboardInterrupt:
+		print("CTRL-C received, exiting...")
+
+	return account_id
