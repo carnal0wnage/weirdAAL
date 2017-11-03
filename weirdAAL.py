@@ -8,3 +8,7 @@
 
 import boto3
 import argparse
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.parse_args()
