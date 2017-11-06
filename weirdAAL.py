@@ -11,9 +11,13 @@ import argparse
 
 import argparse
 parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--step", help="list the step you would like to run",
+action="store", type=int, required=True)
 parser.add_argument("-v", "--verbosity", help="increase output verbosity",
 action="store_true")
 args = parser.parse_args()
+
+
 
 if (args.verbosity):
     print("Verbosity is enabled")
