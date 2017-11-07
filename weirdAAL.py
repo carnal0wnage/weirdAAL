@@ -17,7 +17,14 @@ parser.add_argument("-v", "--verbosity", help="increase output verbosity",
 action="store_true")
 args = parser.parse_args()
 
-
+if (args.step == 1):
+    print("Beginning step 1")
+elif (args.step == 2):
+    print("Beginning step 2")
+elif (args.step == 3):
+    print("Beginning step 3")
+else:
+    print("We need a valid step to continue...")
 
 if (args.verbosity):
     print("Verbosity is enabled")
