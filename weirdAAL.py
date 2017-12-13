@@ -8,8 +8,8 @@
 
 import boto3
 import argparse
+import os
 
-import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",
 action="store", type=int, required=True)
@@ -17,6 +17,11 @@ parser.add_argument("-v", "--verbosity", help="increase output verbosity",
 action="store_true")
 args = parser.parse_args()
 
+
+# Need to figure out if we have keys in the ENV or not
+#print os.environ['AWS_ACCESS_KEY_ID']
+
+# We need the user to tell us the step they want to proceed on
 if (args.step == 1):
     print("Beginning step 1")
 elif (args.step == 2):
@@ -26,5 +31,7 @@ elif (args.step == 3):
 else:
     print("We need a valid step to continue...")
 
+
+# Allow the user to specify verbosity for debugging
 if (args.verbosity):
     print("Verbosity is enabled")
