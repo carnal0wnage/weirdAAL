@@ -9,6 +9,7 @@
 import boto3
 import argparse
 import os
+from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",
@@ -19,7 +20,10 @@ args = parser.parse_args()
 
 
 # Need to figure out if we have keys in the ENV or not
-#print os.environ['AWS_ACCESS_KEY_ID']
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+    print("We've got it")
+else:
+    print("Please supply keys as outlined in our README.md file")
 
 # We need the user to tell us the step they want to proceed on
 if (args.step == 1):
