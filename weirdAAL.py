@@ -10,6 +10,7 @@ import boto3
 import argparse
 import os
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+from botocore.exceptions import ClientError
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",
@@ -18,12 +19,20 @@ parser.add_argument("-v", "--verbosity", help="increase output verbosity",
 action="store_true")
 args = parser.parse_args()
 
+def perform_credential_check():
+    try:
+        client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        account_id = client.get_caller_identity()["Account"]
+    except ClientError as e:
+        print("The AWS Access Keys are not valid/active")
+        exit(1)
 
 # Need to figure out if we have keys in the ENV or not
 if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
-    print("We've got it")
+    perform_credential_check()
 else:
     print("Please supply keys as outlined in our README.md file")
+    exit(1)
 
 # We need the user to tell us the step they want to proceed on
 if (args.step == 1):
