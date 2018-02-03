@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This file will help to serve as a starting point for using the rest of the tools
 # Things we want to figure out
 # 1) Is your key active?
@@ -9,8 +10,10 @@
 import boto3
 import argparse
 import os
-from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from botocore.exceptions import ClientError
+
+AWS_ACCESS_KEY_ID=os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY=os.getenv("AWS_SECRET_ACCESS_KEY")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",

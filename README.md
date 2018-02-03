@@ -1,7 +1,35 @@
 # Weird AAL
-Weird AWS Attack Library (AAL) 
+Weird AWS Attack Library (AAL)
 
 <img src="http://earnthis.net/wp-content/uploads/2013/12/150490_large.jpg"  align="center" height="240" width="350">
+
+# Description
+
+Did you stumble across AWS keys somehow? Great, because this tool was built to help you take advantage of those keys.
+
+# Installation
+
+## Python3 and libraries for weirdAAL
+
+You need Python3 / Pip3 installed on your system.
+
+```
+pip3 install -r requirements.txt
+```
+
+## Environment
+
+The tool needs keys. To make this easy, copy `env.sample` to `.env` in this directory.
+
+
+
+# Usage
+
+```
+./weirdAAL -h
+```
+
+---
 
 # Examples
 
@@ -18,7 +46,3 @@ Weird AWS Attack Library (AAL)
 ## EC2
 - ec2_review_encrypted_volumes.py -- review ec2 instances for encryption status -write out unencrypted ones to file
      (port of https://gist.github.com/cktricky/0fa3b13ca4306bcd1ec384e88eac3f55)
-
-
-
-
