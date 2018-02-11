@@ -1,6 +1,8 @@
-# Docs r generated :D
-docs/*.html
+#let's attempt not to check in config.py with keys
+config.py
 
+# Docs r generated
+docs/*.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
