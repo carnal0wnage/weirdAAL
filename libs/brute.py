@@ -1,4 +1,4 @@
- import boto3
+import boto3
 import botocore
 import pprint
 import sys
@@ -117,6 +117,10 @@ def brute_acm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'acm', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/alexaforbusiness.html
+#TODO
+# search_devices with a filter of * might get it done
+
 #http://boto3.readthedocs.io/en/latest/reference/services/apigateway.html
 def brute_apigateway_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating APIGateway Permissions ###")
@@ -130,6 +134,10 @@ def brute_apigateway_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'apigateway', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/application-autoscaling.html
+#TODO
+#not seeing any functions that dont take args
+
 #http://boto3.readthedocs.io/en/latest/reference/services/appstream.html
 def brute_appstream_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating APPStream Permissions ###")
@@ -138,6 +146,10 @@ def brute_appstream_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('DescribeStacks', 'describe_stacks', (), {}, ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'appstream', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/appsync.html
+#TODO
+#not seeing any functions that dont take args
 
 #http://boto3.readthedocs.io/en/latest/reference/services/athena.html
 def brute_athena_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -162,6 +174,9 @@ def brute_autoscaling_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'autoscaling', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/autoscaling-plans.html
+#todo
+
 #http://boto3.readthedocs.io/en/latest/reference/services/batch.html
 def brute_batch_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Batch Permissions ###")
@@ -178,6 +193,26 @@ def brute_budgets_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     tests = [('DescribeBudgets', 'describe_budgets', (), {'AccountId':account_id}, ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'budgets', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/ce.html
+#TODO
+#http://boto3.readthedocs.io/en/latest/reference/services/ce.html#CostExplorer.Client.get_cost_and_usage
+#shoudl work we just need to generate start and end times each run
+
+#http://boto3.readthedocs.io/en/latest/reference/services/cloud9.html
+def brute_cloud9_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Cloud9 Permissions ###")
+    tests = [('ListEnvironments', 'list_environments', (), {}, ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'cloud9', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/clouddirectory.html
+def brute_clouddirectory_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating CloudDirectory Permissions ###")
+    tests = [('ListDirectories', 'list_directories', (), {}, ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'clouddirectory', tests)
+
 
 #http://boto3.readthedocs.io/en/latest/reference/services/cloudformation.html
 def brute_cloudformation_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -210,6 +245,9 @@ def brute_cloudhsm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'cloudhsm', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/cloudhsmv2.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/cloudsearch.html
 def brute_cloudsearch_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating CloudSearch Permissions ###")
@@ -217,6 +255,9 @@ def brute_cloudsearch_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('ListDomainNames', 'list_domain_names', (), {}, ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'cloudsearch', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/cloudsearchdomain.html
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/cloudtrail.html
 def brute_cloudtrail_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -298,6 +339,9 @@ def brute_cognitosync_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'cognito-sync', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/comprehend.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/config.html
 def brute_configservice_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating ConfigService Permissions ###")
@@ -326,6 +370,9 @@ def brute_datapipeline_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     tests = [('ListPipelines', 'list_pipelines', (), {}, ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'datapipeline', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/dax.html
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/devicefarm.html
 #http://docs.aws.amazon.com/general/latest/gr/rande.html#devicefarm_region
@@ -581,6 +628,9 @@ def brute_glacier_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'glacier', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/glue.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/greengrass.html
 #If this one doesnt work make sure boto3 is up to date
 def brute_greengrass_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -590,6 +640,10 @@ def brute_greengrass_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('ListSubscriptionDefinitions', 'list_subscription_definitions', (), {}),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'greengrass', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/guardduty.html
+#TODO
+
 
 #http://boto3.readthedocs.io/en/latest/reference/services/health.html
 def brute_health_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -649,6 +703,9 @@ def brute_iotdata_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'iot-data', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/iot-jobs-data.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/kinesis.html
 def brute_kinesis_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Kinesis Permissions ###")
@@ -656,12 +713,22 @@ def brute_kinesis_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'kinesis', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-archived-media.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-media.html
+#TODO
+
+
 #http://boto3.readthedocs.io/en/latest/reference/services/kinesisanalytics.html
 def brute_kinesisanalytics_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Kinesis Analytics Permissions ###")
     tests = [('ListApplications', 'list_applications', (), {}),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'kinesisanalytics', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/kinesisvideo.html
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/kms.html
 def brute_kms_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -731,8 +798,32 @@ def brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #http://boto3.readthedocs.io/en/latest/reference/services/marketplacecommerceanalytics.html
 #NO functions to call without arguements
 
+#http://boto3.readthedocs.io/en/latest/reference/services/mediaconvert.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/medialive.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/mediapackage.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/mediastore.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/mediastore-data.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/meteringmarketplace.html
 #NO functions to call without arguements
+
+#http://boto3.readthedocs.io/en/latest/reference/services/mgh.html
+#TODO 
+
+#http://boto3.readthedocs.io/en/latest/reference/services/mobile.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/mq.html
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mturk.html
 def brute_mturk_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -785,6 +876,9 @@ def brute_polly_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'polly', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/pricing.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/rds.html
 def brute_rds_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating RDS Permissions ###")
@@ -817,6 +911,9 @@ def brute_rekognition_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     tests = [('ListCollections', 'list_collections', (), {} ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'rekognition', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/resource-groups.html
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/resourcegroupstaggingapi.html
 def brute_resourcegroupstaggingapi_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -851,12 +948,21 @@ def brute_s3_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 's3', tests)
 
+#http://boto3.readthedocs.io/en/latest/reference/services/sagemaker.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/sagemaker-runtime.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/sdb.html
 def brute_sdb_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating SimpleDB Permissions ###")
     tests = [('ListDomains', 'list_domains', (), {} ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'sdb', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/serverlessrepo.html
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html
 def brute_servicecatalog_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -866,6 +972,9 @@ def brute_servicecatalog_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('ListAcceptedPortfolioShares', 'list_accepted_portfolio_shares', (), {} ),
             ]
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'servicecatalog', tests)
+
+#http://boto3.readthedocs.io/en/latest/reference/services/servicediscovery.html
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/ses.html
 def brute_ses_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
@@ -894,11 +1003,9 @@ def brute_sms_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'sms', tests)
 
 #http://boto3.readthedocs.io/en/latest/reference/services/snowball.html
-#TODO
 def brute_snowball_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print ("### Enumerating Snowball Permissions ###")
-    tests = [('DescribeAddresses', 'describe_addresses', (), {} ),
-             ('GetSnowballUsage', 'get_snowball_usage', (), {} ),
+    tests = [('GetSnowballUsage', 'get_snowball_usage', (), {} ),
              ('ListClusters', 'list_clusters', (), {} ),
              ('ListJobs', 'list_jobs', (), {} ),
             ]
@@ -926,7 +1033,12 @@ def brute_sqs_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/stepfunctions.html
-#TODO
+def brute_stepfunctions_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print ("### Enumerating Step Functions (SFN) Permissions ###")
+    tests = [('ListActivities', 'list_activities', (), {} ),
+            ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'stepfunctions', tests)
+
 
 #http://boto3.readthedocs.io/en/latest/reference/services/storagegateway.html
 #TODO
@@ -944,6 +1056,12 @@ def brute_sts_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #http://boto3.readthedocs.io/en/latest/reference/services/swf.html
 #TODO
 
+#http://boto3.readthedocs.io/en/latest/reference/services/transcribe.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/translate.html
+#TODO
+
 #http://boto3.readthedocs.io/en/latest/reference/services/waf.html
 #TODO
 
@@ -951,6 +1069,9 @@ def brute_sts_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/workdocs.html
+#TODO
+
+#http://boto3.readthedocs.io/en/latest/reference/services/workmail.html
 #TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/workspaces.html
