@@ -29,7 +29,7 @@ def perform_credential_check():
         print("The AWS Access Keys are not valid/active")
         #exit(1)
 
-def step_something():
+def step_recon():
     print("!!!")
 
 def method_create():
