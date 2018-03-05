@@ -17,6 +17,7 @@ parser.add_argument("-s", "--step", help="list the step you would like to run",
 action="store", type=str, required=True)
 parser.add_argument("-t", "--target", help="Give your target a name so we can track results",
 action="store", type=str, required=True)
+parser.add_argument("-l", "--list", help="list steps", action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity",
 action="store_true")
 args = parser.parse_args()
@@ -46,6 +47,9 @@ if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
 else:
     print("Please supply keys as outlined in our README.md file")
     #exit(1)
+
+if (args.list):
+    pass
 
 # We need the user to tell us the step they want to proceed on
 if (args.step):
