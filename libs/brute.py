@@ -1,9 +1,21 @@
 import boto3
 import botocore
+import json
+import logging
 import pprint
 import sys
+import datetime #change as required once we decide time format
+
+from libs.sql import *
+
+
+# we chould probably load this from one place in the future #TODO
+db_name = "weirdAAL.db"
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
+
+logging.basicConfig(level=logging.ERROR, format='%(message)s',filename='target.txt', filemode='w')
+
 
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
@@ -75,6 +87,24 @@ def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, ser
     if actions:
         print ("\n[+] {} Actions allowed are [+]" .format(service))
         print (actions)
+        timenow = datetime.datetime.now()
+
+        db_logger = []
+        for action in actions:
+            db_logger.append([service, action, AWS_ACCESS_KEY_ID, timenow])
+        #print (db_logger)
+
+        #scrapped the json logging idea but keeping it here just in case
+        #data = json.dumps({'time' : timenow, 'service' : service, 'actions' : actions, 'target' : 'passed_in_target'})
+        #logging.critical(data)
+
+        #logging to db here
+        try:
+            insert_reconservice_data(db_name, db_logger)
+        except sqlite3.OperationalError as e:
+            print (e)
+            print ("You need to set up the database...exiting")
+            sys.exit()
         print ("\n")
     else:
         print ("\n[-] No {} actions allowed [-]" .format(service))

@@ -29,6 +29,7 @@ def create_recon_table(db_name, table_name):
              service text,
              sub_service text,
              AWSKeyID text,
+             checked_at text,
              PRIMARY KEY (ID))"""
              #FOREIGN KEY (AWSKeyID) references AWSKey(ID))"""
     create_table(db_name,table_name,sql)
@@ -50,14 +51,21 @@ def insert_awskey_data(db_name, records):
         query(db_name, sql,record)
 
 def insert_reconservice_data(db_name, records):
-    sql = """INSERT INTO recon(AWSKeyID, service, sub_service) VALUES (?,?,?)"""
+    sql = """INSERT INTO recon(service, sub_service, AWSKeyID, checked_at) VALUES (?,?,?,?)"""
     for record in records:
         query(db_name,sql,record)
+
+def search_recon_by_key(db_name,AWSKeyID):
+        with sqlite3.connect(db_name) as db:
+                cursor = db.cursor()
+                cursor.execute("""SELECT service,sub_service FROM recon WHERE AWSKeyID=?""",(AWSKeyID,))
+                results = cursor.fetchall()
+                return results
 
 def query(db_name,sql,data):
     with sqlite3.connect(db_name) as db:
         cursor = db.cursor()
-        cursor.execute("""PRAGMA foreign_keys = ON""")
+        #cursor.execute("""PRAGMA foreign_keys = ON""")
         cursor.execute(sql,data)
         db.commit()
         
