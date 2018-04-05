@@ -8,8 +8,8 @@ def create_table(db_name,table_name,sql):
         result = cursor.fetchall()
         keep_table = True
         if len(result) == 1:
-            #python 2
-            response = raw_input("The table {} already exists, do you wish to recreate it? (y/n): ".format(table_name))
+            #python 3
+            response = input("The table {} already exists, do you wish to recreate it? (y/n): ".format(table_name))
             if response == "y":
                 keep_table = False
                 print("The {} table will be recreated - all existing data will be lost".format(table_name))

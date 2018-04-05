@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from libs.brute import *
 from libs.s3 import *
 

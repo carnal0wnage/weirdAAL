@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import boto3
 import botocore
 import json
@@ -54,23 +56,23 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             try:
                 profile = client.get_login_profile(UserName=user['UserName'])
                 if profile:
-                    print('User {} likely has console access and the password can be reset :-)' .format(user['UserName']))
-                    print("Checking for MFA on account")
+                    print ('User {} likely has console access and the password can be reset :-)' .format(user['UserName']))
+                    print ("Checking for MFA on account")
                     mfa = client.list_mfa_devices(UserName=user['UserName'])
-                    print mfa['MFADevices']
+                    print (mfa['MFADevices'])
 
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'NoSuchEntity':
                     print("[-]: user '{}' likely doesnt have console access" .format(user['UserName']))
                 else:
-                    print "Unexpected error: {}" .format(e)
+                    print ("Unexpected error: {}" .format(e))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print ("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -120,7 +122,7 @@ def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service
             method(*args, **kwargs)
             #print method --wont return anything on dryrun
         except botocore.exceptions.EndpointConnectionError as e:
-            print e
+            print (e)
             continue
         except KeyboardInterrupt:
             print("CTRL-C received, exiting...")
@@ -133,7 +135,7 @@ def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service
                 actions.append(api_action)
 
             else:
-                print e
+                print (e)
                 continue
         else:
             print('{} IS allowed' .format(api_action))
