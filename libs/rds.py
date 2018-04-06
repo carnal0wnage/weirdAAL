@@ -25,6 +25,6 @@ def describe_db_instances(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 					pp.pprint(i)
 
 	except botocore.exceptions.ClientError as e:
-		print e
+		print(e)
 	except KeyboardInterrupt:
 		print("CTRL-C received, exiting...")

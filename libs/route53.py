@@ -30,11 +30,11 @@ def list_geolocations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['GeoLocationDetailsList']) <= 0:
                 print("[-] ListGeoLocations allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} Route53 GeoLocations ###" .format(region)
+                print("### {} Route53 GeoLocations ###" .format(region))
                 for app in response['GeoLocationDetailsList']:
                     pp.pprint(app)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -44,5 +44,3 @@ def list_geolocations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
     	print("CTRL-C received, exiting...")
-
-

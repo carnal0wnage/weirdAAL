@@ -3,7 +3,7 @@ if you have root or IAM access gather user info, manipulate access keys or passw
 '''
 from libs.iam import *
 from libs.sts import *
-from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+#from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 
 def step_cg_test():

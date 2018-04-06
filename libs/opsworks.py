@@ -22,13 +22,13 @@ def describe_stacks(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 			)
 			response = client.describe_stacks()
 			#debug
-			print response
+			print(response)
 			if response.get('Stacks') is None:
 				print("{} likely does not have Lambda permissions\n" .format(AWS_ACCESS_KEY_ID))
 			elif len(response['Stacks']) <= 0:
 				print("[-] DescribeStacks allowed for {} but no results (everyone seems to have this permission) [-]\n" .format(region))
 			else: #THIS PART IS UNTESTED
-				for r in response['Stacks']: 
+				for r in response['Stacks']:
 					pp.pprint(r)
 	except botocore.exceptions.EndpointConnectionError as e:
 		print("Unexpected error: {}" .format(e))

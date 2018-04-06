@@ -27,11 +27,11 @@ def describe_repositories(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['repositories']) <= 0:
                 print("[-] DescribeRepositories allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} ECR Repositories ###" .format(region)
+                print("### {} ECR Repositories ###" .format(region))
                 for tables in response['repositories']:
                     pp.pprint(tables)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))

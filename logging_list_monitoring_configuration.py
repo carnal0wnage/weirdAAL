@@ -42,7 +42,7 @@ for region in regions:
 	print(config_service_text)
 	print("Region:" + region)
 	print_config_text(config_service_text)
-	
+
 	if response.get('ConfigurationRecorders') is None:
 		print("{} likely does not have Config permissions\n" .format(AWS_ACCESS_KEY_ID))
 	elif len(response['ConfigurationRecorders']) <= 0:
@@ -55,6 +55,6 @@ for region in regions:
 			#	pp.pprint(resourcetype['resourceTypes'][0])
 
 	ruleresponse = describe_configuration_recorders(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, region)
-	print ruleresponse
-			
+	print(ruleresponse)
+
 print_section_header_and_footer("END OF CONFIG SERVICE REVIEW", True)

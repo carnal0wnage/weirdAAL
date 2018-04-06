@@ -16,19 +16,18 @@ def list_pipelines(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Printing Data Pipeline Pipelines ###")
     try:
     	for region in regions:
-    		client = boto3.client('datapipeline', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
-
-        	response = client.list_pipelines()
-        	print"### {} Data Pipelines ###" .format(region)
-        	if response.get('pipelineIdList') is None:
-        		print("{} likely does not have Data Pipeline permissions\n" .format(AWS_ACCESS_KEY_ID))
-        	elif len(response['pipelineIdList']) <= 0:
-        		print("[-] ListPipelines allowed for {} but no results [-]" .format(region))
-        	else:
-        		print"### {} Data Pipelines ###" .format(region)
-        		for pipes in response['pipelineIdList']:
-        			pp.pprint(pipes)
-        print("\n")
+            client = boto3.client('datapipeline', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            response = client.list_pipelines()
+            print("### {} Data Pipelines ###" .format(region))
+            if response.get('pipelineIdList') is None:
+                print("{} likely does not have Data Pipeline permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['pipelineIdList']) <= 0:
+                print("[-] ListPipelines allowed for {} but no results [-]" .format(region))
+            else:
+                print("### {} Data Pipelines ###" .format(region))
+                for pipes in response['pipelineIdList']:
+                    pp.pprint(pipes)
+                    print("\n")
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
