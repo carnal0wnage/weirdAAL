@@ -28,7 +28,7 @@ def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 					'Name' : 'status',
 					'Values' : ['in-use']
 				}])['Volumes']
-		
+
 				for volume in response:
 					if volume['Encrypted']:
 						encrypted.append(volume['VolumeId'])
@@ -49,7 +49,7 @@ def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 		if e.response['Error']['Code'] == 'UnauthorizedOperation':
 			print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
 		else:
-			print e
+			print(e)
 	except KeyboardInterrupt:
 		print("CTRL-C received, exiting...")
 
@@ -70,7 +70,7 @@ def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 					pp.pprint(i)
 
 	except botocore.exceptions.ClientError as e:
-		print e
+		print(e)
 	except KeyboardInterrupt:
 		print("CTRL-C received, exiting...")
 
@@ -91,9 +91,9 @@ def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 					volumes = client.describe_instance_attribute(InstanceId=i['InstanceId'], Attribute='blockDeviceMapping')
 					print ("Instance ID: {} \n" .format(i['InstanceId']))
 					pp.pprint(volumes)
-				
+
 	except botocore.exceptions.ClientError as e:
-		print e
+		print(e)
 	except KeyboardInterrupt:
 		print("CTRL-C received, exiting...")
 
@@ -115,9 +115,8 @@ def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 				print("InstandID:{} \n" .format(volume['Attachments'][0]['InstanceId']))
 				pp.pprint(volume)
 				print("\n")
-	
+
 	except botocore.exceptions.ClientError as e:
-		print e
+		print(e)
 	except KeyboardInterrupt:
 		print("CTRL-C received, exiting...")
-
