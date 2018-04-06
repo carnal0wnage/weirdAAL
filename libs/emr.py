@@ -23,9 +23,9 @@ def list_clusters(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('Clusters') is None:
-                print "{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Clusters']) <= 0:
-                print "[-] ListClusters allowed for {} but no results [-]" .format(region)
+                print("[-] ListClusters allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} EMR Clusters ###" .format(region)
                 for app in response['Clusters']:
@@ -38,7 +38,7 @@ def list_clusters(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
     	print("CTRL-C received, exiting...")
 
@@ -53,9 +53,9 @@ def list_security_configurations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('SecurityConfigurations') is None:
-                print "{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['SecurityConfigurations']) <= 0:
-                print "[-] ListSecurityConfigurations allowed for {} but no results [-]" .format(region)
+                print("[-] ListSecurityConfigurations allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} EMR Security Configuration ###" .format(region)
                 for app in response['SecurityConfigurations']:
@@ -68,7 +68,7 @@ def list_security_configurations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
     	print("CTRL-C received, exiting...")
 

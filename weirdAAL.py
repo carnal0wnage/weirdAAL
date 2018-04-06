@@ -14,7 +14,10 @@ from botocore.exceptions import ClientError
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",
-action="store", type=int, required=True)
+action="store", type=str, required=True)
+parser.add_argument("-t", "--target", help="Give your target a name so we can track results",
+action="store", type=str, required=True)
+parser.add_argument("-l", "--list", help="list steps", action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity",
 action="store_true")
 args = parser.parse_args()
@@ -25,6 +28,17 @@ def perform_credential_check():
         account_id = client.get_caller_identity()["Account"]
     except ClientError as e:
         print("The AWS Access Keys are not valid/active")
+        #exit(1)
+
+def step_recon():
+    print("!!!")
+
+def method_create():
+    try:
+        arg = eval("step_" + args.step)
+        return arg
+    except NameError:
+        print("That step does not exist")
         exit(1)
 
 # Need to figure out if we have keys in the ENV or not
@@ -32,17 +46,17 @@ if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
     perform_credential_check()
 else:
     print("Please supply keys as outlined in our README.md file")
-    exit(1)
+    #exit(1)
+
+if (args.list):
+    pass
 
 # We need the user to tell us the step they want to proceed on
-if (args.step == 1):
-    print("Beginning step 1")
-elif (args.step == 2):
-    print("Beginning step 2")
-elif (args.step == 3):
-    print("Beginning step 3")
-else:
-    print("We need a valid step to continue...")
+if (args.step):
+    arg = method_create()
+    if callable(arg):
+        arg()
+
 
 
 # Allow the user to specify verbosity for debugging

@@ -21,21 +21,21 @@ def list_pipelines(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         	response = client.list_pipelines()
         	print"### {} Data Pipelines ###" .format(region)
         	if response.get('pipelineIdList') is None:
-        		print "{} likely does not have Data Pipeline permissions\n" .format(AWS_ACCESS_KEY_ID)
+        		print("{} likely does not have Data Pipeline permissions\n" .format(AWS_ACCESS_KEY_ID))
         	elif len(response['pipelineIdList']) <= 0:
-        		print "[-] ListPipelines allowed for {} but no results [-]" .format(region)
+        		print("[-] ListPipelines allowed for {} but no results [-]" .format(region))
         	else:
         		print"### {} Data Pipelines ###" .format(region)
         		for pipes in response['pipelineIdList']:
         			pp.pprint(pipes)
         print("\n")
-        	
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")

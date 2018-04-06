@@ -26,9 +26,9 @@ def list_geolocations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('GeoLocationDetailsList') is None:
-                print "{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['GeoLocationDetailsList']) <= 0:
-                print "[-] ListGeoLocations allowed for {} but no results [-]" .format(region)
+                print("[-] ListGeoLocations allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} Route53 GeoLocations ###" .format(region)
                 for app in response['GeoLocationDetailsList']:
@@ -41,7 +41,7 @@ def list_geolocations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
     	print("CTRL-C received, exiting...")
 

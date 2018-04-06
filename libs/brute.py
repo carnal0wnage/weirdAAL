@@ -1,9 +1,23 @@
+from __future__ import print_function
+
 import boto3
 import botocore
+import json
+import logging
 import pprint
 import sys
+import datetime #change as required once we decide time format
+
+from libs.sql import *
+
+
+# we chould probably load this from one place in the future #TODO
+db_name = "weirdAAL.db"
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
+
+logging.basicConfig(level=logging.ERROR, format='%(message)s',filename='target.txt', filemode='w')
+
 
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
@@ -42,23 +56,23 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             try:
                 profile = client.get_login_profile(UserName=user['UserName'])
                 if profile:
-                    print('User {} likely has console access and the password can be reset :-)' .format(user['UserName']))
-                    print("Checking for MFA on account")
+                    print ('User {} likely has console access and the password can be reset :-)' .format(user['UserName']))
+                    print ("Checking for MFA on account")
                     mfa = client.list_mfa_devices(UserName=user['UserName'])
-                    print mfa['MFADevices']
+                    print (mfa['MFADevices'])
 
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'NoSuchEntity':
                     print("[-]: user '{}' likely doesnt have console access" .format(user['UserName']))
                 else:
-                    print "Unexpected error: {}" .format(e)
+                    print ("Unexpected error: {}" .format(e))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print ("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -75,6 +89,24 @@ def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, ser
     if actions:
         print ("\n[+] {} Actions allowed are [+]" .format(service))
         print (actions)
+        timenow = datetime.datetime.now()
+
+        db_logger = []
+        for action in actions:
+            db_logger.append([service, action, AWS_ACCESS_KEY_ID, timenow])
+        #print (db_logger)
+
+        #scrapped the json logging idea but keeping it here just in case
+        #data = json.dumps({'time' : timenow, 'service' : service, 'actions' : actions, 'target' : 'passed_in_target'})
+        #logging.critical(data)
+
+        #logging to db here
+        try:
+            insert_reconservice_data(db_name, db_logger)
+        except sqlite3.OperationalError as e:
+            print (e)
+            print ("You need to set up the database...exiting")
+            sys.exit()
         print ("\n")
     else:
         print ("\n[-] No {} actions allowed [-]" .format(service))
@@ -90,7 +122,7 @@ def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service
             method(*args, **kwargs)
             #print method --wont return anything on dryrun
         except botocore.exceptions.EndpointConnectionError as e:
-            print e
+            print (e)
             continue
         except KeyboardInterrupt:
             print("CTRL-C received, exiting...")
@@ -103,7 +135,7 @@ def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service
                 actions.append(api_action)
 
             else:
-                print e
+                print (e)
                 continue
         else:
             print('{} IS allowed' .format(api_action))

@@ -25,7 +25,7 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
                 print('[+] '+ key['Key'].encode('utf-8').strip())
                 #print(key['Key']) #first 100 results
         except KeyError as e:
-            print "KeyError havent tracked down reason yet"
+            print ("KeyError havent tracked down reason yet")
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == 'AccessDenied':
                 print('{} : cant list s3 bucket [AccessDenied]' .format(AWS_ACCESS_KEY_ID))
@@ -34,7 +34,7 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
                 print('{} : cant list s3 bucket [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
-                print "Unexpected error: {}" .format(e)
+                print ("Unexpected error: {}" .format(e))
         except KeyboardInterrupt:
             print("CTRL-C received, exiting...")
             
@@ -55,7 +55,7 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
                 print('{} : cant list s3 bucket policy [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
-                print "Unexpected error: {}" .format(e)
+                print ("Unexpected error: {}" .format(e))
                     
         try:
             acl = client.get_bucket_acl(Bucket=bucket)
@@ -74,7 +74,7 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
                 print('{} : cant list s3 bucket acl [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
-                print "Unexpected error: {}" .format(e)
+                print ("Unexpected error: {}" .format(e))
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
@@ -82,7 +82,7 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print ("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -100,7 +100,7 @@ def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
         myobject = myfile
         print('#### Trying to enumate s3 ACL for {}:{} ####\n '.format(bucket, myfile))
         acl = client.get_object_acl(Bucket=bucket,Key=myfile)
-        print acl
+        print (acl)
         
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
@@ -108,7 +108,7 @@ def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print ("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -134,7 +134,7 @@ def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print ("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -159,6 +159,6 @@ def get_s3objects_for_account_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print ("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")

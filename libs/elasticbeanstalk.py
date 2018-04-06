@@ -23,9 +23,9 @@ def describe_applications(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('Applications') is None:
-                print "{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Applications']) <= 0:
-                print "[-] DescribeApplications allowed for {} but no results [-]" .format(region)
+                print("[-] DescribeApplications allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} ElasticBeanstalk Applications ###" .format(region)
                 for app in response['Applications']:
@@ -38,7 +38,7 @@ def describe_applications(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -53,9 +53,9 @@ def describe_application_versions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('ApplicationVersions') is None:
-                print "{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['ApplicationVersions']) <= 0:
-                print "[-] DescribeApplicationVersions allowed for {} but no results [-]" .format(region)
+                print("[-] DescribeApplicationVersions allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} ElasticBeanstalk Application Versions ###" .format(region)
                 for app in response['ApplicationVersions']:
@@ -68,7 +68,7 @@ def describe_application_versions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -83,17 +83,17 @@ def describe_configuration_options(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('Options') is None:
-                print "{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Options']) <= 0:
-                print "[-] DescribeConfigurationOptions allowed for {} but no results [-]" .format(region)
+                print("[-] DescribeConfigurationOptions allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} ElasticBeanstalk Configuration Options ###" .format(region)
                 #if response['PlatformArn'] is None:
                 #    pass
                 #else:
-                #    print "PlatformArn: {}" .format(response['PlatformArn'])
+                #    print("PlatformArn: {}" .format(response['PlatformArn']))
 
-                print "SolutionStackName: {}" .format(response['SolutionStackName'])
+                print("SolutionStackName: {}" .format(response['SolutionStackName']))
                 pp.pprint( "Options: {}" .format(response['Options']))
         print("\n")
             
@@ -103,7 +103,7 @@ def describe_configuration_options(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -118,9 +118,9 @@ def describe_environments(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('Environments') is None:
-                print "{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Environments']) <= 0:
-                print "[-] DescribeEnvironments allowed for {} but no results [-]" .format(region)
+                print("[-] DescribeEnvironments allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} ElasticBeanstalk Environments ###" .format(region)
                 for enviro in response['Environments']:
@@ -133,7 +133,7 @@ def describe_environments(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -148,9 +148,9 @@ def describe_events(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('Events') is None:
-                print "{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Events']) <= 0:
-                print "[-] DescribeEvents allowed for {} but no results [-]" .format(region)
+                print("[-] DescribeEvents allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} ElasticBeanstalk Events ###" .format(region)
                 for events in response['Events']:
@@ -163,7 +163,7 @@ def describe_events(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
