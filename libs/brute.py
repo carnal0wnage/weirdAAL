@@ -849,7 +849,7 @@ def brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #NO functions to call without arguements
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mgh.html
-#TODO 
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mobile.html
 #TODO
