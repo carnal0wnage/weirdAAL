@@ -8,4 +8,5 @@ dirpath = os.getcwd()
 foldername = os.path.dirname(os.path.realpath(__file__))
 
 all_files = list_all_files(foldername)
+
 __all__ = all_files

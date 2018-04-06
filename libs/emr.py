@@ -27,11 +27,11 @@ def list_clusters(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['Clusters']) <= 0:
                 print("[-] ListClusters allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} EMR Clusters ###" .format(region)
+                print("### {} EMR Clusters ###" .format(region))
                 for app in response['Clusters']:
                     pp.pprint(app)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -57,11 +57,11 @@ def list_security_configurations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['SecurityConfigurations']) <= 0:
                 print("[-] ListSecurityConfigurations allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} EMR Security Configuration ###" .format(region)
+                print("### {} EMR Security Configuration ###" .format(region))
                 for app in response['SecurityConfigurations']:
                     pp.pprint(app)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -71,4 +71,3 @@ def list_security_configurations(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
     	print("CTRL-C received, exiting...")
-

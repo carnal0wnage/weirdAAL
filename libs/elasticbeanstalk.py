@@ -27,11 +27,11 @@ def describe_applications(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['Applications']) <= 0:
                 print("[-] DescribeApplications allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} ElasticBeanstalk Applications ###" .format(region)
+                print("### {} ElasticBeanstalk Applications ###" .format(region))
                 for app in response['Applications']:
                     pp.pprint(app)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -57,11 +57,11 @@ def describe_application_versions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['ApplicationVersions']) <= 0:
                 print("[-] DescribeApplicationVersions allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} ElasticBeanstalk Application Versions ###" .format(region)
+                print("### {} ElasticBeanstalk Application Versions ###" .format(region))
                 for app in response['ApplicationVersions']:
                     pp.pprint(app)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -87,7 +87,7 @@ def describe_configuration_options(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['Options']) <= 0:
                 print("[-] DescribeConfigurationOptions allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} ElasticBeanstalk Configuration Options ###" .format(region)
+                print("### {} ElasticBeanstalk Configuration Options ###" .format(region))
                 #if response['PlatformArn'] is None:
                 #    pass
                 #else:
@@ -96,7 +96,7 @@ def describe_configuration_options(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                 print("SolutionStackName: {}" .format(response['SolutionStackName']))
                 pp.pprint( "Options: {}" .format(response['Options']))
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -122,11 +122,11 @@ def describe_environments(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['Environments']) <= 0:
                 print("[-] DescribeEnvironments allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} ElasticBeanstalk Environments ###" .format(region)
+                print("### {} ElasticBeanstalk Environments ###" .format(region))
                 for enviro in response['Environments']:
-                    pp.pprint(enviro)             
+                    pp.pprint(enviro)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -152,11 +152,11 @@ def describe_events(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             elif len(response['Events']) <= 0:
                 print("[-] DescribeEvents allowed for {} but no results [-]" .format(region))
             else:
-                print"### {} ElasticBeanstalk Events ###" .format(region)
+                print("### {} ElasticBeanstalk Events ###" .format(region))
                 for events in response['Events']:
-                    pp.pprint(events)             
+                    pp.pprint(events)
         print("\n")
-            
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -166,4 +166,3 @@ def describe_events(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
-
