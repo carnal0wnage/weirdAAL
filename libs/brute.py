@@ -10,9 +10,6 @@ import datetime #change as required once we decide time format
 
 from libs.sql import *
 
-def step_cg_test():
-    pass
-    
 # we chould probably load this from one place in the future #TODO
 db_name = "weirdAAL.db"
 
