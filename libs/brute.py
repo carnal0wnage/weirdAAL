@@ -21,6 +21,9 @@ def get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #    print username
 #    return username
 
+def step_app():
+    print('hiiiiiii')
+
 def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
@@ -817,7 +820,7 @@ def brute_machinelearning_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 #NO functions to call without arguements
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mgh.html
-#TODO 
+#TODO
 
 #http://boto3.readthedocs.io/en/latest/reference/services/mobile.html
 #TODO

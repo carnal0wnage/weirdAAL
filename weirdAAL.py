@@ -11,6 +11,7 @@ import argparse
 import os
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from botocore.exceptions import ClientError
+from libs import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",
@@ -35,9 +36,9 @@ def step_recon():
 
 def method_create():
     try:
-        arg = eval("step_" + args.step)
+        arg = globals()["step_" + args.step]#arg = eval("step_" + args.step)
         return arg
-    except NameError:
+    except KeyError:
         print("That step does not exist")
         exit(1)
 
