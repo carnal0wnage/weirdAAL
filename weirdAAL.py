@@ -36,7 +36,7 @@ def step_recon():
 
 def method_create():
     try:
-        arg = globals()["step_" + args.step]#arg = eval("step_" + args.step)
+        arg = globals()["step_" + args.step]
         return arg
     except KeyError:
         print("That step does not exist")
