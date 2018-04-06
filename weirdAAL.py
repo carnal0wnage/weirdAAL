@@ -11,7 +11,7 @@ import argparse
 import os
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from botocore.exceptions import ClientError
-from libs import *
+from modules import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",
