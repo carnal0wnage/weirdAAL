@@ -24,21 +24,21 @@ def describe_stacks(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 			#debug
 			print response
 			if response.get('Stacks') is None:
-				print "{} likely does not have Lambda permissions\n" .format(AWS_ACCESS_KEY_ID)
+				print("{} likely does not have Lambda permissions\n" .format(AWS_ACCESS_KEY_ID))
 			elif len(response['Stacks']) <= 0:
-				print "[-] DescribeStacks allowed for {} but no results (everyone seems to have this permission) [-]\n" .format(region)
+				print("[-] DescribeStacks allowed for {} but no results (everyone seems to have this permission) [-]\n" .format(region))
 			else: #THIS PART IS UNTESTED
 				for r in response['Stacks']: 
 					pp.pprint(r)
 	except botocore.exceptions.EndpointConnectionError as e:
-		print "Unexpected error: {}" .format(e)
+		print("Unexpected error: {}" .format(e))
 
 	except botocore.exceptions.ClientError as e:
 		if e.response['Error']['Code'] == 'InvalidClientTokenId':
 			sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
 		elif e.response['Error']['Code'] == 'EndpointConnectionError':
-			print "[-] Cant connect to the {} endpoint [-]" .format(region)
+			print("[-] Cant connect to the {} endpoint [-]" .format(region))
 		else:
-			print "Unexpected error: {}" .format(e)
+			print("Unexpected error: {}" .format(e))
 	except KeyboardInterrupt:
 		print("CTRL-C received, exiting...")

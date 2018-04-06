@@ -44,7 +44,7 @@ for region in regions:
 	print_config_text(config_service_text)
 	
 	if response.get('ConfigurationRecorders') is None:
-		print "{} likely does not have Config permissions\n" .format(AWS_ACCESS_KEY_ID)
+		print("{} likely does not have Config permissions\n" .format(AWS_ACCESS_KEY_ID))
 	elif len(response['ConfigurationRecorders']) <= 0:
 		print("NO CONFIGURATION DETECTED")
 	else:

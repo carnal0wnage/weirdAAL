@@ -23,9 +23,9 @@ def describe_repositories(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             #print response
 
             if response.get('repositories') is None:
-                print "{} likely does not have ECR permissions\n" .format(AWS_ACCESS_KEY_ID)
+                print("{} likely does not have ECR permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['repositories']) <= 0:
-                print "[-] DescribeRepositories allowed for {} but no results [-]" .format(region)
+                print("[-] DescribeRepositories allowed for {} but no results [-]" .format(region))
             else:
                 print"### {} ECR Repositories ###" .format(region)
                 for tables in response['repositories']:
@@ -38,6 +38,6 @@ def describe_repositories(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")

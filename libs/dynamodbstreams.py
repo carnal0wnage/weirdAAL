@@ -21,9 +21,9 @@ def list_dynamodbstreams(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
         	response = client.list_streams()
         	if response.get('Streams') is None:
-        		print "{} likely does not have DynamoDB permissions\n" .format(AWS_ACCESS_KEY_ID)
+        		print("{} likely does not have DynamoDB permissions\n" .format(AWS_ACCESS_KEY_ID))
         	elif len(response['Streams']) <= 0:
-        		print "[-] ListStreams allowed for {} but no results [-]" .format(region)
+        		print("[-] ListStreams allowed for {} but no results [-]" .format(region))
         	else:
         		print"### {} DynamoDB Streams ###" .format(region)
         		for streams in response['Streams']:
@@ -36,6 +36,6 @@ def list_dynamodbstreams(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
         else:
-            print "Unexpected error: {}" .format(e)
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
