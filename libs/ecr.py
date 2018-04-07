@@ -20,7 +20,7 @@ def describe_repositories(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
             response = client.describe_repositories()
 
-            #print response
+            # print response
 
             if response.get('repositories') is None:
                 print("{} likely does not have ECR permissions\n" .format(AWS_ACCESS_KEY_ID))
