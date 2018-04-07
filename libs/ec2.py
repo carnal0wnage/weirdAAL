@@ -66,7 +66,10 @@ def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                         pp.pprint(i)
 
     except botocore.exceptions.ClientError as e:
-        print(e)
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -90,7 +93,10 @@ def get_instance_details_basic(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                         print("InstanceID: {}, InstanceType: {}, State: {}, Launchtime: {}".format(instanceid, instancetype, state, launchtime))
 
     except botocore.exceptions.ClientError as e:
-        print(e)
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -110,7 +116,10 @@ def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                     pp.pprint(volumes)
 
     except botocore.exceptions.ClientError as e:
-        print(e)
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -132,6 +141,9 @@ def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                 print("\n")
 
     except botocore.exceptions.ClientError as e:
-        print(e)
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have the required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")

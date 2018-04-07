@@ -103,13 +103,13 @@ def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, ser
         try:
             insert_reconservice_data(db_name, db_logger)
         except sqlite3.OperationalError as e:
-            print (e)
-            print ("You need to set up the database...exiting")
+            print(e)
+            print("You need to set up the database...exiting")
             sys.exit()
-        print ("\n")
+        print("\n")
     else:
-        print ("\n[-] No {} actions allowed [-]" .format(service))
-        print ("\n")
+        print("\n[-] No {} actions allowed [-]" .format(service))
+        print("\n")
     return actions
 
 def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests):
