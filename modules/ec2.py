@@ -1,11 +1,15 @@
 '''
 This file is used to perform various EC2 operations
 '''
+
 from libs.ec2 import *
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 '''
-Basic info about each instance
+Basic info about each EC2 instance
+ex:
+[+] Listing instances for region: us-west-2 [+]
+InstanceID: i-XXXXXXXXXXXXXXX, InstanceType: t2.micro, State: {'Code': 80, 'Name': 'stopped'}, Launchtime: 2016-08-25 22:31:31+00:00
 '''
 
 
@@ -14,7 +18,7 @@ def step_ec2_get_instances_basic():
 
 
 '''
-All info about each instance
+All info about each EC2 instance
 '''
 
 
@@ -38,3 +42,12 @@ show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of
 
 def step_ec2_get_instance_volume_details2():
     get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+
+
+'''
+This function is used to list EBS volumes and whether or not they are encrypted. This is only for "in-use" (running) volumes.
+'''
+
+
+def step_ec2_review_encrypted_volumes():
+    review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
