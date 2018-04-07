@@ -17,3 +17,11 @@ def step_show_services_by_key():
     print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
     for result in results:
     	print("{}:{}".format(result[0],result[1]))
+
+#same as show_sevices
+def step_list_services_by_key():
+    db_name = "weirdAAL.db"
+    results = search_recon_by_key(db_name,AWS_ACCESS_KEY_ID)
+    print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
+    for result in results:
+    	print("{}:{}".format(result[0],result[1]))
