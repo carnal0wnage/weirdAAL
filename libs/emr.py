@@ -22,8 +22,6 @@ def list_clusters(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
             response = client.list_clusters()
 
-            # print response
-
             if response.get('Clusters') is None:
                 print("{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Clusters']) <= 0:
