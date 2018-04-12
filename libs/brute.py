@@ -116,6 +116,42 @@ def generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, ser
         print("\n")
     return actions
 
+def generic_permission_bruteforcer_region(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests, region_passed):
+    actions = []
+    try:
+        client = boto3.client(service, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+    except Exception as e:
+        # print('Failed to connect: "{}"' .format(e.error_message))
+        print('Failed to connect: "{}"' .format(e))
+        return actions
+
+    actions = generic_method_bruteforcer_region(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests, region_passed)
+    if actions:
+        print("\n[+] {} Actions allowed are [+]" .format(service))
+        print(actions)
+        timenow = datetime.datetime.now()
+
+        db_logger = []
+        for action in actions:
+            db_logger.append([service, action, AWS_ACCESS_KEY_ID, timenow])
+        # print (db_logger)
+
+        # scrapped the json logging idea but keeping it here just in case
+        # data = json.dumps({'time' : timenow, 'service' : service, 'actions' : actions, 'target' : 'passed_in_target'})
+        # logging.critical(data)
+
+        # logging to db here
+        try:
+            insert_reconservice_data(db_name, db_logger)
+        except sqlite3.OperationalError as e:
+            print(e)
+            print("You need to set up the database...exiting")
+            sys.exit()
+        print("\n")
+    else:
+        print("\n[-] No {} actions allowed [-]" .format(service))
+        print("\n")
+    return actions
 
 def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests):
     actions = []
@@ -134,8 +170,50 @@ def generic_method_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service
             if e.response['Error']['Code'] == 'DryRunOperation':
                 print('{} IS allowed' .format(api_action))
                 actions.append(api_action)
-            if e.response['Error']['Code'] == 'ClusterNotFoundException':
+            elif e.response['Error']['Code'] == 'ClusterNotFoundException':
                 print('{} IS allowed but you need to specify a cluster name' .format(api_action))
+                actions.append(api_action)
+            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                print('[-] {} IS allowed - but SubscriptionRequiredException - usually means you have an unconfigured root account [-]' .format(api_action))
+                #  If it's not configured, we are not adding it to services
+                #  actions.append(api_action)
+            elif e.response['Error']['Code'] == 'OptInRequired':
+                print('[-] {} IS allowed - but OptInRequired - usually means you have an unconfigured root account [-]' .format(api_action))
+                #  If it's not configured, we are not adding it to services
+                #  actions.append(api_action)
+            else:
+                print(e)
+                continue
+        else:
+            print('{} IS allowed' .format(api_action))
+            actions.append(api_action)
+    return actions
+
+def generic_method_bruteforcer_region(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, service, tests, region_passed):
+    actions = []
+    client = boto3.client(service, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region_passed)
+    for api_action, method_name, args, kwargs in tests:
+        try:
+            method = getattr(client, method_name)
+            method(*args, **kwargs)
+            # print method --wont return anything on dryrun
+        except botocore.exceptions.EndpointConnectionError as e:
+            print(e)
+            continue
+        except KeyboardInterrupt:
+            print("CTRL-C received, exiting...")
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == 'DryRunOperation':
+                print('{} IS allowed' .format(api_action))
+                actions.append(api_action)
+            elif e.response['Error']['Code'] == 'ClusterNotFoundException':
+                print('{} IS allowed but you need to specify a cluster name' .format(api_action))
+                actions.append(api_action)
+            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                print('[-] {} IS allowed - but SubscriptionRequiredException - usually means you have an unconfigured root account [-]' .format(api_action))
+                actions.append(api_action)
+            elif e.response['Error']['Code'] == 'OptInRequired':
+                print('[-] {} IS allowed - but OptInRequired - usually means you have an unconfigured root account [-]' .format(api_action))
                 actions.append(api_action)
             else:
                 print(e)
@@ -443,7 +521,7 @@ def brute_devicefarm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Enumerating DeviceFarm Permissions ###")
     tests = [('ListProjects', 'list_projects', (), {}, ),
              ('ListDevices', 'list_devices', (), {}, ), ]
-    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'devicefarm', tests)
+    return generic_permission_bruteforcer_region(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'devicefarm', tests, 'us-west-2')
 
 # http://boto3.readthedocs.io/en/latest/reference/services/directconnect.html
 
@@ -751,6 +829,7 @@ def brute_iam_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     tests = [('GetUser', 'get_user', (), {}),
              # ('ListUserPolicies', 'list_user_policies', (), {'UserName':'root'} ),
              ('ListGroups', 'list_groups', (), {}),
+             ('ListUsers', 'list_users', (), {}),
              # ('ListGroupsForUser', 'list_groups_for_user', (), {'UserName':account_username} ),
              ('GetCredentialReport', 'get_credential_report', (), {}),
              ('GetAccountSummary', 'get_account_summary', (), {}),
