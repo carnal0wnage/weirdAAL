@@ -13,6 +13,16 @@ def get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
         account_id = client.get_caller_identity()["Account"]
         print("Account Id: {}" .format(account_id))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'EndpointConnectionError':
+            print("[-] Cant connect to the {} endpoint [-]" .format(region))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -28,6 +38,15 @@ def get_accountid_all(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("Account Id: {}" .format(account_id))
         print("Account UserID: {}" .format(account_userid) )
         print("Account ARN: {}" .format(account_arn) )
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'EndpointConnectionError':
+            print("[-] Cant connect to the {} endpoint [-]" .format(region))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 

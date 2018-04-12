@@ -21,7 +21,7 @@ def describe_repositories(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
             response = client.describe_repositories()
 
-            # print response
+            # print (response)
 
             if response.get('repositories') is None:
                 print("{} likely does not have ECR permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -38,6 +38,8 @@ def describe_repositories(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:

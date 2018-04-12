@@ -37,7 +37,14 @@ def list_functions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                     pp.pprint(r)
         print("\n")
     except botocore.exceptions.ClientError as e:
-        print(e)
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -65,6 +72,13 @@ def list_event_source_mappings(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                     pp.pprint(r)
         print("\n")
     except botocore.exceptions.ClientError as e:
-        print(e)
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")

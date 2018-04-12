@@ -46,6 +46,8 @@ def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print(e)
     except KeyboardInterrupt:
@@ -68,6 +70,8 @@ def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print(e)
     except KeyboardInterrupt:
@@ -95,6 +99,8 @@ def get_instance_details_basic(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print(e)
     except KeyboardInterrupt:
@@ -118,6 +124,8 @@ def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print(e)
     except KeyboardInterrupt:
@@ -143,6 +151,8 @@ def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have the required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print(e)
     except KeyboardInterrupt:

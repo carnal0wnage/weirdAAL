@@ -31,6 +31,8 @@ def describe_configuration_recorders(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, r
 		elif e.response['Error']['Code'] == 'AccessDeniedException':
 			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
 			pass
+		elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
 		else:
 			print("Unexpected error: {}" .format(e))
 	except KeyboardInterrupt:
@@ -56,6 +58,8 @@ def describe_configuration_rules(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, regio
 		elif e.response['Error']['Code'] == 'AccessDeniedException':
 			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
 			pass
+		elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
 		else:
 			print("Unexpected error: {}" .format(e))
 	except KeyboardInterrupt:
