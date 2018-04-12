@@ -16,10 +16,12 @@ def sqs_list_queues(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             if response.get('QueueUrls') is None:
                 print("[-] ListQueues allowed for {} but no results [-]" .format(region))
             # THis isnt working need to test with one that works to get the QueueUrl attributes
-            # if len(response['QueueUrls']) <= 0:
-            #    print("[-] ListQueues allowed for {} but no results [-]" .format(region))
+            elif len(response['QueueUrls']) <= 0:
+                print("[-] ListQueues allowed for {} but no results [-]" .format(region))
             else:
-                print("region: {} \n {}".format(region,response))
+                print("[+] Listing queuesfor region: {} [+]" .format(region))
+                for r in response['QueueUrls']:
+                    pp.pprint(r)
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
