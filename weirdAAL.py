@@ -12,6 +12,12 @@ import os
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from botocore.exceptions import ClientError
 from modules import *
+import sys
+
+sys.path.append("modules")
+for module in all_modules:
+    exec("from %s import *"%module)
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--step", help="list the step you would like to run",
