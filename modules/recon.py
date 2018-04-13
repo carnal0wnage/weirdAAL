@@ -15,7 +15,7 @@ def step_recon_all():
     #  AppSync no usable functions
     brute_athena_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     brute_autoscaling_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-    #  AutoScalingPlans
+    brute_autoscaling_plans_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     brute_batch_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     brute_budgets_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     #  CostExplorer

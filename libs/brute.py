@@ -294,6 +294,10 @@ def brute_autoscaling_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 
 # http://boto3.readthedocs.io/en/latest/reference/services/autoscaling-plans.html
 # todo
+def brute_autoscaling_plans_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print("### Enumerating Autoscaling-Plans Permissions ###")
+    tests = [('DescribeScalingPlans', 'describe_scaling_plans', (), {}, ), ]
+    return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'autoscaling-plans', tests)
 
 # http://boto3.readthedocs.io/en/latest/reference/services/batch.html
 
