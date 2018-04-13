@@ -835,6 +835,8 @@ def brute_iam_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              # ('ListUserPolicies', 'list_user_policies', (), {'UserName':'root'} ),
              ('ListGroups', 'list_groups', (), {}),
              ('ListUsers', 'list_users', (), {}),
+             ('ListRoles', 'list_roles', (), {}),
+             ('ListPolicies', 'list_policies', (), {}),
              # ('ListGroupsForUser', 'list_groups_for_user', (), {'UserName':account_username} ),
              ('GetCredentialReport', 'get_credential_report', (), {}),
              ('GetAccountSummary', 'get_account_summary', (), {}),

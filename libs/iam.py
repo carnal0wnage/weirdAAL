@@ -13,10 +13,10 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
+region = 'us-east-1'
 regions = ['us-east-1']
-
 def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name=region)
+    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name='us-east-1')
 
     try:
         acct_summary = client.get_account_summary()
@@ -302,6 +302,172 @@ def iam_list_users(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             else:
                 pp.pprint(response['Users'])
                 # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def iam_list_roles(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print("### Printing IAM Roles ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            
+            response = client.list_roles()
+            # print(response)
+            if response.get('Roles') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Roles']) <= 0:
+                print("[-] ListRoles allowed for {} but no results [-]\n" .format(region))
+            else:
+                for roles in response['Roles']:
+                    print("Role Name: {}".format(roles['RoleName']))
+                    pp.pprint(roles)
+                    print('\n')
+                # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def iam_list_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print("### Printing IAM Policies ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            
+            response = client.list_policies()
+            # print(response)
+            if response.get('Policies') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Policies']) <= 0:
+                print("[-] ListPolicies allowed for {} but no results [-]\n" .format(region))
+            else:
+                for policy in response['Policies']:
+                    print("Policy Name: {}".format(policy['PolicyName']))
+                    pp.pprint(policy)
+                    print('\n')
+                # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+# dont use see below
+def iam_list_user_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
+    print("### Printing IAM Policies for {} ###".format(username))
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            
+            response = client.list_user_policies(UserName=username)
+            # print(response)
+            if response.get('PolicyNames') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['PolicyNames']) <= 0:
+                print("[-] ListUserPolicies allowed for {} but no results [-]\n" .format(region))
+            else:
+                for policy in response['PolicyNames']:
+                    print("Policy Name: {}".format(policy['PolicyName']))
+                    pp.pprint(policy)
+                    print('\n')
+                # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def iam_list_attached_user_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
+    print("### Printing Attached IAM Policies for {} ###".format(username))
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            
+            response = client.list_attached_user_policies(UserName=username)
+            # print(response)
+            if response.get('AttachedPolicies') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['AttachedPolicies']) <= 0:
+                print("[-] ListAttachedUserPolicies allowed for {} but no results [-]\n" .format(region))
+            else:
+                for policy in response['AttachedPolicies']:
+                    #print("Policy Name: {}".format(policy['PolicyName']))
+                    pp.pprint(policy)
+                    print('\n')
+                # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def iam_list_entities_for_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, policy_arn):
+    print("### Printing IAM Entity Policies for {} ###".format(policy_arn))
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            
+            response = client.list_entities_for_policy(PolicyArn=policy_arn)
+            print(response)
+
+            #this needs a if data for PolicyGroups, PolicyUsers, PolicyRoles do stuff
+
+            #if response.get('AttachedPolicies') is None:
+            #    print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            #elif len(response['AttachedPolicies']) <= 0:
+            #    print("[-] ListAttachedUserPolicies allowed for {} but no results [-]\n" .format(region))
+            #else:
+            #    for policy in response['AttachedPolicies']:
+            #        #print("Policy Name: {}".format(policy['PolicyName']))
+            #        pp.pprint(policy)
+            #        print('\n')
+            #    # print(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
