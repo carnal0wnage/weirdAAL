@@ -293,7 +293,8 @@ def brute_autoscaling_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     return generic_permission_bruteforcer(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'autoscaling', tests)
 
 # http://boto3.readthedocs.io/en/latest/reference/services/autoscaling-plans.html
-# todo
+
+
 def brute_autoscaling_plans_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     print("### Enumerating Autoscaling-Plans Permissions ###")
     tests = [('DescribeScalingPlans', 'describe_scaling_plans', (), {}, ), ]
@@ -590,11 +591,10 @@ def brute_ec2_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('DescribeImages', 'describe_images', (), {'DryRun': True, 'Owners': ['self', ]}, ),
              ('CreateImage', 'create_image', (), {'InstanceId': 'i-0ffffeeeeaa11e111', 'Name': 'testimage', 'DryRun': True}, ),
              ('DescribeVolumes', 'describe_volumes', (), {'DryRun': True}, ),
-             ('CreateVolume', 'create_volume', (), {'AvailabilityZone': 'us-east1', 'Size': 8, 'DryRun': True}, ),
+             ('CreateVolume', 'create_volume', (), {'AvailabilityZone': 'us-east-1', 'Size': 8, 'DryRun': True}, ),
              ('DescribeSnapshots', 'describe_snapshots', (), {'DryRun': True, 'OwnerIds': ['self', ]}, ),
              ('CreateSnapshot', 'create_snapshot', (), {'VolumeId': 'vol-05777eab71bc97dcb', 'DryRun': True}, ),
              ('DescribeAccountAttributes', 'describe_account_attributes', (), {'DryRun': True}, ),
-             ('DescribeAccounts', 'describe_addresses', (), {'DryRun': True}, ),
              ('DescribeAddresses', 'describe_addresses', (), {'DryRun': True}, ),
              ('DescribeAvailabilityZones', 'describe_availability_zones', (), {'DryRun': True}, ),
              ('DescribeBundleTasks', 'describe_bundle_tasks', (), {'DryRun': True}, ),
@@ -605,7 +605,7 @@ def brute_ec2_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('DescribeEgressOnlyInternetGateways', 'describe_egress_only_internet_gateways', (), {'DryRun': True}, ),
 
              # The above is more than enough to decide that all/almost all EC2 permissions are there but
-             # I'm putting all of them so they can be used for infomration gathering later and i can keep the
+             # I'm putting all of them so they can be used for information gathering later and i can keep the
              # ec2 tests blocks consistent across modules
 
              ('DescribeExportTasks', 'describe_export_tasks', (), {}, ),
@@ -618,6 +618,7 @@ def brute_ec2_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
              ('DescribeInternetGateways', 'describe_internet_gateways', (), {'DryRun': True}, ),
              ('DescribeKeyPairs', 'describe_key_pairs', (), {'DryRun': True}, ),
              ('CreateKeyPair', 'create_key_pair', (), {'KeyName': 'asdfg12345', 'DryRun': True}, ),
+             ('DescribeLaunchTemplates', 'describe_launch_templates', (), {'DryRun': True}, ),
              ('DescribeMovingAddresses', 'describe_moving_addresses', (), {'DryRun': True}, ),
              ('DescribeNatGateways', 'describe_nat_gateways', (), {}, ),
              ('DescribeNetworkAcls', 'describe_network_acls', (), {'DryRun': True}, ),

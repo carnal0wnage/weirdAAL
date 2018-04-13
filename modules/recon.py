@@ -10,9 +10,9 @@ def step_recon_all():
     brute_acm_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     #  AlexaForBusiness
     brute_apigateway_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-    #  Application Auto Scaling
+    #  Application Auto Scaling - no usable functions
     brute_appstream_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-    #  AppSync no usable functions
+    #  AppSync - no usable functions
     brute_athena_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     brute_autoscaling_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     brute_autoscaling_plans_permissions(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)

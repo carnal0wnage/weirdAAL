@@ -157,3 +157,80 @@ def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
+def describe_addresses(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    try:
+        for region in regions:
+            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            response = client.describe_addresses()
+            # print(response)
+            if response.get('Addresses') is None:
+                print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Addresses']) <= 0:
+                print("[-] DescribeAddresses allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing Addresses for region: {} [+]" .format(region))
+                for r in response['Addresses']:
+                    pp.pprint(r)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def describe_network_interfaces(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    try:
+        for region in regions:
+            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            response = client.describe_network_interfaces()
+            # print(response)
+            if response.get('NetworkInterfaces') is None:
+                print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['NetworkInterfaces']) <= 0:
+                print("[-] DescribeNetworkInterfaces allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing Network Interfaces for region: {} [+]" .format(region))
+                for r in response['NetworkInterfaces']:
+                    pp.pprint(r)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def describe_route_tables(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    try:
+        for region in regions:
+            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            response = client.describe_route_tables()
+            # print(response)
+            if response.get('RouteTables') is None:
+                print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['RouteTables']) <= 0:
+                print("[-] DescribeRouteTables allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing Route Tables for region: {} [+]" .format(region))
+                for r in response['RouteTables']:
+                    pp.pprint(r)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
