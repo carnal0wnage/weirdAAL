@@ -13,7 +13,7 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-region = 'us-east-1'
+regions = ['us-east-1']
 
 def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name=region)
@@ -51,6 +51,8 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             sys.exit("The AWS KEY IS INVALID. Exiting")
         if e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
@@ -192,5 +194,124 @@ def make_backdoor_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, pa
 
     except botocore.exceptions.ClientError as e:
         print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def iam_list_groups(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print("### Printing IAM Groups ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            response = client.list_groups()
+            if response.get('Groups') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Groups']) <= 0:
+                print("[-] ListGroups allowed for {} but no results [-]\n" .format(region))
+            else:
+            # print(response)
+                print ("### {} Groups ###" .format(region))
+                for group in response['Groups']:
+                    pp.pprint(group)
+                print("\n")
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def iam_get_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print("### Printing IAM User Info ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            response = client.get_user()
+            print(response)
+            if response.get('User') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['User']) <= 0:
+                print("[-] GetUser allowed for {} but no results [-]\n" .format(region))
+            else:
+            # print(response)
+                print ("### {} User Account Info ###" .format(region))
+                for key, value in response['User'].items():
+                    print(key,':', value)
+                print("\n")
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def iam_get_account_summary(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print("### Printing IAM Account Summary ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            
+            response = client.get_account_summary()
+            # print(response)
+            if response.get('SummaryMap') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['SummaryMap']) <= 0:
+                print("[-] GetAccountSummary allowed for {} but no results [-]\n" .format(region))
+            else:
+                pp.pprint(response['SummaryMap'])
+                # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def iam_list_users(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+    print("### Printing IAM Users ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            
+            response = client.list_users()
+            # print(response)
+            if response.get('Users') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Users']) <= 0:
+                print("[-] ListUsers allowed for {} but no results [-]\n" .format(region))
+            else:
+                pp.pprint(response['Users'])
+                # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")

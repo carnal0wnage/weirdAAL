@@ -54,8 +54,10 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
                 print("\n")
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
                 print('{} : cant list s3 bucket policy [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
+            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
             else:
-                print ("Unexpected error: {}" .format(e))
+                print("Unexpected error: {}" .format(e))
                     
         try:
             acl = client.get_bucket_acl(Bucket=bucket)
@@ -73,16 +75,20 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
                 print("\n")
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
                 print('{} : cant list s3 bucket acl [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
+            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
             else:
-                print ("Unexpected error: {}" .format(e))
+                print("Unexpected error: {}" .format(e))
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
-            print ("Unexpected error: {}" .format(e))
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -107,8 +113,10 @@ def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
-            print ("Unexpected error: {}" .format(e))
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -133,8 +141,10 @@ def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
             print('{} : cant list s3 bucket policy [AccessDenied]' .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
-            print ("Unexpected error: {}" .format(e))
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -158,7 +168,9 @@ def get_s3objects_for_account_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
-            print ("Unexpected error: {}" .format(e))
+            print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
