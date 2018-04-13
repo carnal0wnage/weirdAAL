@@ -9,7 +9,7 @@ regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', '
 
 
 def describe_db_instances(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
-    print("doing stuff")
+    print("### Printing RDS DB instances  ###")
     try:
         for region in regions:
             client = boto3.client(
@@ -19,10 +19,18 @@ def describe_db_instances(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
                 region_name=region
             )
 
-            instances = client.describe_db_instances()
-            for r in instances['DBInstances']:
-                for i in r['Instances']:
-                    pp.pprint(i)
+            response = client.describe_db_instances()
+            # print(response)
+            if response.get('DBInstances') is None:
+                print("{} likely does not have RDS permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['DBInstances']) <= 0:
+                print("[-] DescribeDBInstances allowed for {} but no results [-]" .format(region))
+            else:
+                print("### {} RDS DB Instances ###" .format(region))
+                for r in response['DBInstances']:
+                    for i in r['Instances']:
+                        pp.pprint(i)
+        print("\n")
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
