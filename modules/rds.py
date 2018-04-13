@@ -1,5 +1,5 @@
 '''
-rds module
+RDS module
 '''
 
 
