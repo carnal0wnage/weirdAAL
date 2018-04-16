@@ -8,11 +8,13 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
+
+def get_s3bucket_policy(bucket):
     client = boto3.client(
             's3',
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name='us-east-1'
     )
     
@@ -93,11 +95,9 @@ def get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket):
         print("CTRL-C received, exiting...")
 
 #specifically get the acl on a file in a buckeet
-def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
+def get_s3object_acl(bucket, myfile):
     client = boto3.client(
             's3',
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name='us-east-1'
     )
     
@@ -121,11 +121,9 @@ def get_s3object_acl(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, bucket, myfile):
         print("CTRL-C received, exiting...")
 
 #given an aws keypair what s3 assets does it have permission to
-def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_s3objects_for_account():
     client = boto3.resource(
             's3',
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name='us-east-1'
     )
     
@@ -149,11 +147,9 @@ def get_s3objects_for_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def get_s3objects_for_account_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_s3objects_for_account_detailed():
     client = boto3.resource(
             's3',
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name='us-east-1'
     )
     
