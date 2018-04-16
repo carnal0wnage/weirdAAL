@@ -14,6 +14,8 @@ from botocore.exceptions import ClientError
 from modules import *
 import sys
 
+os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
+
 sys.path.append("modules")
 for module in all_modules:
     exec("from %s import *"%module)
@@ -33,11 +35,15 @@ args = parser.parse_args()
 
 def perform_credential_check():
     try:
-        client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        #client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        client = boto3.client("sts")
         account_id = client.get_caller_identity()["Account"]
+    except botocore.exceptions.NoCredentialsError as e:
+        print("Error: Unable to locate credentials")
+        sys.exit("fix your credentials file -exiting...")
     except ClientError as e:
         print("The AWS Access Keys are not valid/active")
-        #exit(1)
+        sys.exit(1)
 
 def step_recon():
     print("!!!")
