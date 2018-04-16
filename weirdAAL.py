@@ -17,24 +17,25 @@ os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
 sys.path.append("modules")
 for module in all_modules:
-    exec("from %s import *"%module)
+    exec("from %s import *" % module)
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-s", "--step", help="list the step you would like to run",
-action="store", type=str, required=True)
-parser.add_argument("-t", "--target", help="Give your target a name so we can track results",
-action="store", type=str, required=True)
-parser.add_argument("-a", "--arguments", help="Provide a list of arguments, comma separated. Ex: arg1,arg2,arg3",
-action="store", type=str, required=False)
+parser.add_argument("-s", "--step", help="list the step you would like to run", action="store", type=str, required=True)
+parser.add_argument("-t", "--target", help="Give your target a name so we can track results", action="store", type=str, required=True)
+parser.add_argument("-a", "--arguments", help="Provide a list of arguments, comma separated. Ex: arg1,arg2,arg3", action="store", type=str, required=False)
 parser.add_argument("-l", "--list", help="list steps", action="store_true")
-parser.add_argument("-v", "--verbosity", help="increase output verbosity",
-action="store_true")
+parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
 args = parser.parse_args()
 
+
 def perform_credential_check():
+    '''
+    Check that the AWS keys work before we go any further. It picks the keys up from the local .env file
+    We are letting boto3 do all the work that way we can handle session tokens natively
+    '''
+
     try:
-        #client = boto3.client("sts", aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
         client = boto3.client("sts")
         account_id = client.get_caller_identity()["Account"]
     except botocore.exceptions.NoCredentialsError as e:
@@ -44,8 +45,10 @@ def perform_credential_check():
         print("The AWS Access Keys are not valid/active")
         sys.exit(1)
 
+
 def step_recon():
     print("!!!")
+
 
 def method_create():
     try:
@@ -55,12 +58,13 @@ def method_create():
         print("That step does not exist")
         exit(1)
 
+
 # Need to figure out if we have keys in the ENV or not
 if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
     perform_credential_check()
 else:
     print("Please supply keys as outlined in our README.md file")
-    #exit(1)
+    # exit(1)
 
 if (args.list):
     pass
@@ -79,7 +83,7 @@ if (args.step):
         if arg_list:
             arg(arg_list)
         else:
-             arg()
+            arg()
 
 
 # Allow the user to specify verbosity for debugging
