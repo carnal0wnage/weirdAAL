@@ -54,7 +54,7 @@ def review_encrypted_volumes():
         print("CTRL-C received, exiting...")
 
 
-def get_instance_details():
+def describe_instances():
     try:
         for region in regions:
             client = boto3.client('ec2', region_name=region)
@@ -78,7 +78,7 @@ def get_instance_details():
         print("CTRL-C received, exiting...")
 
 
-def get_instance_details_basic():
+def describe_instances_basic():
     try:
         for region in regions:
             client = boto3.client('ec2', region_name=region)

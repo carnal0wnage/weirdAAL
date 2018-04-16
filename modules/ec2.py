@@ -12,8 +12,8 @@ InstanceID: i-XXXXXXXXXXXXXXX, InstanceType: t2.micro, State: {'Code': 80, 'Name
 '''
 
 
-def step_ec2_get_instances_basic():
-    get_instance_details_basic()
+def step_ec2_describe_instances_basic):
+    describe_instances_basic()
 
 
 '''
@@ -21,8 +21,8 @@ All info about each EC2 instance
 '''
 
 
-def step_ec2_get_instances_detailed():
-    get_instance_details()
+def step_ec2_describe_instances():
+    describe_instances()
 
 
 '''
