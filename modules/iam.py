@@ -18,7 +18,7 @@ def step_iam_get_account_summary():
     iam_get_account_summary(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 
 
-def step_iam_list_users():
+def step_iam_list_users(*args):
     iam_list_users(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 
 def step_iam_check_root_account():

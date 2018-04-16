@@ -24,6 +24,8 @@ parser.add_argument("-s", "--step", help="list the step you would like to run",
 action="store", type=str, required=True)
 parser.add_argument("-t", "--target", help="Give your target a name so we can track results",
 action="store", type=str, required=True)
+parser.add_argument("-a", "--arguments", help="Give your target a name so we can track results",
+action="store", type=str, required=False)
 parser.add_argument("-l", "--list", help="list steps", action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity",
 action="store_true")
@@ -58,12 +60,21 @@ else:
 if (args.list):
     pass
 
+
+# arg_list has to be defined otherwise will cause an exception
+arg_list = None
+
+if (args.arguments):
+    arg_list = args.arguments.split(',')
+
 # We need the user to tell us the step they want to proceed on
 if (args.step):
     arg = method_create()
     if callable(arg):
-        arg()
-
+        if arg_list:
+            arg(arg_list)
+        else:
+             arg()
 
 
 # Allow the user to specify verbosity for debugging
