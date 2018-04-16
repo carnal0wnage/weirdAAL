@@ -24,7 +24,7 @@ parser.add_argument("-s", "--step", help="list the step you would like to run",
 action="store", type=str, required=True)
 parser.add_argument("-t", "--target", help="Give your target a name so we can track results",
 action="store", type=str, required=True)
-parser.add_argument("-a", "--arguments", help="Give your target a name so we can track results",
+parser.add_argument("-a", "--arguments", help="Provide a list of arguments, comma separated. Ex: arg1,arg2,arg3",
 action="store", type=str, required=False)
 parser.add_argument("-l", "--list", help="list steps", action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity",
