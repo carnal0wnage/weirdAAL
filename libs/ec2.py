@@ -158,6 +158,7 @@ def get_instance_volume_details2():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def describe_addresses():
     try:
         for region in regions:
@@ -182,6 +183,7 @@ def describe_addresses():
             print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
 
 def describe_network_interfaces():
     try:
@@ -233,4 +235,3 @@ def describe_route_tables():
             print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
-

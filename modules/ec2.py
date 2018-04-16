@@ -51,6 +51,7 @@ This function is used to list EBS volumes and whether or not they are encrypted.
 def step_ec2_review_encrypted_volumes():
     review_encrypted_volumes()
 
+
 '''
 This function is used to describe ec2 network addresses.
 '''
@@ -59,12 +60,19 @@ This function is used to describe ec2 network addresses.
 def step_ec2_describe_addresses():
     describe_addresses()
 
+
 '''
 This function is used to describe ec2 network interfaces.
 '''
 
+
 def step_ec2_describe_network_interfaces():
     describe_network_interfaces()
+
+
+'''
+this function describes route tables for each ec2 instance
+'''
 
 
 def step_ec2_describe_route_tables():
