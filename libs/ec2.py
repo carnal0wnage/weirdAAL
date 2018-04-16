@@ -14,14 +14,14 @@ regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', '
 # we are past the enumeration stage at this point assume you have key that works
 
 
-def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def review_encrypted_volumes():
     print("Reviewing EC2 Volumes... This may take a few....")
     not_encrypted = []
     encrypted = []
     try:
         with open("{}-volumes_list.txt" .format(AWS_ACCESS_KEY_ID), "w") as fout:
             for region in regions:
-                client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+                client = boto3.client('ec2', region_name=region)
                 response = client.describe_volumes(Filters=[{
                     'Name': 'status',
                     'Values': ['in-use']
@@ -54,10 +54,10 @@ def review_encrypted_volumes(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_instance_details():
     try:
         for region in regions:
-            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ec2', region_name=region)
             response = client.describe_instances()
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
@@ -78,10 +78,10 @@ def get_instance_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def get_instance_details_basic(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_instance_details_basic():
     try:
         for region in regions:
-            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ec2', region_name=region)
             response = client.describe_instances()
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
@@ -109,10 +109,10 @@ def get_instance_details_basic(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 # show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
 
 
-def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_instance_volume_details():
     try:
         for region in regions:
-            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ec2', region_name=region)
 
             instances = client.describe_instances()
             for r in instances['Reservations']:
@@ -134,10 +134,10 @@ def get_instance_volume_details(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
 # show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of ID but more details.
 
 
-def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_instance_volume_details2():
     try:
         for region in regions:
-            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ec2', region_name=region)
 
             response = client.describe_volumes(Filters=[{
                     'Name': 'status',
@@ -158,10 +158,10 @@ def get_instance_volume_details2(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def describe_addresses(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def describe_addresses():
     try:
         for region in regions:
-            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ec2', region_name=region)
             response = client.describe_addresses()
             # print(response)
             if response.get('Addresses') is None:
@@ -183,10 +183,10 @@ def describe_addresses(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def describe_network_interfaces(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def describe_network_interfaces():
     try:
         for region in regions:
-            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ec2', region_name=region)
             response = client.describe_network_interfaces()
             # print(response)
             if response.get('NetworkInterfaces') is None:
@@ -209,10 +209,10 @@ def describe_network_interfaces(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def describe_route_tables(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def describe_route_tables():
     try:
         for region in regions:
-            client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ec2', region_name=region)
             response = client.describe_route_tables()
             # print(response)
             if response.get('RouteTables') is None:
