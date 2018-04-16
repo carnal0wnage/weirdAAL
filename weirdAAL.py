@@ -9,7 +9,6 @@
 import boto3
 import argparse
 import os
-from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 from botocore.exceptions import ClientError
 from modules import *
 import sys
