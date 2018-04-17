@@ -7,9 +7,9 @@ from libs.sts import *
 
 
 def step_cg_test():
-  get_accountid(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-  check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-  get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+  get_accountid()
+  check_root_account()
+  get_password_policy()
 #create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,'pythons3')
 #delete_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,'pythons3', 'AKIAIJV3RQMOYM7WQS2Q')
 #change_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'pythons3', 'PS#EDCasd123456!@')
