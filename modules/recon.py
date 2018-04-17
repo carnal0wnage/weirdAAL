@@ -5,6 +5,7 @@ from libs.s3 import *
 
 
 def step_recon_all():
+    get_accountid()
     check_root_account()
     brute_acm_permissions()
     #  AlexaForBusiness

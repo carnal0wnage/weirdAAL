@@ -1,22 +1,31 @@
-'''
-cloudwatch functions
-'''
-
 import boto3
 import botocore
+import os
 import pprint
-import sys,os
+import sys
+
+'''
+Cloudwatch functions for WeirdAAL
+'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
 
-def describe_alarms(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
+
+
+def describe_alarms():
     print("### Printing Cloudwatch Alarm Information ###")
     try:
         for region in regions:
-            client = boto3.client('cloudwatch', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('cloudwatch', region_name=region)
 
             response = client.describe_alarms()
             print ("### {} Alarms ###" .format(region))
@@ -37,11 +46,11 @@ def describe_alarms(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def describe_alarm_history(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def describe_alarm_history():
     print("### Printing Cloudwatch Alarm History Information ###")
     try:
         for region in regions:
-            client = boto3.client('cloudwatch', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name=region)
+            client = boto3.client('cloudwatch', region_name=region)
 
             response = client.describe_alarm_history()
             #print response
@@ -68,11 +77,11 @@ def describe_alarm_history(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def list_metrics(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def list_metrics():
     print("### Printing Cloudwatch List Metrics ###")
     try:
         for region in regions:
-            client = boto3.client('cloudwatch', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name=region)
+            client = boto3.client('cloudwatch', region_name=region)
 
             response = client.list_metrics()
             #print response

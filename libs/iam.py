@@ -1,7 +1,3 @@
-'''
-IAM library
-'''
-
 import boto3
 import botocore
 
@@ -11,12 +7,25 @@ import logging
 import sys,os
 import pprint
 
+'''
+IAM functions for WeirdAAL
+'''
+
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 region = 'us-east-1'
 regions = ['us-east-1']
-def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY,region_name='us-east-1')
+
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
+
+
+def check_root_account():
+    client = boto3.client('iam',region_name=region)
 
     try:
         acct_summary = client.get_account_summary()
@@ -58,8 +67,8 @@ def check_root_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def change_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
-    client = boto3.client('iam', aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
+def change_user_console_password(username, password):
+    client = boto3.client('iam', region_name=region)
 
     try:
         response = client.update_login_profile(UserName=username,Password=password, PasswordResetRequired=False)
@@ -76,8 +85,8 @@ def change_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, usern
         print("CTRL-C received, exiting...")
 
 
-def create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
-    client = boto3.client('iam', aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
+def create_user_console_password(username, password):
+    client = boto3.client('iam', region_name=region)
 
     try:
         response = client.create_login_profile(UserName=username,Password=password, PasswordResetRequired=False)
@@ -94,8 +103,8 @@ def create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, usern
         print("CTRL-C received, exiting...")
 
 
-def get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
-    client = boto3.client('iam', aws_access_key_id = AWS_ACCESS_KEY_ID, aws_secret_access_key = AWS_SECRET_ACCESS_KEY, region_name=region)
+def get_password_policy():
+    client = boto3.client('iam', region_name=region)
 
     try:
         pass_policy = client.get_account_password_policy()
@@ -106,8 +115,8 @@ def get_password_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def create_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+def create_user(username):
+    client = boto3.client('iam', region_name=region)
 
     try:
         print("Creating a new IAM user named: {}" .format(username))
@@ -123,8 +132,8 @@ def create_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+def create_access_key( username):
+    client = boto3.client('iam', region_name=region)
 
     try:
         create_access_key = client.create_access_key(UserName=username)
@@ -135,8 +144,8 @@ def create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def delete_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, accesskey):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+def delete_access_key(username, accesskey):
+    client = boto3.client('iam', region_name=region)
 
     try:
         delete_access_key = client.delete_access_key(UserName=username, AccessKeyId=accesskey)
@@ -151,8 +160,8 @@ def delete_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, access
         print("CTRL-C received, exiting...")
 
 #untested :-/ but should work #TODO
-def delete_mfa_device(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, mfaserial):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+def delete_mfa_device(username, mfaserial):
+    client = boto3.client('iam', region_name=region)
     try:
         delete_mfa = client.deactivate_mfa_device(UserName=username, SerialNumber=mfaserial)
         print("Deleting a MFA device: {} for: {}" .format(mfaserial, username))
@@ -166,8 +175,8 @@ def delete_mfa_device(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, mfaser
         print("CTRL-C received, exiting...")
 
 
-def make_admin(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+def make_admin(username):
+    client = boto3.client('iam', region_name=region)
 
     try:
         make_admin = client.attach_user_policy(UserName=username, PolicyArn='arn:aws:iam::aws:policy/AdministratorAccess')
@@ -182,8 +191,8 @@ def make_admin(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def make_backdoor_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password):
-    client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+def make_backdoor_account( username, password):
+    client = boto3.client('iam', region_name=region)
 
     try:
         print("making backdoor account with username: {}" .format(username))
@@ -197,11 +206,11 @@ def make_backdoor_account(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, pa
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def iam_list_groups(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def iam_list_groups():
     print("### Printing IAM Groups ###")
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             response = client.list_groups()
             if response.get('Groups') is None:
                 print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -227,11 +236,11 @@ def iam_list_groups(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def iam_get_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def iam_get_user():
     print("### Printing IAM User Info ###")
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             response = client.get_user()
             print(response)
             if response.get('User') is None:
@@ -258,11 +267,11 @@ def iam_get_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def iam_get_account_summary(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def iam_get_account_summary():
     print("### Printing IAM Account Summary ###")
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             
             response = client.get_account_summary()
             # print(response)
@@ -287,11 +296,11 @@ def iam_get_account_summary(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def iam_list_users(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def iam_list_users():
     print("### Printing IAM Users ###")
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             
             response = client.list_users()
             # print(response)
@@ -317,11 +326,11 @@ def iam_list_users(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def iam_list_roles(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def iam_list_roles():
     print("### Printing IAM Roles ###")
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             
             response = client.list_roles()
             # print(response)
@@ -350,11 +359,11 @@ def iam_list_roles(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def iam_list_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def iam_list_policies():
     print("### Printing IAM Policies ###")
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             
             response = client.list_policies()
             # print(response)
@@ -383,11 +392,11 @@ def iam_list_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 # dont use see below
-def iam_list_user_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
+def iam_list_user_policies(username):
     print("### Printing IAM Policies for {} ###".format(username))
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             
             response = client.list_user_policies(UserName=username)
             # print(response)
@@ -415,11 +424,11 @@ def iam_list_user_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def iam_list_attached_user_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username):
+def iam_list_attached_user_policies(username):
     print("### Printing Attached IAM Policies for {} ###".format(username))
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             
             response = client.list_attached_user_policies(UserName=username)
             # print(response)
@@ -447,11 +456,11 @@ def iam_list_attached_user_policies(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, us
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def iam_list_entities_for_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, policy_arn):
+def iam_list_entities_for_policy(policy_arn):
     print("### Printing IAM Entity Policies for {} ###".format(policy_arn))
     try:
         for region in regions:
-            client = boto3.client('iam', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('iam', region_name=region)
             
             response = client.list_entities_for_policy(PolicyArn=policy_arn)
             print(response)

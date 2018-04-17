@@ -1,22 +1,29 @@
-'''
-Pricing Library
-'''
-
 import boto3
 import botocore
 import pprint
 import sys
 
+'''
+Pricing functions for WeirdAAL
+'''
+
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'ap-south-1', ]
+regions = ['us-east-1', 'ap-south-1' ]
+
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
 
 
-def pricing_describe_services(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def pricing_describe_services():
     try:
         for region in regions:
-            client = boto3.client('pricing', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('pricing', region_name=region)
             response = client.describe_services()
             print(response)
             if response.get('Services') is None:

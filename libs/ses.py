@@ -1,25 +1,30 @@
-'''
-SES functions
-'''
-
-
 import boto3
 import botocore
 import pprint
+
+'''
+SES functions for WeirdAAL
+'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-west-2', 'eu-west-1' ]
 
-def list_identities(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
+
+
+def list_identities():
     print("### Printing SES Identifies  ###")
     try:
         for region in regions:
             client = boto3.client(
                 'ses',
-                aws_access_key_id = AWS_ACCESS_KEY_ID,
-                aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
                 region_name=region
             )
 
@@ -48,14 +53,12 @@ def list_identities(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def get_send_statistics(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def get_send_statistics():
     print("### Printing SES Identifies  ###")
     try:
         for region in regions:
             client = boto3.client(
                 'ses',
-                aws_access_key_id = AWS_ACCESS_KEY_ID,
-                aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
                 region_name=region
             )
 
@@ -84,14 +87,12 @@ def get_send_statistics(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def list_configuration_sets(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def list_configuration_sets():
     print("### Printing SES Identifies  ###")
     try:
         for region in regions:
             client = boto3.client(
                 'ses',
-                aws_access_key_id = AWS_ACCESS_KEY_ID,
-                aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
                 region_name=region
             )
 

@@ -1,21 +1,29 @@
-'''
-Cost Explorer Library
-'''
-
 import boto3
 import botocore
 import pprint
 import sys
+
+'''
+Cost Explorer functions for WeirdAAL
+'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 #from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', ]
 
-def ce_get_cost_and_usage(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
+
+
+def ce_get_cost_and_usage():
     try:
         for region in regions:
-            client = boto3.client('ce', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('ce', region_name=region)
             response = client.get_cost_and_usage(TimePeriod={'Start': '2018-01-01', 'End': '2018-04-01'}, Granularity='MONTHLY', Metrics=["BlendedCost", "UnblendedCost", "UsageQuantity"],)
             print(response)
             #if response.get('Services') is None:

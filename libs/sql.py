@@ -1,6 +1,10 @@
 import sqlite3
 from sqlite3 import Error
 
+'''
+Custom SQL/database functions for WeirdAAL
+'''
+
 def create_table(db_name,table_name,sql):
     with sqlite3.connect(db_name) as db:
         cursor = db.cursor()

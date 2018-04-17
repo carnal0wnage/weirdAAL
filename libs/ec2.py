@@ -1,17 +1,22 @@
-'''
-ec2 functions go here
-'''
-
 import boto3
 import botocore
 import pprint
+
+'''
+EC2 functions for WeirdAAL
+'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2']
 
-# we are past the enumeration stage at this point assume you have key that works
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def review_encrypted_volumes():

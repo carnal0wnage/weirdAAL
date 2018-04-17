@@ -1,12 +1,12 @@
-'''
-Cloudtrail functions
-'''
-
 import boto3
 import botocore
 import os
 import pprint
 import sys
+
+'''
+Cloudtrail functions for WeirdAAL
+'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -14,11 +14,19 @@ pp = pprint.PrettyPrinter(indent=5, width=80)
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1' ]
 #  'cn-north-1', 'cn-northwest-1',  'us-gov-west-1' throwing An error occurred (UnrecognizedClientException) when calling the DescribeTrails operation: The security token included in the request is invalid.
 
-def describe_trails(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
+
+
+def describe_trails():
     print("### Printing CloudTrail DescribeTrails ###")
     try:
         for region in regions:
-            client = boto3.client('cloudtrail', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('cloudtrail', region_name=region)
 
             response = client.describe_trails()
 
@@ -49,11 +57,12 @@ def describe_trails(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def list_public_keys(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+
+def list_public_keys():
     print("### Printing CloudTrail DescribeTrails ###")
     try:
         for region in regions:
-            client = boto3.client('cloudtrail', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('cloudtrail', region_name=region)
 
             response = client.list_public_keys()
 

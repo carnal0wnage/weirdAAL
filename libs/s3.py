@@ -1,16 +1,20 @@
-'''
-S3 Library
-'''
-
 import boto3
 import botocore
 import pprint
 
+'''
+S3 functions for WeirdAAL
+'''
+
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
 session = boto3.Session()
 credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
+
 
 def get_s3bucket_policy(bucket):
     client = boto3.client(

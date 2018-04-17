@@ -2,13 +2,15 @@
 queries that interact with db can go here
 '''
 
-
+import boto3
 import sqlite3
 from sqlite3 import Error
 
 from  libs.sql import *
 
-from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
 
 #  for a key, what services does it have listed in the DB
 def step_show_services_by_key():

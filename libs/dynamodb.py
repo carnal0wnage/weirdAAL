@@ -1,24 +1,31 @@
-'''
-dynamoDB functions
-'''
-
 import boto3
 import botocore
 import pprint
 import sys
 import os
 
+'''
+dynamoDB functions for WeirdAAL
+'''
+
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2']
 
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
 
-def list_dynamodb_tables(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+
+def list_dynamodb_tables():
     print("### Printing DynamoDB Tables ###")
     try:
         for region in regions:
-            client = boto3.client('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('dynamodb', region_name=region)
             response = client.list_tables()
             if response.get('TableNames') is None:
                 print("{} likely does not have DynamoDB permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -43,11 +50,11 @@ def list_dynamodb_tables(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def list_dynamodb_tables_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+def list_dynamodb_tables_detailed():
     print("### Printing DynamoDB Tables ###")
     try:
         for region in regions:
-            client = boto3.client('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+            client = boto3.client('dynamodb', region_name=region)
             response = client.list_tables()
             if response.get('TableNames') is None:
                 print("{} likely does not have DynamoDB permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -74,10 +81,10 @@ def list_dynamodb_tables_detailed(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
         print("CTRL-C received, exiting...")
 
 
-def describe_table(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, table, region):
+def describe_table(table, region):
     print("### Describing DynamoDB Table: {} ###" .format(table))
     try:
-        client = boto3.client('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+        client = boto3.client('dynamodb', region_name=region)
         response = client.describe_table(TableName=table)
         if response.get('Table') is None:
             print("{} likely does not have DynamoDB permissions\n" .format(AWS_ACCESS_KEY_ID))

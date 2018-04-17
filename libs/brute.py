@@ -11,6 +11,13 @@ import datetime
 
 from libs.sql import *
 
+'''
+This is the main brute library so that we can get an idea what services a particular
+key has access to. We do this by asking if we have permission on as many services & 
+subfunctions as we can. Printed to screen and logged to db.
+'''
+
+
 #  we chould probably load this from one place in the future #TODO
 db_name = "weirdAAL.db"
 
@@ -24,15 +31,30 @@ regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', '
 
 region = 'us-east-1'
 
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
 session = boto3.Session()
 credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
-#print(AWS_ACCESS_KEY_ID)
 
 
 def get_accountid():
-    client = boto3.client('sts', region_name=region)
-    account_id = client.get_caller_identity()["Account"]
+    try:
+        client = boto3.client("sts")
+        account_id = client.get_caller_identity()["Account"]
+        print("Account Id: {}" .format(account_id))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'EndpointConnectionError':
+            print("[-] Cant connect to the {} endpoint [-]" .format(region))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
     return account_id
 
 # NOT QUITE WORKING YET

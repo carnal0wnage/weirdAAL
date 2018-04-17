@@ -1,22 +1,38 @@
-'''
-datapipeline functions
-'''
-
 import boto3
 import botocore
+import os
 import pprint
-import sys,os
+import sys
+
+'''
+Datapipleine functions for WeirdAAL
+'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-#from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-west-2', 'eu-west-1', 'ap-northeast-1', 'ap-southeast-2',  ]
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
 
-def list_pipelines(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY):
+# from http://docs.aws.amazon.com/general/latest/gr/rande.html
+regions = ['us-east-1', 'us-west-2', 'eu-west-1', 'ap-northeast-1', 'ap-southeast-2', ]
+
+'''
+Code to get the AWS_ACCESS_KEY_ID from boto3
+'''
+session = boto3.Session()
+credentials = session.get_credentials()
+AWS_ACCESS_KEY_ID = credentials.access_key
+
+
+def list_pipelines():
+    '''
+    Function to use the datapipeline boto3 library to list available pipelines
+    '''
     print("### Printing Data Pipeline Pipelines ###")
     try:
-    	for region in regions:
-            client = boto3.client('datapipeline', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=region)
+        for region in regions:
+            client = boto3.client('datapipeline', region_name=region)
             response = client.list_pipelines()
             print("### {} Data Pipelines ###" .format(region))
             if response.get('pipelineIdList') is None:
