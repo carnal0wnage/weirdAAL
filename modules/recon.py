@@ -1,14 +1,19 @@
-from __future__ import print_function
+'''
+This module handles the core recon functionality by asking all the services
+that have functions that done have arguments if we can access them :-)
+'''
 
 from libs.brute import *
 from libs.s3 import *
 
+# maps to available services in boto 1.7.4
 
 def module_recon_all():
     get_accountid()
     check_root_account()
     brute_acm_permissions()
-    #  AlexaForBusiness
+    brute_acm_pca_permissions()
+    brute_alexaforbusiness_permissions()
     brute_apigateway_permissions()
     #  Application Auto Scaling - no usable functions
     brute_appstream_permissions()
@@ -19,14 +24,14 @@ def module_recon_all():
     brute_batch_permissions()
     brute_budgets_permissions()
     #  CostExplorer
-    #  brute_cloud9_permissions() Was working now its not
+    brute_cloud9_permissions()
     brute_clouddirectory_permissions()
     brute_cloudformation_permissions()
     brute_cloudfront_permissions()
     brute_cloudhsm_permissions()
-    #  cloudhsmv2
+    brute_cloudhsmv2_permissions()
     brute_cloudsearch_permissions()
-    #  CloudSearchDomain
+    # brute_cloudsearchdomain_permissions() requires a valid cloudsearch domain
     brute_cloudtrail_permissions()
     brute_cloudwatch_permissions()
     brute_codebuild_permissions()
@@ -37,11 +42,12 @@ def module_recon_all():
     brute_cognitoidentity_permissions()
     brute_cognitoidp_permissions()
     brute_cognitosync_permissions()
-    #  Comprehend
+    brute_comprehend_permissions()
     brute_configservice_permissions()
-    #  brute_costandusagereportservice_permissions() #Could not connect to the endpoint URL: "https://cur.us-west-2.amazonaws.com/"
+    # connect no functions
+    brute_costandusagereportservice_permissions()
     brute_datapipeline_permissions()
-    #  DAX
+    brute_dax_permissions()
     brute_devicefarm_permissions()
     brute_directconnect_permissions()
     brute_applicationdiscoveryservice_permissions()
@@ -62,23 +68,24 @@ def module_recon_all():
     brute_es_permissions()
     brute_cloudwatchevents_permissions()
     brute_firehose_permissions()
+    brute_fms_permissions()
     brute_gamelift_permissions()
     brute_glacier_permissions()
-    #  Glue
+    brute_glue_permissions()
     brute_greengrass_permissions()
-    #  GuardDuty
+    brute_guardduty_permissions()
     brute_health_permissions()
     brute_iam_permissions()
     brute_importexport_permissions()
     brute_inspector_permissions()
     brute_iot_permissions()
     #  IoTDataPlane  no functions
-    #  IoTJobsDataPlane
+    #  IoTJobsDataPlane no functions
     brute_kinesis_permissions()
-    #  KinesisVideoArchivedMedia
-    #  KinesisVideoMedia
+    #  KinesisVideoArchivedMedia no functions
+    #  KinesisVideoMedia no functions
     brute_kinesisanalytics_permissions()
-    #  KinesisVideo
+    brute_kinesisvideo_permissions()
     brute_kms_permissions()
     brute_lambda_permissions()
     brute_lexmodels_permissions()
@@ -88,54 +95,55 @@ def module_recon_all():
     brute_machinelearning_permissions()
     #  marketplace-entitlement no functions
     #  marketplacecommerceanalytics no functions
-    #  MediaConvert
-    #  MediaLive
-    #  MediaPackage
-    #  MediaStore
-    #  MediaStore-Data
+    brute_mediaconvert_permissions()
+    brute_medialive_permissions()
+    brute_mediapackage_permissions()
+    brute_mediastore_permissions()
+    brute_mediastore_data_permissions()
     #  MarketplaceMetering no functions
-    #  MigrationHub
-    #  Mobile
-    #  MQ
+    brute_mgh_permissions()
+    brute_mobile_permissions()
+    brute_mq_permissions()
     brute_mturk_permissions()
     brute_opsworks_permissions()
     brute_opsworkscm_permissions()
     brute_organizations_permissions()
     #  PinPoint no functions
     brute_polly_permissions()
-    #  Pricing
+    brute_pricing_permissions()
     brute_rds_permissions()
     brute_redshift_permissions()
     brute_rekognition_permissions()
-    #  ResourceGroups
+    brute_resource_groups_permissions()
     brute_resourcegroupstaggingapi_permissions()
     brute_route53_permissions()
     brute_route53domains_permissions()
     brute_s3_permissions()
-    #  SageMaker
-    #  SageMakerRuntime
+    brute_sagemaker_permissions()
+    #  SageMakerRuntime no functions
     brute_sdb_permissions()
-    #  ServerlessApplicationRepository
+    brute_secretsmanager_permissions()
+    brute_serverlessrepo_permissions()
     brute_servicecatalog_permissions()
-    #  ServiceDiscovery
+    brute_servicediscovery_permissions()
     brute_ses_permissions()
     brute_shield_permissions()
     brute_sms_permissions()
     brute_snowball_permissions()
     brute_sns_permissions()
     brute_sqs_permissions()
-    #  SSM
+    brute_ssm_permissions()
     brute_stepfunctions_permissions()
-    #  StorageGateway
+    brute_storagegateway_permissions()
     brute_sts_permissions()
-    #  Support
-    #  SWF
-    #  TranscribeService
-    #  Translate
-    #  WAF
-    #  WAFRegional
-    #  WorkDocs
-    #  WorkMail
+    brute_support_permissions()
+    brute_swf_permissions()
+    brute_transcribe_permissions()
+    brute_translate_permissions()
+    brute_waf_permissions()
+    brute_waf_regional_permissions()
+    brute_workdocs_permissions()
+    brute_workmail_permissions()
     brute_workspaces_permissions()
     #  XRay no functions
 
