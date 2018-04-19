@@ -1,6 +1,9 @@
 #let's attempt not to check in config.py with keys
 config.py
 
+#weirdAAL.db
+*.db
+
 # Docs r generated
 docs/*.html
 
