@@ -24,7 +24,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-m", "--module", help="list the module you would like to run", action="store", type=str, required=True)
 parser.add_argument("-t", "--target", help="Give your target a name so we can track results", action="store", type=str, required=True)
 parser.add_argument("-a", "--arguments", help="Provide a list of arguments, comma separated. Ex: arg1,arg2,arg3", action="store", type=str, required=False)
-parser.add_argument("-l", "--list", help="list steps", action="store_true")
+parser.add_argument("-l", "--list", help="list modules", action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
 args = parser.parse_args()
 
@@ -47,10 +47,10 @@ def perform_credential_check():
 
 def method_create():
     try:
-        arg = globals()["module_" + args.step]
+        arg = globals()["module_" + args.module]
         return arg
     except KeyError:
-        print("That step does not exist")
+        print("That module does not exist")
         exit(1)
 
 
@@ -71,8 +71,8 @@ arg_list = None
 if (args.arguments):
     arg_list = args.arguments.split(',')
 
-# We need the user to tell us the step they want to proceed on
-if (args.step):
+# We need the user to tell us the module they want to proceed on
+if (args.modules):
     arg = method_create()
     if callable(arg):
         if arg_list:
