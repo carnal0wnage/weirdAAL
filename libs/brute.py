@@ -2,12 +2,13 @@ from __future__ import print_function
 
 import boto3
 import botocore
+import datetime
 import json
 import logging
 import os
 import pprint
 import sys
-import datetime
+
 
 from libs.sql import *
 

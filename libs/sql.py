@@ -27,6 +27,7 @@ def create_table(db_name,table_name,sql):
             cursor.execute(sql)
             db.commit()
 
+
 def create_recon_table(db_name, table_name):
     sql = """CREATE TABLE recon
              (ID integer,
@@ -39,6 +40,7 @@ def create_recon_table(db_name, table_name):
     create_table(db_name,table_name,sql)
     print ("created table: {}".format(table_name))
 
+
 def create_awskey_table(db_name, table_name):
     sql = """CREATE TABLE AWSKey
              (ID integer,
@@ -47,6 +49,7 @@ def create_awskey_table(db_name, table_name):
              PRIMARY KEY(ID))"""
     create_table(db_name,table_name,sql)
     print ("created table: {}".format(table_name))
+
 
 def create_services_table(db_name, table_name):
     sql = """CREATE TABLE services
@@ -66,10 +69,18 @@ def insert_awskey_data(db_name, records):
     for record in records:
         query(db_name, sql,record)
 
+
 def insert_reconservice_data(db_name, records):
     sql = """INSERT INTO recon(service, sub_service, AWSKeyID, checked_at) VALUES (?,?,?,?)"""
     for record in records:
         query(db_name,sql,record)
+
+
+def insert_sub_service_data(db_name, records):
+    sql = """INSERT INTO services(service, sub_service, sub_service_data, AWSKeyID, checked_at) VALUES (?,?,?,?,?)"""
+    for record in records:
+        query(db_name,sql,record)
+
 
 def search_recon_by_key(db_name,AWSKeyID):
         with sqlite3.connect(db_name) as db:
@@ -77,6 +88,7 @@ def search_recon_by_key(db_name,AWSKeyID):
                 cursor.execute("""SELECT service,sub_service,checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""",(AWSKeyID,))
                 results = cursor.fetchall()
                 return results
+
 
 def query(db_name,sql,data):
     with sqlite3.connect(db_name) as db:

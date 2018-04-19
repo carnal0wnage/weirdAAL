@@ -1,6 +1,12 @@
 import boto3
 import botocore
+import datetime
 import pprint
+
+from libs.sql import *
+
+#  we chould probably load this from one place in the future #TODO
+db_name = "weirdAAL.db"
 
 '''
 EC2 functions for WeirdAAL
@@ -68,10 +74,19 @@ def describe_instances():
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
                 print("[+] Listing instances for region: {} [+]" .format(region))
+                db_logger = []
                 for r in response['Reservations']:
+                    db_logger.append(['ec2', 'DescribeInstances', str(r), AWS_ACCESS_KEY_ID, datetime.datetime.now()])
                     for i in r['Instances']:
                         pp.pprint(i)
-
+                # logging to db here
+                try:
+                    # print(db_logger)
+                    insert_sub_service_data(db_name, db_logger)
+                except sqlite3.OperationalError as e:
+                    print(e)
+                    print("You need to set up the database...exiting")
+                    sys.exit()
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
@@ -93,17 +108,28 @@ def describe_instances_basic():
             else:
                 # print (response)
                 print("[+] Listing instances for region: {} [+]" .format(region))
+                db_logger = []
                 for r in response['Reservations']:
+                    # logging the full blob
+                    db_logger.append(['ec2', 'DescribeInstances', str(r), AWS_ACCESS_KEY_ID, datetime.datetime.now()])
                     for i in r['Instances']:
                         launchtime = i['LaunchTime']
                         instanceid = i['InstanceId']
                         instancetype = i['InstanceType']
                         state = i['State']
                         print("InstanceID: {}, InstanceType: {}, State: {}, Launchtime: {}".format(instanceid, instancetype, state, launchtime))
-
+                # logging to db here
+                try:
+                    # print(db_logger)
+                    insert_sub_service_data(db_name, db_logger)
+                except sqlite3.OperationalError as e:
+                    print(e)
+                    print("You need to set up the database...exiting")
+                    sys.exit()
+        print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
-            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
