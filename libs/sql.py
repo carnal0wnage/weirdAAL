@@ -33,7 +33,7 @@ def create_recon_table(db_name, table_name):
              service text,
              sub_service text,
              AWSKeyID text,
-             checked_at text,
+             checked_at timestamp,
              PRIMARY KEY (ID))"""
              #FOREIGN KEY (AWSKeyID) references AWSKey(ID))"""
     create_table(db_name,table_name,sql)
@@ -44,6 +44,18 @@ def create_awskey_table(db_name, table_name):
              (ID integer,
              AWSKeyID Text,
              Description text,
+             PRIMARY KEY(ID))"""
+    create_table(db_name,table_name,sql)
+    print ("created table: {}".format(table_name))
+
+def create_services_table(db_name, table_name):
+    sql = """CREATE TABLE services
+             (ID integer,
+             AWSKeyID Text,
+             service text,
+             sub_service text,
+             sub_service_data text,
+             checked_at timestamp,
              PRIMARY KEY(ID))"""
     create_table(db_name,table_name,sql)
     print ("created table: {}".format(table_name))
@@ -62,7 +74,7 @@ def insert_reconservice_data(db_name, records):
 def search_recon_by_key(db_name,AWSKeyID):
         with sqlite3.connect(db_name) as db:
                 cursor = db.cursor()
-                cursor.execute("""SELECT service,sub_service FROM recon WHERE AWSKeyID=?""",(AWSKeyID,))
+                cursor.execute("""SELECT service,sub_service,checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""",(AWSKeyID,))
                 results = cursor.fetchall()
                 return results
 

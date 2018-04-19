@@ -124,7 +124,7 @@ def generic_permission_bruteforcer(service, tests):
 
         db_logger = []
         for action in actions:
-            db_logger.append([service, action, AWS_ACCESS_KEY_ID, timenow])
+            db_logger.append([service, action, AWS_ACCESS_KEY_ID, datetime.datetime.now()])
         # print (db_logger)
 
         # scrapped the json logging idea but keeping it here just in case
@@ -161,7 +161,7 @@ def generic_permission_bruteforcer_region(service, tests, region_passed):
 
         db_logger = []
         for action in actions:
-            db_logger.append([service, action, AWS_ACCESS_KEY_ID, timenow])
+            db_logger.append([service, action, AWS_ACCESS_KEY_ID, datetime.datetime.now()])
         # print (db_logger)
 
         # scrapped the json logging idea but keeping it here just in case

@@ -10,3 +10,4 @@ if __name__ == "__main__":
     db_name = "weirdAAL.db"
     create_awskey_table(db_name, "AWSKey")
     create_recon_table(db_name, "recon")
+    create_services_table(db_name,"services")

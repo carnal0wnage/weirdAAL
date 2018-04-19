@@ -60,9 +60,9 @@ def method_create():
 
 
 # Need to figure out if we have keys in the ENV or not
-if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+try:
     perform_credential_check()
-else:
+except:
     print("Please supply keys as outlined in our README.md file")
     # exit(1)
 
