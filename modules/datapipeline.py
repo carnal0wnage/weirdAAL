@@ -5,7 +5,7 @@ datapipeline modules
 from libs.datapipeline import *
 
 
-def step_datapipeline_list_pipelines():
+def module_datapipeline_list_pipelines():
     '''
     List Pipelines
     '''

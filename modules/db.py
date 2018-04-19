@@ -17,7 +17,7 @@ db_name = "weirdAAL.db"
 #  for a key, what services does it have listed in the DB
 
 
-def step_show_services_by_key():
+def module_show_services_by_key():
     '''
     Show services for a given key service:sub_service
     example: elasticbeanstalk:DescribeEvents
@@ -28,7 +28,7 @@ def step_show_services_by_key():
         print("{}:{}".format(result[0], result[1]))
 
 
-def step_show_services_by_key_with_date():
+def module_show_services_by_key_with_date():
     '''
     Show services for a given key service:sub_service
     example: elasticbeanstalk:DescribeEvents
@@ -41,7 +41,7 @@ def step_show_services_by_key_with_date():
 # same as show_sevices
 
 
-def step_list_services_by_key():
+def module_list_services_by_key():
     '''
     Show services for a given key service:sub_service
     example: elasticbeanstalk:DescribeEvents
@@ -55,7 +55,7 @@ def step_list_services_by_key():
 # for a key, what services does it have listed in the DB and the date
 
 
-def step_list_services_by_key_with_date():
+def module_list_services_by_key_with_date():
     '''
     Show services for a given key service:sub_service with date
     example: elasticbeanstalk:DescribeEvents -> Date: 2018-04-18 20:36:41.791780

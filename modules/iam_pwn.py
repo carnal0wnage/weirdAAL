@@ -6,7 +6,7 @@ from libs.sts import *
 #from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 
-def step_cg_test():
+def module_iam_pwn():
   get_accountid()
   check_root_account()
   get_password_policy()

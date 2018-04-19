@@ -12,7 +12,7 @@ InstanceID: i-XXXXXXXXXXXXXXX, InstanceType: t2.micro, State: {'Code': 80, 'Name
 '''
 
 
-def step_ec2_describe_instances_basic():
+def module_ec2_describe_instances_basic():
     describe_instances_basic()
 
 
@@ -21,7 +21,7 @@ All info about each EC2 instance
 '''
 
 
-def step_ec2_describe_instances():
+def module_ec2_describe_instances():
     describe_instances()
 
 
@@ -30,7 +30,7 @@ show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail
 '''
 
 
-def step_ec2_get_instance_volume_details():
+def module_ec2_get_instance_volume_details():
     get_instance_volume_details()
 
 
@@ -39,7 +39,7 @@ show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of
 '''
 
 
-def step_ec2_get_instance_volume_details2():
+def module_ec2_get_instance_volume_details2():
     get_instance_volume_details2()
 
 
@@ -48,7 +48,7 @@ This function is used to list EBS volumes and whether or not they are encrypted.
 '''
 
 
-def step_ec2_review_encrypted_volumes():
+def module_ec2_review_encrypted_volumes():
     review_encrypted_volumes()
 
 
@@ -57,7 +57,7 @@ This function is used to describe ec2 network addresses.
 '''
 
 
-def step_ec2_describe_addresses():
+def module_ec2_describe_addresses():
     describe_addresses()
 
 
@@ -66,7 +66,7 @@ This function is used to describe ec2 network interfaces.
 '''
 
 
-def step_ec2_describe_network_interfaces():
+def module_ec2_describe_network_interfaces():
     describe_network_interfaces()
 
 
@@ -75,5 +75,5 @@ this function describes route tables for each ec2 instance
 '''
 
 
-def step_ec2_describe_route_tables():
+def module_ec2_describe_route_tables():
     describe_route_tables()

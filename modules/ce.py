@@ -7,5 +7,5 @@ permission to get anything from this
 from libs.ce import *
 
 
-def step_cost_explorer_get_cost_and_usage():
+def module_cost_explorer_get_cost_and_usage():
     ce_get_cost_and_usage()

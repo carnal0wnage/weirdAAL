@@ -4,5 +4,5 @@ dynamoDBstreams examples
 from libs.dynamodbstreams import *
 
 
-def step_dynamodbstreams_list_streams():
+def module_dynamodbstreams_list_streams():
     list_dynamodbstreams()

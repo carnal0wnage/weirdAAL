@@ -12,21 +12,21 @@ when you run these functions
 '''
 
 
-def step_elasticbeanstalk_describe_applications():
+def module_elasticbeanstalk_describe_applications():
     describe_applications()
 
 
-def step_elasticbeanstalk_describe_applications_versions():
+def module_elasticbeanstalk_describe_applications_versions():
     describe_application_versions()
 
 # not working
-# def step_elasticbeanstalk_describe_configuration_options():
+# def module_elasticbeanstalk_describe_configuration_options():
 #   describe_configuration_options()
 
 
-def step_elasticbeanstalk_describe_environments():
+def module_elasticbeanstalk_describe_environments():
     describe_environments()
 
 
-def step_elasticbeanstalk_describe_events():
+def module_elasticbeanstalk_describe_events():
     describe_events()
