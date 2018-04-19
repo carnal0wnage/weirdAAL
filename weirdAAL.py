@@ -45,11 +45,6 @@ def perform_credential_check():
         print("The AWS Access Keys are not valid/active")
         sys.exit(1)
 
-
-def module_recon():
-    print("!!!")
-
-
 def method_create():
     try:
         arg = globals()["module_" + args.step]
