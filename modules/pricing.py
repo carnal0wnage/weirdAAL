@@ -7,5 +7,5 @@ permission to get anything from this
 from libs.pricing import *
 
 
-def step_pricing_describe_services():
+def module_pricing_describe_services():
     pricing_describe_services()
