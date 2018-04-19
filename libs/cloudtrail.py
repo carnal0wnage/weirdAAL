@@ -23,6 +23,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def describe_trails():
+    '''
+    Describe CloudTrail Trails for each region
+    '''
     print("### Printing CloudTrail DescribeTrails ###")
     try:
         for region in regions:
@@ -59,6 +62,9 @@ def describe_trails():
 
 
 def list_public_keys():
+    '''
+    List public keys
+    '''
     print("### Printing CloudTrail DescribeTrails ###")
     try:
         for region in regions:
@@ -93,6 +99,7 @@ def list_public_keys():
 
 def stop_trail(TrailARN):
     '''
+    Stop a specified trailARN
     port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
     '''
     print("### Attempting to stop trail {} ###\n".format(TrailARN[0]))
@@ -136,6 +143,7 @@ def stop_trail(TrailARN):
 
 def delete_trail(TrailARN):
     '''
+    Delete a specified trailARN
     port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
     '''
     print("### Attempting to delete trail {} ###\n".format(TrailARN[0]))
