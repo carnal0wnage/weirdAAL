@@ -3,6 +3,7 @@ config.py
 
 #weirdAAL.db
 *.db
+*.sqlite
 
 # Docs r generated
 docs/*.html
