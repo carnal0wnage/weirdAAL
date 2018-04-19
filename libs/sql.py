@@ -85,7 +85,7 @@ def insert_sub_service_data(db_name, records):
 def search_recon_by_key(db_name,AWSKeyID):
         with sqlite3.connect(db_name) as db:
                 cursor = db.cursor()
-                cursor.execute("""SELECT service,sub_service,checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""",(AWSKeyID,))
+                cursor.execute("""SELECT DISTINCT service,sub_service,checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""",(AWSKeyID,))
                 results = cursor.fetchall()
                 return results
 

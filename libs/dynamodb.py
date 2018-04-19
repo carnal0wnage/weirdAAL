@@ -63,7 +63,7 @@ def list_dynamodb_tables_detailed():
             else:
                 print("### {} DynamoDB Tables ###" .format(region))
                 for tables in response['TableNames']:
-                    describe_table(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, tables, region)
+                    describe_table(tables, region)
         print("\n")
 
     except botocore.exceptions.ClientError as e:
