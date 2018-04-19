@@ -72,7 +72,7 @@ if (args.arguments):
     arg_list = args.arguments.split(',')
 
 # We need the user to tell us the module they want to proceed on
-if (args.modules):
+if (args.module):
     arg = method_create()
     if callable(arg):
         if arg_list:
