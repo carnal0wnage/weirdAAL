@@ -1,5 +1,5 @@
-boto3==1.4.7
-botocore==1.7.37
+boto3==1.7.4
+botocore==1.10.4
 docutils==0.14
 jmespath==0.9.3
 python-dateutil==2.6.1
