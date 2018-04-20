@@ -1,12 +1,12 @@
+'''
+dynamoDBstreams functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import pprint
 import os
 import sys
-
-'''
-dynamoDBstreams functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -22,6 +22,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def list_dynamodbstreams():
+    '''
+    Use list_streams function in dynamodbstreams to list available streams
+    '''
     print("### Printing DynamoDBstreams ###")
     try:
         for region in regions:

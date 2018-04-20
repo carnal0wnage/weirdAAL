@@ -1,12 +1,12 @@
+'''
+ECR functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import os
 import pprint
 import sys
-
-'''
-ECR functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -22,6 +22,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def describe_repositories():
+    '''
+    Use ecr describe_repositories function to list available repositories
+    '''
     print("### Printing ECR Repositories ###")
     try:
         for region in regions:

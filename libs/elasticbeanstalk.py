@@ -1,12 +1,12 @@
+'''
+ElasticBeanstalk functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import os
 import pprint
 import sys
-
-'''
-ElasticBeanstalk functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -167,7 +167,7 @@ def describe_events():
 
             response = client.describe_events()
 
-            # print response
+            # print(response)
 
             if response.get('Events') is None:
                 print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))

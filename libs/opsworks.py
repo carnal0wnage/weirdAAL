@@ -1,10 +1,10 @@
-import boto3
-import botocore
-import pprint
-
 '''
 Opsworks functions for WeirdAAL
 '''
+
+import boto3
+import botocore
+import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 

@@ -1,12 +1,12 @@
+'''
+dynamoDB functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import pprint
 import sys
 import os
-
-'''
-dynamoDB functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -22,6 +22,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def list_dynamodb_tables():
+    '''
+    Use dynamodb list_tables function to list table names
+    '''
     print("### Printing DynamoDB Tables ###")
     try:
         for region in regions:
@@ -51,6 +54,9 @@ def list_dynamodb_tables():
 
 
 def list_dynamodb_tables_detailed():
+    '''
+    Use dynamodb list_tables function to list table names and also attempt to describe each table from list_tables()
+    '''
     print("### Printing DynamoDB Tables ###")
     try:
         for region in regions:
@@ -82,6 +88,9 @@ def list_dynamodb_tables_detailed():
 
 
 def describe_table(table, region):
+    '''
+    dynamodb attempt to read infromation from specified DynamoDB table
+    '''
     print("### Describing DynamoDB Table: {} ###" .format(table))
     try:
         client = boto3.client('dynamodb', region_name=region)

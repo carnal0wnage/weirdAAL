@@ -1,3 +1,7 @@
+'''
+EC2 functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import datetime
@@ -7,10 +11,6 @@ from libs.sql import *
 
 #  we chould probably load this from one place in the future #TODO
 db_name = "weirdAAL.db"
-
-'''
-EC2 functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 

@@ -1,12 +1,12 @@
+'''
+Cloudtrail functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import os
 import pprint
 import sys
-
-'''
-Cloudtrail functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -100,7 +100,7 @@ def list_public_keys():
 def stop_trail(TrailARN):
     '''
     Stop a specified trailARN
-    port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
+    Port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
     '''
     print("### Attempting to stop trail {} ###\n".format(TrailARN[0]))
     try:
@@ -144,7 +144,7 @@ def stop_trail(TrailARN):
 def delete_trail(TrailARN):
     '''
     Delete a specified trailARN
-    port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
+    Port of https://github.com/dagrz/aws_pwn/blob/master/stealth/disrupt_cloudtrail.py
     '''
     print("### Attempting to delete trail {} ###\n".format(TrailARN[0]))
     try:

@@ -1,12 +1,12 @@
+'''
+Firehose functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import os
 import pprint
 import sys
-
-'''
-Firehose functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -22,6 +22,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def firehose_list_delivery_streams():
+    '''
+    Use firehose list_delivery_streams to list available delivery streams
+    '''
     print("### Printing Firehose Delivery Streams ###")
     try:
         for region in regions:
@@ -53,6 +56,9 @@ def firehose_list_delivery_streams():
 
 
 def firehose_describe_delivery_streams():
+    '''
+    use firehose describe_delivery_stream function to list details of each deliver stream from list_delivery_streams
+    '''
     print("### Printing Firehose Delivery Streams & details ###")
     try:
         for region in regions:

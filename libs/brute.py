@@ -1,4 +1,10 @@
-from __future__ import print_function
+'''
+Brute functions for WeirdAAL
+
+This is the main brute library so that we can get an idea what services a particular
+key has access to. We do this by asking if we have permission on as many services & 
+subfunctions as we can. Printed to screen and logged to db.
+'''
 
 import boto3
 import botocore
@@ -12,13 +18,6 @@ import sys
 
 from libs.sql import *
 #from conf.conf import *
-
-'''
-This is the main brute library so that we can get an idea what services a particular
-key has access to. We do this by asking if we have permission on as many services & 
-subfunctions as we can. Printed to screen and logged to db.
-'''
-
 
 # we chould probably load this from one place in the future #TODO
 db_name = "weirdAAL.db"
@@ -42,6 +41,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def get_accountid():
+    '''
+    Get the accountID via sts call
+    '''
     try:
         client = boto3.client("sts")
         account_id = client.get_caller_identity()["Account"]
@@ -68,8 +70,10 @@ def get_accountid():
 
 
 def check_root_account():
+    '''
+    use IAM calls to check for root/IAM access
+    '''
     client = boto3.client('iam')
-
     try:
         acct_summary = client.get_account_summary()
         if acct_summary:

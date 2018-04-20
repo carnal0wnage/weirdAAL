@@ -1,12 +1,12 @@
+'''
+Route53 functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import os
 import pprint
 import sys
-
-'''
-Route53 functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 

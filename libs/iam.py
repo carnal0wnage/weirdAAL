@@ -1,15 +1,15 @@
-import boto3
-import botocore
-
-import json
-import urllib
-import logging
-import sys,os
-import pprint
-
 '''
 IAM functions for WeirdAAL
 '''
+
+import boto3
+import botocore
+import json
+import logging
+import os
+import pprint
+import sys
+import urllib
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 

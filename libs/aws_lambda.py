@@ -1,12 +1,12 @@
+'''
+lamda functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import os
 import pprint
 import sys
-
-'''
-lamda functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -22,6 +22,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def list_functions():
+    '''
+    List available lambda functions
+    '''
     print("### Listing Lambda Functions ###")
     try:
         for region in regions:
@@ -36,7 +39,6 @@ def list_functions():
                 print("[-] ListFunctions allowed for {} but no results [-]" .format(region))
             else:  # THIS PART IS UNTESTED
                 for r in response['Functions']:
-                    # for i in r['Instances']:
                     pp.pprint(r)
         print("\n")
     except botocore.exceptions.ClientError as e:
@@ -53,6 +55,9 @@ def list_functions():
 
 
 def list_event_source_mappings():
+    '''
+    List Lambda event source mappings
+    '''
     print("### Listing Lambda Event Source Mappings ###")
     try:
         for region in regions:

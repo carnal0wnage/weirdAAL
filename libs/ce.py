@@ -1,11 +1,11 @@
+'''
+Cost Explorer functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import pprint
 import sys
-
-'''
-Cost Explorer functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 

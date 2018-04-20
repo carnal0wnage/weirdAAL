@@ -1,11 +1,11 @@
+'''
+Config functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import pprint
 import sys
-
-'''
-Config functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -21,55 +21,56 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def describe_configuration_recorders(region):
-	response = {}
-	try:
-		client = boto3.client("config", region_name=region)
+    response = []
+    try:
+        client = boto3.client("config", region_name=region)
 
-		response = client.describe_configuration_recorders()
-		#print response
-	except botocore.exceptions.ClientError as e:
-		if e.response['Error']['Code'] == 'InvalidClientTokenId':
-			sys.exit("The AWS KEY IS INVALID. Exiting")
-		elif e.response['Error']['Code']  == 'UnrecognizedClientException':
-			sys.exit("The AWS KEY IS INVALID. Exiting")
-		elif e.response['Error']['Code'] == 'AccessDenied':
-			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
-			pass
-		elif e.response['Error']['Code'] == 'AccessDeniedException':
-			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
-			pass
-		elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+        response = client.describe_configuration_recorders()
+        # print response
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'AccessDeniedException':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
-		else:
-			print("Unexpected error: {}" .format(e))
-	except KeyboardInterrupt:
-		print("CTRL-C received, exiting...")
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
-	return response
+    return response
+
 
 def describe_configuration_rules(region):
-	response = []
-	try:
-		client = boto3.client("config", region_name=region)
+    response = []
+    try:
+        client = boto3.client("config", region_name=region)
 
-		response = client.describe_config_rules()
-		#print response
-	except botocore.exceptions.ClientError as e:
-		if e.response['Error']['Code'] == 'InvalidClientTokenId':
-			sys.exit("The AWS KEY IS INVALID. Exiting")
-		elif e.response['Error']['Code']  == 'UnrecognizedClientException':
-			sys.exit("The AWS KEY IS INVALID. Exiting")
-		elif e.response['Error']['Code'] == 'AccessDenied':
-			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
-			pass
-		elif e.response['Error']['Code'] == 'AccessDeniedException':
-			print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
-			pass
-		elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+        response = client.describe_config_rules()
+        # print response
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'AccessDeniedException':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
-		else:
-			print("Unexpected error: {}" .format(e))
-	except KeyboardInterrupt:
-		print("CTRL-C received, exiting...")
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
-	return response
+    return response

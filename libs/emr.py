@@ -1,12 +1,12 @@
+'''
+EMR functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import os
 import pprint
 import sys
-
-'''
-EMR functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -60,7 +60,7 @@ def list_security_configurations():
 
             response = client.list_security_configurations()
 
-            # print response
+            # print(response)
 
             if response.get('SecurityConfigurations') is None:
                 print("{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID))

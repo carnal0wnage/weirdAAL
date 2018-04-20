@@ -1,11 +1,11 @@
+'''
+STS libs for WeirdAAL
+'''
+
 import boto3
 import botocore
 import pprint
 import sys
-
-'''
-STS libs for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -21,6 +21,10 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def sts_get_accountid():
+    '''
+    Use STS functions to get account data
+    ex: Account Id: 14681234567
+    '''
     try:
         client = boto3.client("sts")
         account_id = client.get_caller_identity()["Account"]
@@ -40,6 +44,10 @@ def sts_get_accountid():
 
 
 def sts_get_accountid_all():
+    '''
+    Use STS functions to get account data (detailed)
+    Prints AccountID, UserID, ARN
+    '''
     try:
         client = boto3.client("sts")
         account_id = client.get_caller_identity()["Account"]

@@ -1,11 +1,12 @@
+'''
+Translate functions for WeirdAAL
+'''
+
 import boto3
 import botocore
 import pprint
 import sys
 
-'''
-Translate functions for WeirdAAL
-'''
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -20,6 +21,11 @@ credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
 
 def translate_text(text, source_lang, target_lang):
+    '''
+    Translate a block of text from source to target language
+    Available languages: English (en), Arabic (ar), Chinese (Simplified) (zh), French (fr), German (de), Portuguese (pt), Spanish (es)
+    http://boto3.readthedocs.io/en/latest/reference/services/translate.html
+    '''
     try:
         for region in regions:
             client = boto3.client('translate', region_name=region)
