@@ -74,7 +74,7 @@ def module_ec2_describe_route_tables():
 def module_ec2_get_console_screenshot(*text):
     '''
     This function gets a screenshot for the specified InstanceID and region
-    python3 weirdAAL.py -m ec2_get_console_screenshot -a i-0321f4EXAMPLE us-east-1 -t yolo
+    python3 weirdAAL.py -m ec2_get_console_screenshot -a 'i-0321f4EXAMPLE','us-east-1' -t yolo
     '''
     get_console_screenshot(text[0][0], text[0][1])
 
@@ -82,7 +82,7 @@ def module_ec2_get_console_screenshot(*text):
 def module_ec2_get_console_output(*text):
     '''
     This function gets the console output for the specified InstanceID and region
-    python3 weirdAAL.py -m ec2_get_console_output -a i-0321f4EXAMPLE us-east-1 -t yolo
+    python3 weirdAAL.py -m ec2_get_console_output -a 'i-0321f4EXAMPLE','us-east-1' -t yolo
     '''
     get_console_output(text[0][0], text[0][1])
 
