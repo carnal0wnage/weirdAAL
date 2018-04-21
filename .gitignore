@@ -5,6 +5,10 @@ config.py
 *.db
 *.sqlite
 
+# anything in loot/* or screenshots/*
+loot/*
+screenshots/*
+
 # Docs r generated
 docs/*.html
 
