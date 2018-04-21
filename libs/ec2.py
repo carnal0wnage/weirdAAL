@@ -11,9 +11,6 @@ import time
 
 from libs.sql import *
 
-#  we chould probably load this from one place in the future #TODO
-db_name = "weirdAAL.db"
-
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
@@ -423,7 +420,7 @@ def get_console_screenshot_all_region(region):
 def get_console_screenshot_all_region_list(file,region):
     try:
         client = boto3.client('ec2', region_name=region)
-        
+
         alist = [line.rstrip() for line in open(file)]
         for line in alist:
             try:
@@ -578,7 +575,7 @@ def get_console_output_all_region(region):
 def get_console_output_all_region_list(file,region):
     try:
         client = boto3.client('ec2', region_name=region)
-        
+
         alist = [line.rstrip() for line in open(file)]
         for line in alist:
             try:
