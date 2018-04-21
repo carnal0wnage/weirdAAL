@@ -12,7 +12,6 @@ session = boto3.Session()
 credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
 
-db_name = "weirdAAL.db"
 
 #  for a key, what services does it have listed in the DB
 

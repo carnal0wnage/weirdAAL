@@ -2,7 +2,7 @@
 Brute functions for WeirdAAL
 
 This is the main brute library so that we can get an idea what services a particular
-key has access to. We do this by asking if we have permission on as many services & 
+key has access to. We do this by asking if we have permission on as many services &
 subfunctions as we can. Printed to screen and logged to db.
 '''
 
@@ -17,10 +17,6 @@ import sys
 
 
 from libs.sql import *
-#from conf.conf import *
-
-# we chould probably load this from one place in the future #TODO
-db_name = "weirdAAL.db"
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
@@ -614,7 +610,7 @@ def brute_dax_permissions():
     http://boto3.readthedocs.io/en/latest/reference/services/dax.html
     '''
     print("### Enumerating DynamoDB Accelerator (DAX) Permissions ###")
-    tests = [('DescribeClusters', 'describe_clusters', (), {}, ), 
+    tests = [('DescribeClusters', 'describe_clusters', (), {}, ),
              ('DescribeDefaultParameters', 'describe_default_parameters', (), {}, ),
              ('DescribeEvents', 'describe_events', (), {}, ),
              ('DescribeParameterGroups', 'describe_parameter_groups', (), {}, ),
@@ -1624,7 +1620,7 @@ def brute_waf_permissions():
     '''
     print("### Enumerating AWS WAF Permissions ###")
     tests = [('ListRules', 'list_rules', (), {}),
-             ('ListRuleGroups', 'list_rule_groups', (), {}), 
+             ('ListRuleGroups', 'list_rule_groups', (), {}),
              #('ListActivatedRulesInRuleGroup', 'list_activated_rules_in_rule_group', (), {}),
              ('ListIpSets', 'list_ip_sets', (), {}), ]
     return generic_permission_bruteforcer('waf', tests)
@@ -1636,7 +1632,7 @@ def brute_waf_regional_permissions():
     '''
     print("### Enumerating AWS WAF Regional Permissions ###")
     tests = [('ListRules', 'list_rules', (), {}),
-             ('ListRuleGroups', 'list_rule_groups', (), {}), 
+             ('ListRuleGroups', 'list_rule_groups', (), {}),
              #('ListActivatedRulesInRuleGroup', 'list_activated_rules_in_rule_group', (), {}),
              ('ListIpSets', 'list_ip_sets', (), {}), ]
     return generic_permission_bruteforcer('waf-regional', tests)

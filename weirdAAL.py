@@ -12,6 +12,7 @@ import os
 from botocore.exceptions import ClientError
 from modules import *
 import sys
+import builtins
 
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
@@ -28,6 +29,11 @@ parser.add_argument("-l", "--list", help="list modules", action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
 args = parser.parse_args()
 
+# Provides us with a global var "db_name" we can access anywhere
+builtins.db_name = "weirdAAL.py"
+
+# Provides us with a global var "target" we can access anywhere
+builtsins.target = args.target
 
 def perform_credential_check():
     '''
