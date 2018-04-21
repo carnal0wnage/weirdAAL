@@ -33,7 +33,7 @@ args = parser.parse_args()
 builtins.db_name = "weirdAAL.py"
 
 # Provides us with a global var "target" we can access anywhere
-builtsins.target = args.target
+builtins.target = args.target
 
 def perform_credential_check():
     '''
