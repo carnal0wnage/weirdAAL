@@ -4,76 +4,134 @@ This file is used to perform various EC2 operations
 
 from libs.ec2 import *
 
-'''
-Basic info about each EC2 instance
-ex:
-[+] Listing instances for region: us-west-2 [+]
-InstanceID: i-XXXXXXXXXXXXXXX, InstanceType: t2.micro, State: {'Code': 80, 'Name': 'stopped'}, Launchtime: 2016-08-25 22:31:31+00:00
-'''
-
 
 def module_ec2_describe_instances_basic():
+    '''
+    Basic info about each EC2 instance
+    ex:
+    [+] Listing instances for region: us-west-2 [+]
+    InstanceID: i-XXXXXXXXXXXXXXX, InstanceType: t2.micro, State: {'Code': 80, 'Name': 'stopped'}, Launchtime: 2016-08-25 22:31:31+00:00
+    '''
     describe_instances_basic()
 
 
-'''
-All info about each EC2 instance
-'''
-
-
 def module_ec2_describe_instances():
+    '''
+    All info about each EC2 instance
+    '''
     describe_instances()
 
 
-'''
-show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
-'''
+def module_ec2_write_instances_to_file():
+    '''
+    For each region write the instanceIDs to a file by region ex (AWSKEYID-region.txt)
+    '''
+    write_instances_to_file()
 
 
 def module_ec2_get_instance_volume_details():
+    '''
+    Show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
+    '''
     get_instance_volume_details()
 
 
-'''
-show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of ID but more details.
-'''
-
-
 def module_ec2_get_instance_volume_details2():
+    '''
+    Show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of ID but more details.
+    '''
     get_instance_volume_details2()
 
 
-'''
-This function is used to list EBS volumes and whether or not they are encrypted. This is only for "in-use" (running) volumes.
-'''
-
-
 def module_ec2_review_encrypted_volumes():
+    '''
+    This function is used to list EBS volumes and whether or not they are encrypted. This is only for "in-use" (running) volumes.
+    '''
     review_encrypted_volumes()
 
 
-'''
-This function is used to describe ec2 network addresses.
-'''
-
-
 def module_ec2_describe_addresses():
+    '''
+    This function is used to describe ec2 network addresses.
+    '''
     describe_addresses()
 
 
-'''
-This function is used to describe ec2 network interfaces.
-'''
-
-
 def module_ec2_describe_network_interfaces():
+    '''
+    This function is used to describe ec2 network interfaces.
+    '''
     describe_network_interfaces()
 
 
-'''
-this function describes route tables for each ec2 instance
-'''
-
-
 def module_ec2_describe_route_tables():
+    '''
+    This function describes route tables for each ec2 instance
+    '''
     describe_route_tables()
+
+
+def module_ec2_get_console_screenshot(*text):
+    '''
+    This function gets a screenshot for the specified InstanceID and region
+    python3 weirdAAL.py -m ec2_get_console_screenshot -a i-0321f4EXAMPLE us-east-1 -t yolo
+    '''
+    get_console_screenshot(text[0][0], text[0][1])
+
+
+def module_ec2_get_console_output(*text):
+    '''
+    This function gets the console output for the specified InstanceID and region
+    python3 weirdAAL.py -m ec2_get_console_output -a i-0321f4EXAMPLE us-east-1 -t yolo
+    '''
+    get_console_output(text[0][0], text[0][1])
+
+
+def module_ec2_get_console_screenshot_all():
+    '''
+    This function will attempt to screenshot all EC2 instances (loops through all regions)
+    '''
+    get_console_screenshot_all()
+
+
+def module_ec2_get_console_output_all():
+    '''
+    This function will attempt to get the console output all EC2 instances (loops through all regions)
+    '''
+    get_console_output_all()
+
+
+def module_ec2_get_console_screenshot_all_region(*text):
+    '''
+    This function gets a screenshot for all EC2 instances in the specified region
+    python3 weirdAAL.py -m ec2_get_console_screenshot_all_region -a us-west-2 -t yolo
+    '''
+    get_console_screenshot_all_region(text[0][0])
+
+
+def module_ec2_get_console_output_all_region(*text):
+    '''
+    This function gets the console output for all EC2 instances in the specified region
+    python3 weirdAAL.py -m ec2_get_console_output_all_region -a us-west-2 -t yolo
+    '''
+    get_console_output_all_region(text[0][0])
+
+
+def module_ec2_get_console_screenshot_all_region_list(*text):
+    '''
+    This function gets a screenshot for all EC2 instances in the specified list & region
+    useful if for some reason one instance-id wont screenshot, pass it a list of instance-ids for a region
+    -See module_ec2_write_instances_to_file to create the list
+    python3 weirdAAL.py -m ec2_get_console_screenshot_all_region_list -a 'ASIAJEXAMPLEKEY-us-west-2.txt','us-west-2' -t yolo
+    '''
+    get_console_screenshot_all_region_list(text[0][0], text[0][1])
+
+
+def module_ec2_get_console_output_all_region_list(*text):
+    '''
+    This function gets the console output for all EC2 instances in the specified list & region
+    useful if for some reason one instance-id wont screenshot, pass it a list of instance-ids for a region
+    -See module_ec2_write_instances_to_file to create the list
+    python3 weirdAAL.py -m ec2_get_console_output_all_region_list -a 'ASIAJEXAMPLEKEY-us-west-2.txt','us-west-2' -t yolo
+    '''
+    get_console_output_all_region_list(text[0][0], text[0][1])
