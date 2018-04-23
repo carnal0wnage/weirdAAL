@@ -25,6 +25,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def check_root_account():
+    '''
+    Do various checks to see if the account has root or elevated IAM privs
+    '''
     client = boto3.client('iam',region_name=region)
 
     try:
@@ -68,6 +71,9 @@ def check_root_account():
         print("CTRL-C received, exiting...")
 
 def iam_change_user_console_password(username, password):
+    '''
+    Change the IAM console password of a specified user with the specified password
+    '''
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -87,6 +93,9 @@ def iam_change_user_console_password(username, password):
 
 
 def iam_create_user_console_password(username, password):
+    '''
+    create new IAM account with the specified username and password
+    '''
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -105,6 +114,9 @@ def iam_create_user_console_password(username, password):
 
 
 def get_password_policy():
+    '''
+    Get the password policy
+    '''
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -117,6 +129,10 @@ def get_password_policy():
         print("CTRL-C received, exiting...")
 
 def iam_create_user(username):
+    '''
+    This creates a IAM user, this does not set a password you need to call the
+    iam_create_user_console_password afterwards
+    '''
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -134,6 +150,9 @@ def iam_create_user(username):
         print("CTRL-C received, exiting...")
 
 def iam_create_access_key(username):
+    '''
+    Create a new access & secret key for the specified username
+    '''
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -146,6 +165,9 @@ def iam_create_access_key(username):
         print("CTRL-C received, exiting...")
 
 def iam_delete_access_key(username, accesskey):
+    '''
+    Delete the specified access key for the specified user and specified access key
+    '''
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -160,8 +182,11 @@ def iam_delete_access_key(username, accesskey):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-#untested :-/ but should work #TODO
+
 def iam_delete_mfa_device(username, mfaserial):
+    '''
+    Delete the specified MFA serial number for the specified username
+    '''
     client = boto3.client('iam', region_name=region)
     try:
         delete_mfa = client.deactivate_mfa_device(UserName=username, SerialNumber=mfaserial)
@@ -176,6 +201,9 @@ def iam_delete_mfa_device(username, mfaserial):
         print("CTRL-C received, exiting...")
 
 def iam_list_mfa_device(username):
+    '''
+    List MFA devices for a specified username
+    '''
     client = boto3.client('iam', region_name=region)
     try:
         response = client.list_mfa_devices(UserName=username)
@@ -203,6 +231,9 @@ def iam_list_mfa_device(username):
         print("CTRL-C received, exiting...")
 
 def iam_make_admin(username):
+    '''
+    Attach the builtin admin policy to the specified username
+    '''
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -234,6 +265,9 @@ def iam_make_backdoor_account( username, password):
         print("CTRL-C received, exiting...")
 
 def iam_list_groups():
+    '''
+    List all IAM groups for the account
+    '''
     print("### Printing IAM Groups ###")
     try:
         for region in regions:
@@ -264,6 +298,9 @@ def iam_list_groups():
         print("CTRL-C received, exiting...")
 
 def iam_get_user():
+    '''
+    Get user info: userid, arn, created date, password last used
+    '''
     print("### Printing IAM User Info ###")
     try:
         for region in regions:
@@ -295,6 +332,9 @@ def iam_get_user():
         print("CTRL-C received, exiting...")
 
 def iam_get_account_summary():
+    '''
+    calls get_account_summary(). This shows numbers of groups, polcies, MFA devices, etc
+    '''
     print("### Printing IAM Account Summary ###")
     try:
         for region in regions:
@@ -324,6 +364,9 @@ def iam_get_account_summary():
         print("CTRL-C received, exiting...")
 
 def iam_list_users():
+    '''
+    List users for the account
+    '''
     print("### Printing IAM Users ###")
     try:
         for region in regions:
@@ -354,6 +397,9 @@ def iam_list_users():
 
 
 def iam_list_roles():
+    '''
+    Lists the IAM roles that have the specified path prefix. If there are none, the operation returns an empty list
+    '''
     print("### Printing IAM Roles ###")
     try:
         for region in regions:
@@ -387,6 +433,9 @@ def iam_list_roles():
 
 
 def iam_list_policies():
+    '''
+    Lists all the managed policies that are available in your AWS account, including your own customer-defined managed policies and all AWS managed policies.
+    '''
     print("### Printing IAM Policies ###")
     try:
         for region in regions:
@@ -418,8 +467,47 @@ def iam_list_policies():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-# dont use see below
+def iam_list_policies_attached():
+    '''
+    Lists all the managed policies that are available in your AWS account, including your own customer-defined managed policies and all AWS managed policies.
+    adds the OnlyAttached=True flag
+    '''
+    print("### Printing IAM Policies ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', region_name=region)
+            
+            response = client.list_policies(OnlyAttached=True)
+            # print(response)
+            if response.get('Policies') is None:
+                print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Policies']) <= 0:
+                print("[-] ListPolicies allowed for {} but no results [-]\n" .format(region))
+            else:
+                for policy in response['Policies']:
+                    print("Policy Name: {}".format(policy['PolicyName']))
+                    pp.pprint(policy)
+                    print('\n')
+                # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
 def iam_list_user_policies(username):
+    '''
+    Lists the names of the inline policies embedded in the specified IAM user.
+    '''
     print("### Printing IAM Policies for {} ###".format(username))
     try:
         for region in regions:
@@ -452,6 +540,9 @@ def iam_list_user_policies(username):
         print("CTRL-C received, exiting...")
 
 def iam_list_attached_user_policies(username):
+    '''
+    Lists all managed policies that are attached to the specified IAM user.
+    '''
     print("### Printing Attached IAM Policies for {} ###".format(username))
     try:
         for region in regions:
@@ -484,6 +575,9 @@ def iam_list_attached_user_policies(username):
         print("CTRL-C received, exiting...")
 
 def iam_list_entities_for_policy(policy_arn):
+    '''
+    Lists all IAM users, groups, and roles that the specified managed policy is attached to.
+    '''
     print("### Printing IAM Entity Policies for {} ###".format(policy_arn))
     try:
         for region in regions:
