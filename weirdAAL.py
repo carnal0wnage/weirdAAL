@@ -30,7 +30,7 @@ parser.add_argument("-v", "--verbosity", help="increase output verbosity", actio
 args = parser.parse_args()
 
 # Provides us with a global var "db_name" we can access anywhere
-builtins.db_name = "weirdAAL.py"
+builtins.db_name = "weirdAAL.db"
 
 # Provides us with a global var "target" we can access anywhere
 builtins.target = args.target

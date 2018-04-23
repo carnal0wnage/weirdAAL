@@ -16,7 +16,7 @@ def module_iam_get_account_summary():
     iam_get_account_summary()
 
 
-def module_iam_list_users(*args):
+def module_iam_list_users():
     iam_list_users()
 
 def module_iam_check_root_account():
@@ -31,12 +31,23 @@ def module_iam_list_roles():
 def module_iam_list_policies():
 	iam_list_policies()
 
-#have to figure out the argument passing part here first
-def module_iam_list_user_policies():
-	iam_list_user_policies( 'root')
 
-def module_iam_list_attached_user_policies():
-	iam_list_attached_user_policies( 'root')
+def module_iam_list_user_policies(*text):
+	'''
+	List user policies for specified user
+	python3 weirdAAL.py -m iam_list_user_policies -a python -t yolo
+	'''
+	iam_list_user_policies(text[0][0])
 
-def module_iam_list_entities_for_policy():
-	iam_list_entities_for_policy('arn:aws:iam::xxxxxxx')
+def module_iam_list_attached_user_policies(*text):
+	'''
+	List attached user policies for specified user
+	python3 weirdAAL.py -m iam_list_attached_user_policies -a python -t yolo
+	'''
+	iam_list_attached_user_policies(text[0][0])
+
+def module_iam_list_entities_for_policy(*text):
+	'''
+	 python3 weirdAAL.py -m iam_list_entities_for_policy -a 'arn:aws:iam::...' -t yolo
+	'''
+	iam_list_entities_for_policy(text[0][0])

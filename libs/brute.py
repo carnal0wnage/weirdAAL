@@ -277,7 +277,7 @@ def brute_alexaforbusiness_permissions():
     http://boto3.readthedocs.io/en/latest/reference/services/alexaforbusiness.html
     '''
     print("### Enumerating Alexa For Business Permissions ###")
-    tests = [('ListSkills', 'list_skills', (), {}, ), ]
+    tests = [('CreateAddressBook', 'create_address_book', (), {'Name' : 'Test'}, ), ]
     return generic_permission_bruteforcer('alexaforbusiness', tests)
 
 
@@ -701,9 +701,9 @@ def brute_ec2_permissions():
              ('DescribeImages', 'describe_images', (), {'DryRun': True, 'Owners': ['self', ]}, ),
              ('CreateImage', 'create_image', (), {'InstanceId': 'i-0ffffeeeeaa11e111', 'Name': 'testimage', 'DryRun': True}, ),
              ('DescribeVolumes', 'describe_volumes', (), {'DryRun': True}, ),
-             ('CreateVolume', 'create_volume', (), {'AvailabilityZone': 'us-east-2', 'Size': 8, 'DryRun': True}, ),
+             ('CreateVolume', 'create_volume', (), {'AvailabilityZone': 'us-east-1a', 'Size': 8, 'DryRun': True}, ),
              ('DescribeSnapshots', 'describe_snapshots', (), {'DryRun': True, 'OwnerIds': ['self', ]}, ),
-             ('CreateSnapshot', 'create_snapshot', (), {'VolumeId': 'vol-05777eab71bc97dcb', 'DryRun': True}, ),
+             #('CreateSnapshot', 'create_snapshot', (), {'VolumeId': 'vol-05777eab71bc97dcb', 'DryRun': True}, ),
              ('DescribeAccountAttributes', 'describe_account_attributes', (), {'DryRun': True}, ),
              ('DescribeAddresses', 'describe_addresses', (), {'DryRun': True}, ),
              ('DescribeAvailabilityZones', 'describe_availability_zones', (), {'DryRun': True}, ),
