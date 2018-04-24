@@ -135,3 +135,21 @@ def module_ec2_get_console_output_all_region_list(*text):
     python3 weirdAAL.py -m ec2_get_console_output_all_region_list -a 'ASIAJEXAMPLEKEY-us-west-2.txt','us-west-2' -t yolo
     '''
     get_console_output_all_region_list(text[0][0], text[0][1])
+
+
+def module_ec2_list_launchable_ami():
+    '''
+    This function will attempt to get launchable AMIs for the key owner (loops through all regions)
+    For each region list launchable AMIs - equivalent to aws ec2 describe-images --executable-users self
+    per documentation this doenst list AMIs you own.
+    "The following command lists the AMIs for which you have explicit launch permissions. This list does not include any AMIs that you own."
+    run ec2_list_owner_ami also to get a list of YOUR account's AMIs
+    '''
+    ec2_list_launchable_ami()
+
+
+def module_ec2_list_owner_ami():
+    '''
+    This function will attempt to get all AMIs for the key owner (loops through all regions)
+    '''
+    ec2_list_owner_ami()

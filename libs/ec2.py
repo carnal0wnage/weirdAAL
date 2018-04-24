@@ -14,7 +14,7 @@ from libs.sql import *
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2']
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1', 'us-gov-west-1' ]
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -24,6 +24,7 @@ credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
 
 
+
 def review_encrypted_volumes():
     print("Reviewing EC2 Volumes... This may take a few....")
     not_encrypted = []
@@ -31,12 +32,14 @@ def review_encrypted_volumes():
     try:
         with open("{}-volumes_list.txt" .format(AWS_ACCESS_KEY_ID), "w") as fout:
             for region in regions:
-                client = boto3.client('ec2', region_name=region)
-                response = client.describe_volumes(Filters=[{
-                    'Name': 'status',
-                    'Values': ['in-use']
-                }])['Volumes']
-
+                try:
+                    client = boto3.client('ec2', region_name=region)
+                    response = client.describe_volumes(Filters=[{
+                        'Name': 'status',
+                        'Values': ['in-use']
+                    }])['Volumes']
+                except botocore.exceptions.ClientError as e:
+                    print(e)
                 for volume in response:
                     if volume['Encrypted']:
                         encrypted.append(volume['VolumeId'])
@@ -67,8 +70,11 @@ def review_encrypted_volumes():
 def describe_instances():
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_instances()
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_instances()
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -100,8 +106,11 @@ def describe_instances():
 def describe_instances_basic():
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_instances()
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_instances()
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -133,6 +142,7 @@ def describe_instances_basic():
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
             print(e)
+            next
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
@@ -143,8 +153,11 @@ def write_instances_to_file():
     '''
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_instances()
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_instances()
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -168,17 +181,87 @@ def write_instances_to_file():
         print("CTRL-C received, exiting...")
 
 
+def ec2_list_launchable_ami():
+    '''
+    For each region list launchable AMIs - equivalent to aws ec2 describe-images --executable-users self
+    per documentation this doenst list AMIs you own.
+    "The following command lists the AMIs for which you have explicit launch permissions. This list does not include any AMIs that you own."
+    run ec2_list_owner_ami also to get a list of YOUR account's AMIs
+    '''
+    try:
+        for region in regions:
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_images(ExecutableUsers=['self'])
+            except botocore.exceptions.ClientError as e:
+                print(e)
+            # print(response)
+            if len(response['Images']) <= 0:
+                print("[-] List instances allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing AMIs for region: {} [+]" .format(region))
+                for r in response['Images']:
+                    pp.pprint(r)
+                print("\n")
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - ' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 
-# show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
+def ec2_list_owner_ami():
+    '''
+    For each region list your AMI's  Owners=['self']
+    '''
+    try:
+        for region in regions:
+            try:
+                client = boto3.client('ec2', region_name=region)
+                #response = client.describe_images(Filters=[{'Name': 'is-public','Values': ['False',]},])
+                response = client.describe_images(Owners=['self'])
+            except botocore.exceptions.ClientError as e:
+                print(e)
+            # print(response)
+            if len(response['Images']) <= 0:
+                print("[-] List instances allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing AMIs for region: {} [+]" .format(region))
+                for r in response['Images']:
+                    pp.pprint(r)
+                print("\n")
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - ' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 
 def get_instance_volume_details():
+    '''
+    show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
+    '''
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-
-            instances = client.describe_instances()
+            try:
+                client = boto3.client('ec2', region_name=region)
+                instances = client.describe_instances()
+            except botocore.exceptions.ClientError as e:
+                print(e)
             for r in instances['Reservations']:
                 for i in r['Instances']:
                     volumes = client.describe_instance_attribute(InstanceId=i['InstanceId'], Attribute='blockDeviceMapping')
@@ -202,12 +285,14 @@ def get_instance_volume_details2():
     '''
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-
-            response = client.describe_volumes(Filters=[{
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_volumes(Filters=[{
                     'Name': 'status',
                     'Values': ['in-use']
                 }])['Volumes']
+            except botocore.exceptions.ClientError as e:
+                print(e)
             for volume in response:
                 print("InstandID:{} \n" .format(volume['Attachments'][0]['InstanceId']))
                 pp.pprint(volume)
@@ -227,9 +312,11 @@ def get_instance_volume_details2():
 def describe_addresses():
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_addresses()
-            # print(response)
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_addresses()
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if response.get('Addresses') is None:
                 print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Addresses']) <= 0:
@@ -253,15 +340,18 @@ def describe_addresses():
 def describe_network_interfaces():
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_network_interfaces()
-            # print(response)
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_network_interfaces()
+                # print(response)
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if response.get('NetworkInterfaces') is None:
                 print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['NetworkInterfaces']) <= 0:
                 print("[-] DescribeNetworkInterfaces allowed for {} but no results [-]" .format(region))
             else:
-                # print (response)
+                # print(response)
                 print("[+] Listing Network Interfaces for region: {} [+]" .format(region))
                 for r in response['NetworkInterfaces']:
                     pp.pprint(r)
@@ -279,9 +369,12 @@ def describe_network_interfaces():
 def describe_route_tables():
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_route_tables()
-            # print(response)
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_route_tables()
+                # print(response)
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if response.get('RouteTables') is None:
                 print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['RouteTables']) <= 0:
@@ -328,8 +421,11 @@ def get_console_screenshot(instanceid, region):
 def get_console_screenshot_all():
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_instances()
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_instances()
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -482,8 +578,11 @@ def get_console_output(instanceid, region):
 def get_console_output_all():
     try:
         for region in regions:
-            client = boto3.client('ec2', region_name=region)
-            response = client.describe_instances()
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_instances()
+            except botocore.exceptions.ClientError as e:
+                print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
