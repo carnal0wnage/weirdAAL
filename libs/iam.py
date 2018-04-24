@@ -28,7 +28,7 @@ def check_root_account():
     '''
     Do various checks to see if the account has root or elevated IAM privs
     '''
-    client = boto3.client('iam',region_name=region)
+    client = boto3.client('iam', region_name=region)
 
     try:
         acct_summary = client.get_account_summary()
@@ -70,6 +70,7 @@ def check_root_account():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_change_user_console_password(username, password):
     '''
     Change the IAM console password of a specified user with the specified password
@@ -77,7 +78,7 @@ def iam_change_user_console_password(username, password):
     client = boto3.client('iam', region_name=region)
 
     try:
-        response = client.update_login_profile(UserName=username,Password=password, PasswordResetRequired=False)
+        response = client.update_login_profile(UserName=username, Password=password, PasswordResetRequired=False)
         print('Changing password for user: {} to password: {}' .format(username, password))
         # print(response)
         print('Response to password change was: {}' .format(response['ResponseMetadata']['HTTPStatusCode']))
@@ -99,7 +100,7 @@ def iam_create_user_console_password(username, password):
     client = boto3.client('iam', region_name=region)
 
     try:
-        response = client.create_login_profile(UserName=username,Password=password, PasswordResetRequired=False)
+        response = client.create_login_profile(UserName=username, Password=password, PasswordResetRequired=False)
         print('Changing password for user: %s to password: {}' .format(username, password))
         print('Response to password change was: {}' .format(response['ResponseMetadata']['HTTPStatusCode']))
     except botocore.exceptions.ClientError as e:
@@ -128,6 +129,7 @@ def get_password_policy():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_create_user(username):
     '''
     This creates a IAM user, this does not set a password you need to call the
@@ -137,7 +139,7 @@ def iam_create_user(username):
 
     try:
         print("Creating a new IAM user named: {}" .format(username))
-        create_user = client.create_user(Path='/',UserName=username)
+        create_user = client.create_user(Path='/', UserName=username)
         print('Response to create user was: {}' .format(create_user['ResponseMetadata']['HTTPStatusCode']))
         print("New User Details")
         pp.pprint(create_user['User'])
@@ -148,6 +150,7 @@ def iam_create_user(username):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
 
 def iam_create_access_key(username):
     '''
@@ -163,6 +166,7 @@ def iam_create_access_key(username):
         print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
 
 def iam_delete_access_key(username, accesskey):
     '''
@@ -200,6 +204,7 @@ def iam_delete_mfa_device(username, mfaserial):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_list_mfa_device(username):
     '''
     List MFA devices for a specified username
@@ -230,6 +235,7 @@ def iam_list_mfa_device(username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_make_admin(username):
     '''
     Attach the builtin admin policy to the specified username
@@ -240,7 +246,7 @@ def iam_make_admin(username):
         make_admin = client.attach_user_policy(UserName=username, PolicyArn='arn:aws:iam::aws:policy/AdministratorAccess')
         print("Adding admin policy to: {}" .format(username))
         print('Response to attaching admin policy was: {}' .format(make_admin['ResponseMetadata']['HTTPStatusCode']))
-    #print('Response to delete key was: %s' % delete_access_key['ResponseMetadata']['HTTPStatusCode'])
+        # print('Response to delete key was: %s' % delete_access_key['ResponseMetadata']['HTTPStatusCode'])
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'AccessDenied':
             print("ERROR: Account does not have permissions to add the policy")
@@ -249,7 +255,8 @@ def iam_make_admin(username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-def iam_make_backdoor_account( username, password):
+
+def iam_make_backdoor_account(username, password):
     client = boto3.client('iam', region_name=region)
 
     try:
@@ -263,6 +270,7 @@ def iam_make_backdoor_account( username, password):
         print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
 
 def iam_list_groups():
     '''
@@ -278,8 +286,8 @@ def iam_list_groups():
             elif len(response['Groups']) <= 0:
                 print("[-] ListGroups allowed for {} but no results [-]\n" .format(region))
             else:
-            # print(response)
-                print ("### {} Groups ###" .format(region))
+                # print(response)
+                print("### {} Groups ###" .format(region))
                 for group in response['Groups']:
                     pp.pprint(group)
                 print("\n")
@@ -297,6 +305,7 @@ def iam_list_groups():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_get_user():
     '''
     Get user info: userid, arn, created date, password last used
@@ -312,10 +321,10 @@ def iam_get_user():
             elif len(response['User']) <= 0:
                 print("[-] GetUser allowed for {} but no results [-]\n" .format(region))
             else:
-            # print(response)
-                print ("### {} User Account Info ###" .format(region))
+                # print(response)
+                print("### {} User Account Info ###" .format(region))
                 for key, value in response['User'].items():
-                    print(key,':', value)
+                    print(key, ':', value)
                 print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
@@ -331,6 +340,7 @@ def iam_get_user():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_get_account_summary():
     '''
     calls get_account_summary(). This shows numbers of groups, polcies, MFA devices, etc
@@ -339,7 +349,6 @@ def iam_get_account_summary():
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.get_account_summary()
             # print(response)
             if response.get('SummaryMap') is None:
@@ -363,6 +372,7 @@ def iam_get_account_summary():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_list_users():
     '''
     List users for the account
@@ -371,7 +381,6 @@ def iam_list_users():
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.list_users()
             # print(response)
             if response.get('Users') is None:
@@ -404,7 +413,6 @@ def iam_list_roles():
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.list_roles()
             # print(response)
             if response.get('Roles') is None:
@@ -440,7 +448,6 @@ def iam_list_policies():
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.list_policies()
             # print(response)
             if response.get('Policies') is None:
@@ -467,6 +474,7 @@ def iam_list_policies():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_list_policies_attached():
     '''
     Lists all the managed policies that are available in your AWS account, including your own customer-defined managed policies and all AWS managed policies.
@@ -476,7 +484,6 @@ def iam_list_policies_attached():
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.list_policies(OnlyAttached=True)
             # print(response)
             if response.get('Policies') is None:
@@ -488,7 +495,7 @@ def iam_list_policies_attached():
                     print("Policy Name: {}".format(policy['PolicyName']))
                     pp.pprint(policy)
                     print('\n')
-                # print(response)
+                    # print(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -512,7 +519,6 @@ def iam_list_user_policies(username):
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.list_user_policies(UserName=username)
             # print(response)
             if response.get('PolicyNames') is None:
@@ -524,7 +530,7 @@ def iam_list_user_policies(username):
                     print("Policy Name: {}".format(policy['PolicyName']))
                     pp.pprint(policy)
                     print('\n')
-                # print(response)
+                    # print(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -538,6 +544,7 @@ def iam_list_user_policies(username):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
 
 def iam_list_attached_user_policies(username):
     '''
@@ -547,7 +554,6 @@ def iam_list_attached_user_policies(username):
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.list_attached_user_policies(UserName=username)
             # print(response)
             if response.get('AttachedPolicies') is None:
@@ -556,10 +562,10 @@ def iam_list_attached_user_policies(username):
                 print("[-] ListAttachedUserPolicies allowed for {} but no results [-]\n" .format(region))
             else:
                 for policy in response['AttachedPolicies']:
-                    #print("Policy Name: {}".format(policy['PolicyName']))
+                    # print("Policy Name: {}".format(policy['PolicyName']))
                     pp.pprint(policy)
                     print('\n')
-                # print(response)
+                    # print(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
@@ -574,6 +580,7 @@ def iam_list_attached_user_policies(username):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def iam_list_entities_for_policy(policy_arn):
     '''
     Lists all IAM users, groups, and roles that the specified managed policy is attached to.
@@ -582,17 +589,16 @@ def iam_list_entities_for_policy(policy_arn):
     try:
         for region in regions:
             client = boto3.client('iam', region_name=region)
-            
             response = client.list_entities_for_policy(PolicyArn=policy_arn)
             print(response)
 
-            #this needs a if data for PolicyGroups, PolicyUsers, PolicyRoles do stuff
+            # this needs a if data for PolicyGroups, PolicyUsers, PolicyRoles do stuff
 
-            #if response.get('AttachedPolicies') is None:
+            # if response.get('AttachedPolicies') is None:
             #    print("{} likely does not have IAM permissions\n" .format(AWS_ACCESS_KEY_ID))
-            #elif len(response['AttachedPolicies']) <= 0:
+            # elif len(response['AttachedPolicies']) <= 0:
             #    print("[-] ListAttachedUserPolicies allowed for {} but no results [-]\n" .format(region))
-            #else:
+            # else:
             #    for policy in response['AttachedPolicies']:
             #        #print("Policy Name: {}".format(policy['PolicyName']))
             #        pp.pprint(policy)
