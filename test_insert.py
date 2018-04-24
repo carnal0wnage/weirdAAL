@@ -1,9 +1,12 @@
+import builtins
 import datetime
 import sqlite3
 from sqlite3 import Error
 
 from  libs.sql import *
 
+# Provides us with a global var "db_name" we can access anywhere
+builtins.db_name = "weirdAAL.db"
 
 #create some tables to stick data in
 
