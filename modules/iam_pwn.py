@@ -1,6 +1,6 @@
 '''
-Functions specificially realted to IAM account takeover
-if you have root or IAM access gather user info, manipulate access keys or passwords, make backdoor account
+Functions specifically related to IAM account takeover if you have root or IAM access gather user info, 
+manipulate access keys or passwords, make backdoor account
 '''
 from libs.iam import *
 from libs.sts import *
@@ -45,7 +45,7 @@ def module_iam_delete_mfa_device(*text):
 
 def module_iam_change_user_console_password(*text):
     '''
-    change the console password for the specied user
+    change the console password for the specified user
     python3 weirdAAL.py -m iam_change_user_console_password -a 'python','HackTh3Planet!' -t yolo
     '''
     iam_change_user_console_password(text[0][0], text[0][1])
