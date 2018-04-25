@@ -26,7 +26,7 @@ def describe_configuration_recorders(region):
         client = boto3.client("config", region_name=region)
 
         response = client.describe_configuration_recorders()
-        # print response
+        print(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -54,7 +54,7 @@ def describe_configuration_rules(region):
         client = boto3.client("config", region_name=region)
 
         response = client.describe_config_rules()
-        # print response
+        print(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -74,3 +74,6 @@ def describe_configuration_rules(region):
         print("CTRL-C received, exiting...")
 
     return response
+
+def list_all_config_rules():
+    describe_configuration_rules('us-east-1')
