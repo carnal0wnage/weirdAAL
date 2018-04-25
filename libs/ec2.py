@@ -7,6 +7,7 @@ import botocore
 import datetime
 import os
 import pprint
+import sys
 import time
 
 from libs.sql import *
@@ -14,7 +15,7 @@ from libs.sql import *
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1', 'us-gov-west-1' ]
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1', 'us-gov-west-1']
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -22,7 +23,6 @@ Code to get the AWS_ACCESS_KEY_ID from boto3
 session = boto3.Session()
 credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
-
 
 
 def review_encrypted_volumes():
@@ -39,7 +39,11 @@ def review_encrypted_volumes():
                         'Values': ['in-use']
                     }])['Volumes']
                 except botocore.exceptions.ClientError as e:
-                    print(e)
+                    if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                        print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                        sys.exit()
+                    else:
+                        print(e)
                 for volume in response:
                     if volume['Encrypted']:
                         encrypted.append(volume['VolumeId'])
@@ -74,7 +78,11 @@ def describe_instances():
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_instances()
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -110,7 +118,11 @@ def describe_instances_basic():
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_instances()
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -157,14 +169,18 @@ def write_instances_to_file():
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_instances()
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
                 # print (response)
                 print("[+] Listing instances for region: {} [+]" .format(region))
                 for r in response['Reservations']:
-                    file = open('{}/loot/{}-{}.txt'.format(os.getcwd(),AWS_ACCESS_KEY_ID,region), "a")
+                    file = open('{}/loot/{}-{}.txt'.format(os.getcwd(), AWS_ACCESS_KEY_ID, region), "a")
                     for i in r['Instances']:
                         instanceid = i['InstanceId']
                         file.write("{}\n".format(instanceid))
@@ -194,12 +210,16 @@ def ec2_list_launchable_ami():
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_images(ExecutableUsers=['self'])
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeImages -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             # print(response)
             if len(response['Images']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
-                # print (response)
+                # print(response)
                 print("[+] Listing AMIs for region: {} [+]" .format(region))
                 for r in response['Images']:
                     pp.pprint(r)
@@ -225,15 +245,19 @@ def ec2_list_owner_ami():
         for region in regions:
             try:
                 client = boto3.client('ec2', region_name=region)
-                #response = client.describe_images(Filters=[{'Name': 'is-public','Values': ['False',]},])
+                # response = client.describe_images(Filters=[{'Name': 'is-public','Values': ['False',]},])
                 response = client.describe_images(Owners=['self'])
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeImages -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             # print(response)
             if len(response['Images']) <= 0:
-                print("[-] List instances allowed for {} but no results [-]" .format(region))
+                print("[-] DescribeImages allowed for {} but no results [-]" .format(region))
             else:
-                # print (response)
+                # print(response)
                 print("[+] Listing AMIs for region: {} [+]" .format(region))
                 for r in response['Images']:
                     pp.pprint(r)
@@ -261,7 +285,11 @@ def get_instance_volume_details():
                 client = boto3.client('ec2', region_name=region)
                 instances = client.describe_instances()
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the Describeinstances -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             for r in instances['Reservations']:
                 for i in r['Instances']:
                     volumes = client.describe_instance_attribute(InstanceId=i['InstanceId'], Attribute='blockDeviceMapping')
@@ -292,7 +320,11 @@ def get_instance_volume_details2():
                     'Values': ['in-use']
                 }])['Volumes']
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have the required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             for volume in response:
                 print("InstandID:{} \n" .format(volume['Attachments'][0]['InstanceId']))
                 pp.pprint(volume)
@@ -316,7 +348,11 @@ def describe_addresses():
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_addresses()
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeAddresses -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if response.get('Addresses') is None:
                 print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Addresses']) <= 0:
@@ -345,7 +381,11 @@ def describe_network_interfaces():
                 response = client.describe_network_interfaces()
                 # print(response)
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if response.get('NetworkInterfaces') is None:
                 print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['NetworkInterfaces']) <= 0:
@@ -374,7 +414,11 @@ def describe_route_tables():
                 response = client.describe_route_tables()
                 # print(response)
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if response.get('RouteTables') is None:
                 print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['RouteTables']) <= 0:
@@ -394,18 +438,19 @@ def describe_route_tables():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def get_console_screenshot(instanceid, region):
     try:
         client = boto3.client('ec2', region_name=region)
         print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
-        response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid,WakeUp=True)
+        response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid, WakeUp=True)
         # print(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'DryRunOperation':
             print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
-            response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid,WakeUp=True)
+            response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid, WakeUp=True)
             print('[+] Writing screenshot to screenshots/{}.png [+]'.format(instanceid))
-            file = open('{}/screenshots/{}.png'.format(os.getcwd(),instanceid), "wb")
+            file = open('{}/screenshots/{}.png'.format(os.getcwd(), instanceid), "wb")
             file.write(base64.b64decode(response['ImageData']))
             file.close
             # print(response)
@@ -418,6 +463,7 @@ def get_console_screenshot(instanceid, region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def get_console_screenshot_all():
     try:
         for region in regions:
@@ -425,7 +471,11 @@ def get_console_screenshot_all():
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_instances()
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling describe_instances -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -437,13 +487,13 @@ def get_console_screenshot_all():
                         try:
                             client = boto3.client('ec2', region_name=region)
                             print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
-                            response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid,WakeUp=True)
+                            response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid, WakeUp=True)
                         except botocore.exceptions.ClientError as e:
                             if e.response['Error']['Code'] == 'DryRunOperation':
                                 print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
-                                response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid,WakeUp=True)
+                                response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid, WakeUp=True)
                                 print('[+] Writing screenshot to screenshots/{}.png [+]'.format(instanceid))
-                                file = open('{}/screenshots/{}.png'.format(os.getcwd(),instanceid), "wb")
+                                file = open('{}/screenshots/{}.png'.format(os.getcwd(), instanceid), "wb")
                                 file.write(base64.b64decode(response['ImageData']))
                                 file.close
                                 # print(response)
@@ -466,6 +516,7 @@ def get_console_screenshot_all():
             print(e)
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
 
 def get_console_screenshot_all_region(region):
     try:
@@ -482,13 +533,13 @@ def get_console_screenshot_all_region(region):
                         try:
                             client = boto3.client('ec2', region_name=region)
                             print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
-                            response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid,WakeUp=True)
+                            response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid, WakeUp=True)
                         except botocore.exceptions.ClientError as e:
                             if e.response['Error']['Code'] == 'DryRunOperation':
                                 print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
-                                response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid,WakeUp=True)
+                                response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid, WakeUp=True)
                                 print('[+] Writing screenshot to screenshots/{}.png [+]'.format(instanceid))
-                                file = open('{}/screenshots/{}.png'.format(os.getcwd(),instanceid), "wb")
+                                file = open('{}/screenshots/{}.png'.format(os.getcwd(), instanceid), "wb")
                                 file.write(base64.b64decode(response['ImageData']))
                                 file.close
                                 # print(response)
@@ -513,7 +564,7 @@ def get_console_screenshot_all_region(region):
         print("CTRL-C received, exiting...")
 
 
-def get_console_screenshot_all_region_list(file,region):
+def get_console_screenshot_all_region_list(file, region):
     try:
         client = boto3.client('ec2', region_name=region)
 
@@ -521,13 +572,13 @@ def get_console_screenshot_all_region_list(file,region):
         for line in alist:
             try:
                 print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(line, region))
-                response = client.get_console_screenshot(DryRun=True, InstanceId=line,WakeUp=True)
+                response = client.get_console_screenshot(DryRun=True, InstanceId=line, WakeUp=True)
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'DryRunOperation':
                     print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
-                    response = client.get_console_screenshot(DryRun=False, InstanceId=line,WakeUp=True)
+                    response = client.get_console_screenshot(DryRun=False, InstanceId=line, WakeUp=True)
                     print('[+] Writing screenshot to screenshots/{}.png [+]'.format(line))
-                    file = open('{}/screenshots/{}.png'.format(os.getcwd(),line), "wb")
+                    file = open('{}/screenshots/{}.png'.format(os.getcwd(), line), "wb")
                     file.write(base64.b64decode(response['ImageData']))
                     file.close
                     # print(response)
@@ -551,6 +602,7 @@ def get_console_screenshot_all_region_list(file,region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def get_console_output(instanceid, region):
     try:
         client = boto3.client('ec2', region_name=region)
@@ -562,7 +614,7 @@ def get_console_output(instanceid, region):
             print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
             response = client.get_console_output(DryRun=False, InstanceId=instanceid)
             print('[+] Writing console output to loot/{}-console.txt [+]'.format(instanceid))
-            file = open('{}/loot/{}-console.txt'.format(os.getcwd(),instanceid), "w")
+            file = open('{}/loot/{}-console.txt'.format(os.getcwd(), instanceid), "w")
             file.write(str(response['Output']))
             file.close
             # print(response)
@@ -575,6 +627,7 @@ def get_console_output(instanceid, region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def get_console_output_all():
     try:
         for region in regions:
@@ -582,7 +635,11 @@ def get_console_output_all():
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_instances()
             except botocore.exceptions.ClientError as e:
-                print(e)
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -600,7 +657,7 @@ def get_console_output_all():
                                 print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
                                 response = client.get_console_output(DryRun=False, InstanceId=instanceid)
                                 print('[+] Writing console output to loot/{}-console.txt [+]'.format(instanceid))
-                                file = open('{}/loot/{}-console.txt'.format(os.getcwd(),instanceid), "w")
+                                file = open('{}/loot/{}-console.txt'.format(os.getcwd(), instanceid), "w")
                                 file.write(str(response['Output']))
                                 file.close
                                 # print(response)
@@ -646,7 +703,7 @@ def get_console_output_all_region(region):
                                 print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
                                 response = client.get_console_output(DryRun=False, InstanceId=instanceid)
                                 print('[+] Writing console output to loot/{}-console.txt [+]'.format(instanceid))
-                                file = open('{}/loot/{}-console.txt'.format(os.getcwd(),instanceid), "w")
+                                file = open('{}/loot/{}-console.txt'.format(os.getcwd(), instanceid), "w")
                                 file.write(str(response['Output']))
                                 file.close
                                 # print(response)
@@ -671,7 +728,7 @@ def get_console_output_all_region(region):
         print("CTRL-C received, exiting...")
 
 
-def get_console_output_all_region_list(file,region):
+def get_console_output_all_region_list(file, region):
     try:
         client = boto3.client('ec2', region_name=region)
 
@@ -685,7 +742,7 @@ def get_console_output_all_region_list(file,region):
                     print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
                     response = client.get_console_output(DryRun=False, InstanceId=line)
                     print('[+] Writing console output to loot/{}-console.txt [+]'.format(line))
-                    file = open('{}/loot/{}-console.txt'.format(os.getcwd(),line), "w")
+                    file = open('{}/loot/{}-console.txt'.format(os.getcwd(), line), "w")
                     file.write(str(response['Output']))
                     file.close
                     # print(response)
