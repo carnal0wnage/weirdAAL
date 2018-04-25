@@ -146,6 +146,7 @@ def generic_permission_bruteforcer(service, tests):
         print("\n")
     return actions
 
+
 def generic_permission_bruteforcer_region(service, tests, region_passed):
     actions = []
     try:
@@ -183,6 +184,7 @@ def generic_permission_bruteforcer_region(service, tests, region_passed):
         print("\n")
     return actions
 
+
 def generic_method_bruteforcer(service, tests):
     actions = []
     client = boto3.client(service, region_name=region)
@@ -218,6 +220,7 @@ def generic_method_bruteforcer(service, tests):
             print('{} IS allowed' .format(api_action))
             actions.append(api_action)
     return actions
+
 
 def generic_method_bruteforcer_region(service, tests, region_passed):
     actions = []
@@ -277,7 +280,7 @@ def brute_alexaforbusiness_permissions():
     http://boto3.readthedocs.io/en/latest/reference/services/alexaforbusiness.html
     '''
     print("### Enumerating Alexa For Business Permissions ###")
-    tests = [('CreateAddressBook', 'create_address_book', (), {'Name' : 'Test'}, ), ]
+    tests = [('CreateAddressBook', 'create_address_book', (), {'Name': 'Test'}, ), ]
     return generic_permission_bruteforcer('alexaforbusiness', tests)
 
 
@@ -400,8 +403,8 @@ def brute_cloudformation_permissions():
     print("### Enumerating CloudFormation Permissions ###")
     tests = [('ListStacks', 'list_stacks', (), {}),
              ('DescribeStacks', 'describe_stacks', (), {}),
-             #('DescribeStackEvents', 'describe_stack_events', (), {}),
-             #('DescribeStackResources', 'describe_stack_resources', (), {}),
+             # ('DescribeStackEvents', 'describe_stack_events', (), {}),
+             # ('DescribeStackResources', 'describe_stack_resources', (), {}),
              ('ListExports', 'list_exports', (), {}),
              ('DescribeAccountLimits', 'describe_account_limits', (), {}), ]
     return generic_permission_bruteforcer('cloudformation', tests)
@@ -456,7 +459,7 @@ def brute_cloudsearchdomain_permissions():
     Disabled---requires a custom search domain from cloudsearch describe_domains results
     '''
     print("### Enumerating Amazon CloudSearch Domain Permissions ###")
-    tests = [('Search', 'search', (), {'query':'*'}, ), ]
+    tests = [('Search', 'search', (), {'query': '*'}, ), ]
     return generic_permission_bruteforcer('cloudsearchdomain', tests)
 
 
@@ -509,7 +512,7 @@ def brute_codedeploy_permissions():
     tests = [('ListApplications', 'list_applications', (), {}, ),
              ('ListDeployments', 'list_deployments', (), {}, ),
              ('ListDeploymentsConfigs', 'list_deployment_configs', (), {}, ),
-             ('ListGitHubAccountTokenNames', 'list_git_hub_account_token_names', (), {}, ), #returning an error no function of that name
+             ('ListGitHubAccountTokenNames', 'list_git_hub_account_token_names', (), {}, ),
              ('ListOnPremisesInstances', 'list_on_premises_instances', (), {}, ), ]
     return generic_permission_bruteforcer('codedeploy', tests)
 
@@ -586,6 +589,7 @@ def brute_configservice_permissions():
 
 # http://boto3.readthedocs.io/en/latest/reference/services/connect.html
 # no functions
+
 
 def brute_costandusagereportservice_permissions():
     '''
@@ -703,7 +707,7 @@ def brute_ec2_permissions():
              ('DescribeVolumes', 'describe_volumes', (), {'DryRun': True}, ),
              ('CreateVolume', 'create_volume', (), {'AvailabilityZone': 'us-east-1a', 'Size': 8, 'DryRun': True}, ),
              ('DescribeSnapshots', 'describe_snapshots', (), {'DryRun': True, 'OwnerIds': ['self', ]}, ),
-             #('CreateSnapshot', 'create_snapshot', (), {'VolumeId': 'vol-05777eab71bc97dcb', 'DryRun': True}, ),
+             # ('CreateSnapshot', 'create_snapshot', (), {'VolumeId': 'vol-05777eab71bc97dcb', 'DryRun': True}, ),
              ('DescribeAccountAttributes', 'describe_account_attributes', (), {'DryRun': True}, ),
              ('DescribeAddresses', 'describe_addresses', (), {'DryRun': True}, ),
              ('DescribeAvailabilityZones', 'describe_availability_zones', (), {'DryRun': True}, ),
@@ -914,10 +918,7 @@ def brute_gamelift_permissions():
              ('DescribeEC2InstanceLimits', 'describe_ec2_instance_limits', (), {}),
              ('DescribeFleetAttributes', 'describe_fleet_attributes', (), {}),
              ('DescribeFleetCapacity', 'describe_fleet_capacity', (), {}),
-             #('DescribeGameSessionDetails', 'describe_game_session_details', (), {}),
              ('DescribeGameSessionQueues', 'describe_game_session_queues', (), {}), ]
-             #('DescribeGameSessions', 'describe_game_sessions', (), {}),
-             #('DescribePlayerSessions', 'describe_player_sessions', (), {}), ]
     return generic_permission_bruteforcer('gamelift', tests)
 
 
@@ -1094,6 +1095,7 @@ def brute_lambda_permissions():
     '''
     print("### Enumerating Lambda Permissions ###")
     tests = [('ListFunctions', 'list_functions', (), {}, ),
+             ('GetAccountSettings', 'get_account_settings', (), {}),
              ('ListEventSourceMappings', 'list_event_source_mappings', (), {}), ]
     return generic_permission_bruteforcer('lambda', tests)
 
@@ -1540,7 +1542,7 @@ def brute_ssm_permissions():
     '''
     print("### Enumerating Amazon Simple Systems Manager (SSM) Permissions ###")
     tests = [('DescribeActivations', 'describe_activations', (), {}),
-             #('DescribeAssociation', 'describe_association', (), {}),
+             # ('DescribeAssociation', 'describe_association', (), {}),
              ('ListDocuments', 'list_documents', (), {}),
              ('ListResourceComplianceSummaries', 'list_resource_compliance_summaries', (), {}), ]
     return generic_permission_bruteforcer('ssm', tests)
@@ -1591,7 +1593,7 @@ def brute_swf_permissions():
     http://boto3.readthedocs.io/en/latest/reference/services/swf.html
     '''
     print("### Enumerating Amazon Simple Workflow Service (SWF) Permissions ###")
-    tests = [('ListDomains', 'list_domains', (), {'registrationStatus':'REGISTERED'}), ]
+    tests = [('ListDomains', 'list_domains', (), {'registrationStatus': 'REGISTERED'}), ]
     return generic_permission_bruteforcer('swf', tests)
 
 
@@ -1610,7 +1612,7 @@ def brute_translate_permissions():
     http://boto3.readthedocs.io/en/latest/reference/services/translate.html
     '''
     print("### Enumerating  Amazon Translate Permissions ###")
-    tests = [('TranslateText', 'translate_text', (), {'Text': 'secure your shit', 'SourceLanguageCode': 'en' ,'TargetLanguageCode': 'es' }), ]
+    tests = [('TranslateText', 'translate_text', (), {'Text': 'secure your shit', 'SourceLanguageCode': 'en', 'TargetLanguageCode': 'es'}), ]
     return generic_permission_bruteforcer('translate', tests)
 
 
@@ -1621,7 +1623,7 @@ def brute_waf_permissions():
     print("### Enumerating AWS WAF Permissions ###")
     tests = [('ListRules', 'list_rules', (), {}),
              ('ListRuleGroups', 'list_rule_groups', (), {}),
-             #('ListActivatedRulesInRuleGroup', 'list_activated_rules_in_rule_group', (), {}),
+             # ('ListActivatedRulesInRuleGroup', 'list_activated_rules_in_rule_group', (), {}),
              ('ListIpSets', 'list_ip_sets', (), {}), ]
     return generic_permission_bruteforcer('waf', tests)
 
@@ -1633,7 +1635,7 @@ def brute_waf_regional_permissions():
     print("### Enumerating AWS WAF Regional Permissions ###")
     tests = [('ListRules', 'list_rules', (), {}),
              ('ListRuleGroups', 'list_rule_groups', (), {}),
-             #('ListActivatedRulesInRuleGroup', 'list_activated_rules_in_rule_group', (), {}),
+             # ('ListActivatedRulesInRuleGroup', 'list_activated_rules_in_rule_group', (), {}),
              ('ListIpSets', 'list_ip_sets', (), {}), ]
     return generic_permission_bruteforcer('waf-regional', tests)
 

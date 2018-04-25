@@ -1,5 +1,5 @@
 '''
-lamda functions for WeirdAAL
+Lambda functions for WeirdAAL
 '''
 
 import boto3
@@ -96,7 +96,7 @@ def lambda_get_function(functionname, region):
         client = boto3.client('lambda', region_name=region)
 
         response = client.get_function(FunctionName=functionname)
-        #print(response)
+        # print(response)
 
         if response.get('Configuration') is None:
             print("{} likely does not have Lambda permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -106,7 +106,39 @@ def lambda_get_function(functionname, region):
             print(response['Configuration'])
             print("\n")
             # print(response['Code'])
-            print("Download link for {}:{}".format(functionname,response['Code']['Location']))
+            print("Download link for {}:{}".format(functionname, response['Code']['Location']))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def lambda_get_account_settings():
+    '''
+    Returns Lambda account info
+    '''
+    print("### Attempting to get account settings ###")
+    try:
+        client = boto3.client('lambda')
+        response = client.get_account_settings()
+        # print(response)
+        if response.get('AccountLimit') is None:
+            print("{} likely does not have Lambda permissions\n" .format(AWS_ACCESS_KEY_ID))
+        elif len(response['AccountLimit']) <= 0:
+            print("[-] GetAccountSettings allowed for {} but no results [-]" .format(region))
+        else:
+            print("AccountLimit:")
+            pp.pprint(response['AccountLimit'])
+            print("AccountUsage:")
+            pp.pprint(response['AccountUsage'])
+            print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
