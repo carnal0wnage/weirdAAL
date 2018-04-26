@@ -21,7 +21,6 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def describe_configuration_recorders(region):
-    response = []
     try:
         client = boto3.client("config", region_name=region)
 
@@ -30,7 +29,7 @@ def describe_configuration_recorders(region):
         print(region_name)
         print("=" * len(region_name))
         if not response['ConfigurationRecorders']:
-            print("No Rules Found")
+            print("No Recordings Found\n")
         else:
             for r in response['ConfigurationRecorders']:
                 for k,v in r.items():
@@ -54,11 +53,8 @@ def describe_configuration_recorders(region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-    return response
-
 
 def describe_configuration_rules(region):
-    response = []
     try:
         client = boto3.client("config", region_name=region)
 
@@ -67,7 +63,7 @@ def describe_configuration_rules(region):
         print(region_name)
         print("=" * len(region_name))
         if not response['ConfigRules']:
-            print("No Rules Found")
+            print("No Rules Found\n")
         else:
             for r in response['ConfigRules']:
                 for k,v in r.items():
@@ -91,8 +87,51 @@ def describe_configuration_rules(region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-    return response
+def delete_rule(rule_name, region):
+    try:
+        client = boto3.client("config", region_name=region)
+        client.delete_config_rule(ConfigRuleName=rule_name)
+        print("Successfully deleted %s from %s!" % (rule_name, region))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'AccessDeniedException':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
+def delete_recorder(recorder_name, region):
+    try:
+        client = boto3.client("config", region_name=region)
+        client.delete_configuration_recorder(ConfigurationRecorderName=recorder_name)
+        print("Successfully deleted %s from %s!" % (recorder_name, region))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'AccessDeniedException':
+            print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
+            pass
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def list_all_config_rules():
     for region in regions:
@@ -101,3 +140,11 @@ def list_all_config_rules():
 def list_all_config_recorders():
     for region in regions:
         describe_configuration_recorders(region)
+
+def delete_config_rule(rule_name, region):
+    if rule_name:
+        delete_rule(rule_name, region)
+
+def delete_config_recorder(recorder_name, region):
+    if recorder_name:
+        delete_recorder(recorder_name, region)
