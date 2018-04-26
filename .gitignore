@@ -1,5 +1,5 @@
 #let's attempt not to check in config.py with keys
-config.py
+#config.py
 
 #weirdAAL.db
 *.db
