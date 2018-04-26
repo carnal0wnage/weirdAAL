@@ -77,3 +77,6 @@ def describe_configuration_rules(region):
 
 def list_all_config_rules():
     describe_configuration_rules('us-east-1')
+
+def list_all_config_recorders():
+    describe_configuration_recorders('us-east-1')
