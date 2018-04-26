@@ -26,7 +26,16 @@ def describe_configuration_recorders(region):
         client = boto3.client("config", region_name=region)
 
         response = client.describe_configuration_recorders()
-        print(response)
+        region_name = "Region: %s\n" % region
+        print(region_name)
+        print("=" * len(region_name))
+        if not response['ConfigurationRecorders']:
+            print("No Rules Found")
+        else:
+            for r in response['ConfigurationRecorders']:
+                for k,v in r.items():
+                    print("%s: %s" % (k,v))
+                print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -54,7 +63,16 @@ def describe_configuration_rules(region):
         client = boto3.client("config", region_name=region)
 
         response = client.describe_config_rules()
-        print(response)
+        region_name = "Region: %s" % region
+        print(region_name)
+        print("=" * len(region_name))
+        if not response['ConfigRules']:
+            print("No Rules Found")
+        else:
+            for r in response['ConfigRules']:
+                for k,v in r.items():
+                    print("%s: %s" % (k,v))
+                print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -75,8 +93,11 @@ def describe_configuration_rules(region):
 
     return response
 
+
 def list_all_config_rules():
-    describe_configuration_rules('us-east-1')
+    for region in regions:
+        describe_configuration_rules(region)
 
 def list_all_config_recorders():
-    describe_configuration_recorders('us-east-1')
+    for region in regions:
+        describe_configuration_recorders(region)
