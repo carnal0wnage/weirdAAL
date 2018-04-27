@@ -77,6 +77,7 @@ def describe_instances():
             try:
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_instances()
+                #print(response)
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
                     print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
