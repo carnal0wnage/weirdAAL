@@ -485,29 +485,30 @@ def get_console_screenshot_all():
                 for r in response['Reservations']:
                     for i in r['Instances']:
                         instanceid = i['InstanceId']
-                        try:
-                            client = boto3.client('ec2', region_name=region)
-                            print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
-                            response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid, WakeUp=True)
-                        except botocore.exceptions.ClientError as e:
-                            if e.response['Error']['Code'] == 'DryRunOperation':
-                                print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
-                                response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid, WakeUp=True)
-                                print('[+] Writing screenshot to screenshots/{}.png [+]'.format(instanceid))
-                                file = open('{}/screenshots/{}.png'.format(os.getcwd(), instanceid), "wb")
-                                file.write(base64.b64decode(response['ImageData']))
-                                file.close
-                                # print(response)
-                            elif e.response['Error']['Code'] == 'UnauthorizedOperation':
-                                print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Message'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
-                                print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
-                            else:
-                                print(e)
+                        if i['State']['Name'] == "running":
+                            try:
+                                client = boto3.client('ec2', region_name=region)
+                                print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
+                                response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid, WakeUp=True)
+                            except botocore.exceptions.ClientError as e:
+                                if e.response['Error']['Code'] == 'DryRunOperation':
+                                    print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
+                                    response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid, WakeUp=True)
+                                    print('[+] Writing screenshot to screenshots/{}.png [+]'.format(instanceid))
+                                    file = open('{}/screenshots/{}.png'.format(os.getcwd(), instanceid), "wb")
+                                    file.write(base64.b64decode(response['ImageData']))
+                                    file.close
+                                    # print(response)
+                                elif e.response['Error']['Code'] == 'UnauthorizedOperation':
+                                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Message'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                                    print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+                                else:
+                                    print(e)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
@@ -531,29 +532,32 @@ def get_console_screenshot_all_region(region):
                 for r in response['Reservations']:
                     for i in r['Instances']:
                         instanceid = i['InstanceId']
-                        try:
-                            client = boto3.client('ec2', region_name=region)
-                            print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
-                            response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid, WakeUp=True)
-                        except botocore.exceptions.ClientError as e:
-                            if e.response['Error']['Code'] == 'DryRunOperation':
-                                print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
-                                response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid, WakeUp=True)
-                                print('[+] Writing screenshot to screenshots/{}.png [+]'.format(instanceid))
-                                file = open('{}/screenshots/{}.png'.format(os.getcwd(), instanceid), "wb")
-                                file.write(base64.b64decode(response['ImageData']))
-                                file.close
-                                # print(response)
-                            elif e.response['Error']['Code'] == 'UnauthorizedOperation':
-                                print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Message'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
-                                print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
-                            else:
-                                print(e)
+                        if i['State']['Name'] == "running":
+                            try:
+                                client = boto3.client('ec2', region_name=region)
+                                print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
+                                response = client.get_console_screenshot(DryRun=True, InstanceId=instanceid, WakeUp=True)
+                            except botocore.exceptions.ClientError as e:
+                                if e.response['Error']['Code'] == 'DryRunOperation':
+                                    print('[+] {} : Has permissions...proceeding with the screenshot attempt [+]' .format(AWS_ACCESS_KEY_ID))
+                                    response = client.get_console_screenshot(DryRun=False, InstanceId=instanceid, WakeUp=True)
+                                    print('[+] Writing screenshot to screenshots/{}.png [+]'.format(instanceid))
+                                    file = open('{}/screenshots/{}.png'.format(os.getcwd(), instanceid), "wb")
+                                    file.write(base64.b64decode(response['ImageData']))
+                                    file.close
+                                    # print(response)
+                                elif e.response['Error']['Code'] == 'UnauthorizedOperation':
+                                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Message'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                                    print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'InvalidInstanceID.NotFound':
+                                    print('{} : instance not found' .format(AWS_ACCESS_KEY_ID))
+                                else:
+                                    print(e)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
@@ -649,29 +653,33 @@ def get_console_output_all():
                 for r in response['Reservations']:
                     for i in r['Instances']:
                         instanceid = i['InstanceId']
-                        try:
-                            client = boto3.client('ec2', region_name=region)
-                            print("[INFO] Checking for required permissions to get console output: {} on {} [INFO]" .format(instanceid, region))
-                            response = client.get_console_output(DryRun=True, InstanceId=instanceid)
-                        except botocore.exceptions.ClientError as e:
-                            if e.response['Error']['Code'] == 'DryRunOperation':
-                                print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
-                                response = client.get_console_output(DryRun=False, InstanceId=instanceid)
-                                print('[+] Writing console output to loot/{}-console.txt [+]'.format(instanceid))
-                                file = open('{}/loot/{}-console.txt'.format(os.getcwd(), instanceid), "w")
-                                file.write(str(response['Output']))
-                                file.close
-                                # print(response)
-                            elif e.response['Error']['Code'] == 'UnauthorizedOperation':
-                                print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Message'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
-                                print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
-                            else:
-                                print(e)
+                        if i['State']['Name'] == "running":
+                            try:
+                                client = boto3.client('ec2', region_name=region)
+                                print("[INFO] Checking for required permissions to get console output: {} on {} [INFO]" .format(instanceid, region))
+                                response = client.get_console_output(DryRun=True, InstanceId=instanceid)
+                            except botocore.exceptions.ClientError as e:
+                                if e.response['Error']['Code'] == 'DryRunOperation':
+                                    print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
+                                    response = client.get_console_output(DryRun=False, InstanceId=instanceid)
+                                    print('[+] Writing console output to loot/{}-console.txt [+]'.format(instanceid))
+                                    if response.get('Output') is None:
+                                        print("[-]no output from {} [-]".format(instanceid))
+                                    else:
+                                        file = open('{}/loot/{}-console.txt'.format(os.getcwd(), instanceid), "w")
+                                        file.write(str(response['Output']))
+                                        file.close
+                                        # print(response)
+                                elif e.response['Error']['Code'] == 'UnauthorizedOperation':
+                                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Message'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                                    print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+                                else:
+                                    print(e)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
@@ -695,29 +703,33 @@ def get_console_output_all_region(region):
                 for r in response['Reservations']:
                     for i in r['Instances']:
                         instanceid = i['InstanceId']
-                        try:
-                            client = boto3.client('ec2', region_name=region)
-                            print("[INFO] Checking for required permissions to get console output: {} on {} [INFO]" .format(instanceid, region))
-                            response = client.get_console_output(DryRun=True, InstanceId=instanceid)
-                        except botocore.exceptions.ClientError as e:
-                            if e.response['Error']['Code'] == 'DryRunOperation':
-                                print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
-                                response = client.get_console_output(DryRun=False, InstanceId=instanceid)
-                                print('[+] Writing console output to loot/{}-console.txt [+]'.format(instanceid))
-                                file = open('{}/loot/{}-console.txt'.format(os.getcwd(), instanceid), "w")
-                                file.write(str(response['Output']))
-                                file.close
-                                # print(response)
-                            elif e.response['Error']['Code'] == 'UnauthorizedOperation':
-                                print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Message'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'InternalError':
-                                print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
-                            elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
-                                print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
-                            else:
-                                print(e)
+                        if i['State']['Name'] == "running":
+                            try:
+                                client = boto3.client('ec2', region_name=region)
+                                print("[INFO] Checking for required permissions to get console output: {} on {} [INFO]" .format(instanceid, region))
+                                response = client.get_console_output(DryRun=True, InstanceId=instanceid)
+                            except botocore.exceptions.ClientError as e:
+                                if e.response['Error']['Code'] == 'DryRunOperation':
+                                    print('[+] {} : Has permissions...proceeding with the console output attempt [+]' .format(AWS_ACCESS_KEY_ID))
+                                    response = client.get_console_output(DryRun=False, InstanceId=instanceid)
+                                    print('[+] Writing console output to loot/{}-console.txt [+]'.format(instanceid))
+                                    if response.get('Output') is None:
+                                        print("[-]no output from {} [-]".format(instanceid))
+                                    else:
+                                        file = open('{}/loot/{}-console.txt'.format(os.getcwd(), instanceid), "w")
+                                        file.write(str(response['Output']))
+                                        file.close
+                                        # print(response)
+                                elif e.response['Error']['Code'] == 'UnauthorizedOperation':
+                                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Message'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'InternalError':
+                                    print('{} : Has permissions but an internal error occured - check manually' .format(AWS_ACCESS_KEY_ID))
+                                elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+                                    print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+                                else:
+                                    print(e)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
