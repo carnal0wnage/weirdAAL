@@ -90,7 +90,7 @@ def describe_instances():
                 print("[+] Listing instances for region: {} [+]" .format(region))
                 db_logger = []
                 for r in response['Reservations']:
-                    db_logger.append(['ec2', 'DescribeInstances', str(r), AWS_ACCESS_KEY_ID, datetime.datetime.now()])
+                    db_logger.append(['ec2', 'DescribeInstances', str(r), AWS_ACCESS_KEY_ID, target, datetime.datetime.now()])
                     for i in r['Instances']:
                         pp.pprint(i)
                 # logging to db here
@@ -132,7 +132,7 @@ def describe_instances_basic():
                 db_logger = []
                 for r in response['Reservations']:
                     # logging the full blob
-                    db_logger.append(['ec2', 'DescribeInstances', str(r), AWS_ACCESS_KEY_ID, datetime.datetime.now()])
+                    db_logger.append(['ec2', 'DescribeInstances', str(r), AWS_ACCESS_KEY_ID, target, datetime.datetime.now()])
                     for i in r['Instances']:
                         launchtime = i['LaunchTime']
                         instanceid = i['InstanceId']

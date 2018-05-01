@@ -129,6 +129,21 @@ def get_password_policy():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+def get_account_authorization_details():
+    '''
+    Get the account authoirzation details
+    '''
+    client = boto3.client('iam', region_name=region)
+
+    try:
+        deets = client.get_account_authorization_details()
+        print("Account Authorization Details:")
+        pp.pprint(deets['UserDetailList'])
+    except botocore.exceptions.ClientError as e:
+        print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
 
 def iam_create_user(username):
     '''

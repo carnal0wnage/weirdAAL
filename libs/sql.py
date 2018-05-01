@@ -40,6 +40,7 @@ def create_recon_table(db_name, table_name):
              service text,
              sub_service text,
              AWSKeyID text,
+             target text,
              checked_at timestamp,
              PRIMARY KEY (ID))"""
              #FOREIGN KEY (AWSKeyID) references AWSKey(ID))"""
@@ -53,8 +54,9 @@ def create_awskey_table(db_name, table_name):
     '''
     sql = """CREATE TABLE AWSKey
              (ID integer,
-             AWSKeyID Text,
-             Description text,
+             AWSKeyID text,
+             description text,
+             target text,
              PRIMARY KEY(ID))"""
     create_table(db_name,table_name,sql)
     print ("created table: {}".format(table_name))
@@ -71,6 +73,7 @@ def create_services_table(db_name, table_name):
              sub_service text,
              sub_service_data text,
              checked_at timestamp,
+             target text,
              PRIMARY KEY(ID))"""
     create_table(db_name,table_name,sql)
     print ("created table: {}".format(table_name))
@@ -80,7 +83,7 @@ def insert_awskey_data(db_name, records):
     '''
     Insert AWS Key and a description to the AWSKey table (unused)
     '''
-    sql = """INSERT INTO AWSKey(AWSKeyID, Description) VALUES (?,?)"""
+    sql = """INSERT INTO AWSKey(AWSKeyID, description, target) VALUES (?,?,?)"""
     for record in records:
         query(db_name, sql,record)
 
@@ -89,7 +92,7 @@ def insert_reconservice_data(db_name, records):
     '''
     Insert data into the recon table
     '''
-    sql = """INSERT INTO recon(service, sub_service, AWSKeyID, checked_at) VALUES (?,?,?,?)"""
+    sql = """INSERT INTO recon(service, sub_service, AWSKeyID, target, checked_at) VALUES (?,?,?,?,?)"""
     for record in records:
         query(db_name,sql,record)
 
@@ -98,7 +101,7 @@ def insert_sub_service_data(db_name, records):
     '''
     Insert service, sub_service & sub_service data into the DB
     '''
-    sql = """INSERT INTO services(service, sub_service, sub_service_data, AWSKeyID, checked_at) VALUES (?,?,?,?,?)"""
+    sql = """INSERT INTO services(service, sub_service, sub_service_data, AWSKeyID, target, checked_at) VALUES (?,?,?,?,?,?)"""
     for record in records:
         query(db_name,sql,record)
 
@@ -109,7 +112,7 @@ def search_recon_by_key(db_name,AWSKeyID):
     '''
     with sqlite3.connect(db_name) as db:
         cursor = db.cursor()
-        cursor.execute("""SELECT DISTINCT service,sub_service,checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""",(AWSKeyID,))
+        cursor.execute("""SELECT DISTINCT service, sub_service, checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""",(AWSKeyID,))
         results = cursor.fetchall()
         return results
 

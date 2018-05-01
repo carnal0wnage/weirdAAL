@@ -90,3 +90,10 @@ def module_iam_list_entities_for_policy(*text):
      python3 weirdAAL.py -m iam_list_entities_for_policy -a 'arn:aws:iam::...' -t yolo
     '''
     iam_list_entities_for_policy(text[0][0])
+
+
+def module_iam_get_account_authorization_details():
+    '''
+    Retrieves information about all IAM users, groups, roles, and policies in your AWS account, including their relationships to one another. Use this API to obtain a snapshot of the configuration of IAM permissions (users, groups, roles, and policies) in your account.
+    '''
+    get_account_authorization_details()
