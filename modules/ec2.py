@@ -71,6 +71,15 @@ def module_ec2_describe_route_tables():
     describe_route_tables()
 
 
+def module_ec2_stop_instance_dryrun(*text):
+    '''
+    This function attempt to stop the specified InstanceID and region
+    passes dry run command so shouldnt "actually" stop it. nice to prove access
+    python3 weirdAAL.py -m ec2_stop_instance_dryrun -a 'i-0321f4EXAMPLE','us-east-1' -t yolo
+    '''
+    ec2_stop_instance_dryrun(text[0][0], text[0][1])
+
+
 def module_ec2_get_console_screenshot(*text):
     '''
     This function gets a screenshot for the specified InstanceID and region

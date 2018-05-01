@@ -198,6 +198,28 @@ def write_instances_to_file():
         print("CTRL-C received, exiting...")
 
 
+def ec2_stop_instance_dryrun(instanceid, region):
+    '''
+    Attempt to stop (passing dryrun flag) the specified instanceID on the specififed region
+    '''
+    try:
+        client = boto3.client('ec2', region_name=region)
+        print("[INFO] Checking for permissions to stop instance (DryRun): {} on {} ** no ec2s were hurt during this ** [INFO]" .format(instanceid, region))
+        response = client.stop_instances(DryRun=True, InstanceIds=['{}'.format(instanceid)])
+        # print(response)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'DryRunOperation':
+            print('[+] {} : Has permissions to stop the instance: {}... [+]' .format(AWS_ACCESS_KEY_ID, instanceid))
+        elif e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling stop_instances -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
 def ec2_list_launchable_ami():
     '''
     For each region list launchable AMIs - equivalent to aws ec2 describe-images --executable-users self
