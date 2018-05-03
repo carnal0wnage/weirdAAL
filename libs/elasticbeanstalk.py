@@ -11,7 +11,7 @@ import sys
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2', ]
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2']
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -21,15 +21,16 @@ credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
 
 
-def describe_applications():
+def elasticbeanstalk_describe_applications():
+    '''
+    Elasticbeanstalk Describe Applications
+    '''
     print("### Printing ElasticBeanstalk Applications ###")
     try:
         for region in regions:
             client = boto3.client('elasticbeanstalk', region_name=region)
-
             response = client.describe_applications()
-
-            # print response
+            # print(response)
 
             if response.get('Applications') is None:
                 print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -54,15 +55,16 @@ def describe_applications():
         print("CTRL-C received, exiting...")
 
 
-def describe_application_versions():
+def elasticbeanstalk_describe_application_versions():
+    '''
+    Elasticbeanstalk Describe Application versions
+    '''
     print("### Printing ElasticBeanstalk Applications Versions ###")
     try:
         for region in regions:
             client = boto3.client('elasticbeanstalk', region_name=region)
-
             response = client.describe_application_versions()
-
-            # print response
+            # print(response)
 
             if response.get('ApplicationVersions') is None:
                 print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -87,16 +89,17 @@ def describe_application_versions():
         print("CTRL-C received, exiting...")
 
 
-def describe_configuration_options():
+def elasticbeanstalk_describe_configuration_options():
+    '''
+    Elasticbeanstalk Describe Configuration options
+    Currently not working
+    '''
     print("### Printing ElasticBeanstalk Configuration Options ###")
     try:
         for region in regions:
             client = boto3.client('elasticbeanstalk', region_name=region)
-
             response = client.describe_configuration_options()
-            print(response)
-
-            # print response
+            # print(response)
 
             if response.get('Options') is None:
                 print("{} likely does not have ElasticBeanstalk permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -126,14 +129,15 @@ def describe_configuration_options():
         print("CTRL-C received, exiting...")
 
 
-def describe_environments():
+def elasticbeanstalk_describe_environments():
+    '''
+    Elasticbeanstalk Describe Environments
+    '''
     print("### Printing ElasticBeanstalk Environments ###")
     try:
         for region in regions:
             client = boto3.client('elasticbeanstalk', region_name=region)
-
             response = client.describe_environments()
-
             # print response
 
             if response.get('Environments') is None:
@@ -159,14 +163,15 @@ def describe_environments():
         print("CTRL-C received, exiting...")
 
 
-def describe_events():
+def elasticbeanstalk_describe_events():
+    '''
+    Elasticbeanstalk Describe Events
+    '''
     print("### Printing ElasticBeanstalk Environments ###")
     try:
         for region in regions:
             client = boto3.client('elasticbeanstalk', region_name=region)
-
             response = client.describe_events()
-
             # print(response)
 
             if response.get('Events') is None:

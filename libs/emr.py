@@ -22,11 +22,13 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def list_clusters():
+    '''
+    List EMR Clusters
+    '''
     print("### Printing EMR Clusters ###")
     try:
         for region in regions:
             client = boto3.client('emr', region_name=region)
-
             response = client.list_clusters()
 
             if response.get('Clusters') is None:
@@ -53,13 +55,14 @@ def list_clusters():
 
 
 def list_security_configurations():
+    '''
+    List EMR Security Configurations
+    '''
     print("### Printing EMR Security Configuration ###")
     try:
         for region in regions:
             client = boto3.client('emr', region_name=region)
-
             response = client.list_security_configurations()
-
             # print(response)
 
             if response.get('SecurityConfigurations') is None:

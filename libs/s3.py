@@ -14,6 +14,7 @@ Code to get the AWS_ACCESS_KEY_ID from boto3
 session = boto3.Session()
 credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
+AWS_SECRET_ACCESS_KEY = credentials.secret_key
 
 
 def get_s3bucket_policy(bucket):
@@ -161,7 +162,7 @@ def get_s3objects_for_account_detailed():
         print('#### Trying to list s3 bucketsfor {} ####\n '.format(AWS_ACCESS_KEY_ID))
         for bucket in client.buckets.all():
             print(bucket.name)
-            get_s3bucket_policy(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,bucket.name)
+            get_s3bucket_policy(bucket.name)
         
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':

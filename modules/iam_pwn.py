@@ -1,5 +1,5 @@
 '''
-Functions specifically related to IAM account takeover if you have root or IAM access gather user info, 
+Functions specifically related to IAM account takeover if you have root or IAM access gather user info,
 manipulate access keys or passwords, make backdoor account
 '''
 from libs.iam import *
@@ -9,6 +9,7 @@ from libs.sts import *
 def module_iam_get_account_summary():
     '''
     Get account summmary for current user get_account_summary()
+    python3 weirdAAL.py -m iam_get_account_summary -t yolo
     '''
     iam_get_account_summary()
 
@@ -16,6 +17,7 @@ def module_iam_get_account_summary():
 def module_iam_check_root_account():
     '''
     runs get_account_summary, list_users, for each user list_login_profiles() & list_mfa_devices()
+    python3 weirdAAL.py -m iam_check_root_account -t yolo
     '''
     check_root_account()
 
@@ -23,6 +25,7 @@ def module_iam_check_root_account():
 def module_iam_get_password_policy():
     '''
     runs IAM get_account_password_policy for the current user
+    python3 weirdAAL.py -m iam_get_password_policy -t yolo
     '''
     get_password_policy()
 
@@ -70,6 +73,7 @@ def module_iam_delete_access_key(*text):
 def module_iam_create_user(*text):
     '''
     create a IAM user with the specified username
+    python3 weirdAAL.py -m iam_delete_access_key -a 'urpwned' -t yolo
     '''
     iam_create_user(text[0][0])
 
@@ -77,6 +81,7 @@ def module_iam_create_user(*text):
 def module_iam_make_admin(*text):
     '''
     attach the admin policy ['arn:aws:iam::aws:policy/AdministratorAccess'] to the specified user
+    python3 weirdAAL.py -m iam_delete_access_key -a 'urpwned' -t yolo
     '''
     iam_make_admin(text[0][0])
 

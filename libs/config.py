@@ -9,8 +9,8 @@ import sys
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-#from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
+# from http://docs.aws.amazon.com/general/latest/gr/rande.html
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2']
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -21,6 +21,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def describe_configuration_recorders(region):
+    '''
+    Describe Config recorders
+    '''
     try:
         client = boto3.client("config", region_name=region)
 
@@ -32,13 +35,13 @@ def describe_configuration_recorders(region):
             print("No Recordings Found\n")
         else:
             for r in response['ConfigurationRecorders']:
-                for k,v in r.items():
-                    print("%s: %s" % (k,v))
+                for k, v in r.items():
+                    print("%s: %s" % (k, v))
                 print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
-        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+        elif e.response['Error']['Code'] == 'UnrecognizedClientException':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
@@ -55,6 +58,9 @@ def describe_configuration_recorders(region):
 
 
 def describe_configuration_rules(region):
+    '''
+    Describe Config rules
+    '''
     try:
         client = boto3.client("config", region_name=region)
 
@@ -66,13 +72,13 @@ def describe_configuration_rules(region):
             print("No Rules Found\n")
         else:
             for r in response['ConfigRules']:
-                for k,v in r.items():
-                    print("%s: %s" % (k,v))
+                for k, v in r.items():
+                    print("%s: %s" % (k, v))
                 print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
-        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+        elif e.response['Error']['Code'] == 'UnrecognizedClientException':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
@@ -87,7 +93,11 @@ def describe_configuration_rules(region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def delete_rule(rule_name, region):
+    '''
+    Attempt to delete the specified Config Rule
+    '''
     try:
         client = boto3.client("config", region_name=region)
         client.delete_config_rule(ConfigRuleName=rule_name)
@@ -95,7 +105,7 @@ def delete_rule(rule_name, region):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
-        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+        elif e.response['Error']['Code'] == 'UnrecognizedClientException':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
@@ -110,7 +120,11 @@ def delete_rule(rule_name, region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def delete_recorder(recorder_name, region):
+    '''
+    Attempt to delete the specified Config recorder
+    '''
     try:
         client = boto3.client("config", region_name=region)
         client.delete_configuration_recorder(ConfigurationRecorderName=recorder_name)
@@ -118,7 +132,7 @@ def delete_recorder(recorder_name, region):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
-        elif e.response['Error']['Code']  == 'UnrecognizedClientException':
+        elif e.response['Error']['Code'] == 'UnrecognizedClientException':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('[-] {} : does not have config access. Did you check first?' .format(AWS_ACCESS_KEY_ID))
@@ -133,18 +147,34 @@ def delete_recorder(recorder_name, region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def list_all_config_rules():
+    '''
+    Get config rules for each region
+    '''
     for region in regions:
         describe_configuration_rules(region)
 
+
 def list_all_config_recorders():
+    '''
+    Get recorders for each region
+    '''
     for region in regions:
         describe_configuration_recorders(region)
 
+
 def delete_config_rule(rule_name, region):
+    '''
+    delete config rule (makes sure you passed a rule name)
+    '''
     if rule_name:
         delete_rule(rule_name, region)
 
+
 def delete_config_recorder(recorder_name, region):
+    '''
+    delete config recorder (makes sure you passed a recorder name)
+    '''
     if recorder_name:
         delete_recorder(recorder_name, region)

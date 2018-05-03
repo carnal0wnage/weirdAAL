@@ -25,7 +25,7 @@ credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
 
 
-def list_pipelines():
+def datapipeline_list_pipelines():
     '''
     Function to use the datapipeline boto3 library to list available pipelines
     '''

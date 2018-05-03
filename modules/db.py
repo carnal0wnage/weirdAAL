@@ -13,7 +13,7 @@ credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
 
 
-#  for a key, what services does it have listed in the DB
+# for a key, what services does it have listed in the DB
 
 
 def module_show_services_by_key():

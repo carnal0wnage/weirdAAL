@@ -9,7 +9,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-west-2', 'eu-west-1' ]
+regions = ['us-east-1', 'us-west-2', 'eu-west-1']
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -20,7 +20,10 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def list_identities():
-    print("### Printing SES Identifies  ###")
+    '''
+    SES List identities
+    '''
+    print("### Printing SES Identities  ###")
     try:
         for region in regions:
             client = boto3.client(
@@ -37,7 +40,6 @@ def list_identities():
             else:
                 print("### {} SES Identities ###" .format(region))
                 for r in response['Identities']:
-                    #for i in r['Instances']:
                     pp.pprint(r)
         print("\n")
 
@@ -53,8 +55,12 @@ def list_identities():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def get_send_statistics():
-    print("### Printing SES Identifies  ###")
+    '''
+    SES get send statistics
+    '''
+    print("### Printing SES Send Statistics  ###")
     try:
         for region in regions:
             client = boto3.client(
@@ -71,7 +77,6 @@ def get_send_statistics():
             else:
                 print("### {} SES Send Statistics ###" .format(region))
                 for r in response['SendDataPoints']:
-                    #for i in r['Instances']:
                     pp.pprint(r)
         print("\n")
 
@@ -87,8 +92,12 @@ def get_send_statistics():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def list_configuration_sets():
-    print("### Printing SES Identifies  ###")
+    '''
+    SES List configuration sets
+    '''
+    print("### Printing SES Configuration Sets  ###")
     try:
         for region in regions:
             client = boto3.client(
@@ -105,7 +114,6 @@ def list_configuration_sets():
             else:
                 print("### {} SES Configuration Sets ###" .format(region))
                 for r in response['ConfigurationSets']:
-                    #for i in r['Instances']:
                     pp.pprint(r)
         print("\n")
 
@@ -120,4 +128,3 @@ def list_configuration_sets():
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
-

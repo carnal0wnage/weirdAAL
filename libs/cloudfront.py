@@ -22,7 +22,7 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 def cloudfront_list_distributions():
     '''
-    cloudfront list distributions
+    CloudFront list distributions
     '''
     print("### Printing CloudFront Distributions ###")
     try:
@@ -30,7 +30,7 @@ def cloudfront_list_distributions():
             client = boto3.client('cloudfront', region_name=region)
 
             response = client.list_distributions()
-            #print(response)
+            # print(response)
             if response.get('DistributionList') is None:
                 print("{} likely does not have CloudFront permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['DistributionList']) <= 0:
@@ -39,8 +39,7 @@ def cloudfront_list_distributions():
                 print("### {} CloudFront Distributions ###" .format(region))
                 for dist in response['DistributionList']['Items']:
                     pp.pprint(dist)
-
-                    #pp.pprint(dist['Items'][0])
+                    # pp.pprint(dist['Items'][0])
         print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
@@ -53,5 +52,3 @@ def cloudfront_list_distributions():
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
-
-

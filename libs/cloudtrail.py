@@ -11,7 +11,7 @@ import sys
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1' ]
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1']
 #  'cn-north-1', 'cn-northwest-1',  'us-gov-west-1' throwing An error occurred (UnrecognizedClientException) when calling the DescribeTrails operation: The security token included in the request is invalid.
 
 '''
@@ -30,11 +30,8 @@ def describe_trails():
     try:
         for region in regions:
             client = boto3.client('cloudtrail', region_name=region)
-
             response = client.describe_trails()
 
-            # print (response)
-            # print(region)
             if response['trailList'] is None:
                 print("{} likely does not have CloudTrail permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['trailList']) <= 0:
@@ -49,7 +46,7 @@ def describe_trails():
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
-        #elif e.response['Error']['Code'] == 'UnrecognizedClientException':
+        # elif e.response['Error']['Code'] == 'UnrecognizedClientException':
         #    print('{} : UnrecognizedClientException error' .format(AWS_ACCESS_KEY_ID))
         #    pass
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
@@ -69,11 +66,8 @@ def list_public_keys():
     try:
         for region in regions:
             client = boto3.client('cloudtrail', region_name=region)
-
             response = client.list_public_keys()
 
-            # print (response)
-            # print(region)
             if response['PublicKeyList'] is None:
                 print("{} likely does not have CloudTrail permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['PublicKeyList']) <= 0:
@@ -106,10 +100,7 @@ def stop_trail(TrailARN):
     try:
         for region in regions:
             client = boto3.client('cloudtrail', region_name=region)
-
             response = client.describe_trails()
-
-            # print(response)
 
             if response['trailList'] is None:
                 print("{} likely does not have CloudTrail permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -130,7 +121,7 @@ def stop_trail(TrailARN):
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
-        #elif e.response['Error']['Code'] == 'UnrecognizedClientException':
+        # elif e.response['Error']['Code'] == 'UnrecognizedClientException':
         #    print('{} : UnrecognizedClientException error' .format(AWS_ACCESS_KEY_ID))
         #    pass
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
@@ -141,6 +132,7 @@ def stop_trail(TrailARN):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def delete_trail(TrailARN):
     '''
     Delete a specified trailARN
@@ -150,10 +142,7 @@ def delete_trail(TrailARN):
     try:
         for region in regions:
             client = boto3.client('cloudtrail', region_name=region)
-
             response = client.describe_trails()
-
-            # print(response)
 
             if response['trailList'] is None:
                 print("{} likely does not have CloudTrail permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -174,7 +163,7 @@ def delete_trail(TrailARN):
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'AccessDenied':
             print('{} : Does not have the required permissions' .format(AWS_ACCESS_KEY_ID))
-        #elif e.response['Error']['Code'] == 'UnrecognizedClientException':
+        # elif e.response['Error']['Code'] == 'UnrecognizedClientException':
         #    print('{} : UnrecognizedClientException error' .format(AWS_ACCESS_KEY_ID))
         #    pass
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':

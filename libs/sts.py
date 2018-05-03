@@ -54,8 +54,8 @@ def sts_get_accountid_all():
         account_userid = client.get_caller_identity()["UserId"]
         account_arn = client.get_caller_identity()["Arn"]
         print("Account Id: {}" .format(account_id))
-        print("Account UserID: {}" .format(account_userid) )
-        print("Account ARN: {}" .format(account_arn) )
+        print("Account UserID: {}" .format(account_userid))
+        print("Account ARN: {}" .format(account_arn))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))

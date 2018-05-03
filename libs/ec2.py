@@ -26,6 +26,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def review_encrypted_volumes():
+    '''
+    EC2 review encrypted volumes (describe volumes and check to see if encrypted or not)
+    '''
     print("Reviewing EC2 Volumes... This may take a few....")
     not_encrypted = []
     encrypted = []
@@ -72,12 +75,15 @@ def review_encrypted_volumes():
 
 
 def describe_instances():
+    '''
+    EC2 Describe Instances
+    '''
     try:
         for region in regions:
             try:
                 client = boto3.client('ec2', region_name=region)
                 response = client.describe_instances()
-                #print(response)
+                # print(response)
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
                     print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
@@ -113,6 +119,10 @@ def describe_instances():
 
 
 def describe_instances_basic():
+    '''
+    Describe EC2 instances:
+    print("InstanceID: {}, InstanceType: {}, State: {}, Launchtime: {}".format(instanceid, instancetype, state, launchtime))
+    '''
     try:
         for region in regions:
             try:
@@ -262,7 +272,7 @@ def ec2_list_launchable_ami():
 
 def ec2_list_owner_ami():
     '''
-    For each region list your AMI's  Owners=['self']
+    For each region list your AMI's Owners=['self']
     '''
     try:
         for region in regions:
@@ -365,6 +375,9 @@ def get_instance_volume_details2():
 
 
 def describe_addresses():
+    '''
+    Describe EC2 addresses (loop through all regions)
+    '''
     try:
         for region in regions:
             try:
@@ -397,6 +410,9 @@ def describe_addresses():
 
 
 def describe_network_interfaces():
+    '''
+    Describe EC2 network interfaces (loop through all regions)
+    '''
     try:
         for region in regions:
             try:
@@ -430,6 +446,9 @@ def describe_network_interfaces():
 
 
 def describe_route_tables():
+    '''
+    Describe EC2 route tables (loop through all regions)
+    '''
     try:
         for region in regions:
             try:
@@ -463,6 +482,9 @@ def describe_route_tables():
 
 
 def get_console_screenshot(instanceid, region):
+    '''
+    Get console screenshot of the specified InstanceID in the specified region
+    '''
     try:
         client = boto3.client('ec2', region_name=region)
         print("[INFO] Checking for required permissions to screenshot: {} on {} [INFO]" .format(instanceid, region))
@@ -488,6 +510,9 @@ def get_console_screenshot(instanceid, region):
 
 
 def get_console_screenshot_all():
+    '''
+    loop through all regions and attempt to screenshot
+    '''
     try:
         for region in regions:
             try:
@@ -543,6 +568,9 @@ def get_console_screenshot_all():
 
 
 def get_console_screenshot_all_region(region):
+    '''
+    Attempt to get screenshots of all EC2 instances in a specified region
+    '''
     try:
             client = boto3.client('ec2', region_name=region)
             response = client.describe_instances()
@@ -592,6 +620,10 @@ def get_console_screenshot_all_region(region):
 
 
 def get_console_screenshot_all_region_list(file, region):
+    '''
+    Read a list of ec2 instanceIDs and attempt to screenshot them. They need to be in the same region
+    see write_instances_to_file to get a list of instances by region
+    '''
     try:
         client = boto3.client('ec2', region_name=region)
 
@@ -631,6 +663,9 @@ def get_console_screenshot_all_region_list(file, region):
 
 
 def get_console_output(instanceid, region):
+    '''
+    Attempt to get console output for specified instanceID and region
+    '''
     try:
         client = boto3.client('ec2', region_name=region)
         print("[INFO] Checking for required permissions to get console output: {} on {} [INFO]" .format(instanceid, region))
@@ -656,6 +691,9 @@ def get_console_output(instanceid, region):
 
 
 def get_console_output_all():
+    '''
+    loop through all regions and attempt to get console output
+    '''
     try:
         for region in regions:
             try:
@@ -714,6 +752,9 @@ def get_console_output_all():
 
 
 def get_console_output_all_region(region):
+    '''
+    loop thorugh a region and attempt to get the console output
+    '''
     try:
             client = boto3.client('ec2', region_name=region)
             response = client.describe_instances()
@@ -764,6 +805,9 @@ def get_console_output_all_region(region):
 
 
 def get_console_output_all_region_list(file, region):
+    '''
+    read in a file of instanceIDs for a region and attempt ot get the console output
+    '''
     try:
         client = boto3.client('ec2', region_name=region)
 

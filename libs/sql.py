@@ -5,17 +5,17 @@ Custom SQL/database functions for WeirdAAL
 import sqlite3
 from sqlite3 import Error
 
-def create_table(db_name,table_name,sql):
+
+def create_table(db_name, table_name, sql):
     '''
     SQLite3 create table function
     '''
     with sqlite3.connect(db_name) as db:
         cursor = db.cursor()
-        cursor.execute("""SELECT name FROM sqlite_master WHERE name=?""",(table_name,))
+        cursor.execute("""SELECT name FROM sqlite_master WHERE name=?""", (table_name,))
         result = cursor.fetchall()
         keep_table = True
         if len(result) == 1:
-            #python 3
             response = input("The table {} already exists, do you wish to recreate it? (y/n): ".format(table_name))
             if response == "y":
                 keep_table = False
@@ -43,9 +43,9 @@ def create_recon_table(db_name, table_name):
              target text,
              checked_at timestamp,
              PRIMARY KEY (ID))"""
-             #FOREIGN KEY (AWSKeyID) references AWSKey(ID))"""
-    create_table(db_name,table_name,sql)
-    print ("created table: {}".format(table_name))
+             # FOREIGN KEY (AWSKeyID) references AWSKey(ID))"""
+    create_table(db_name, table_name, sql)
+    print("created table: {}".format(table_name))
 
 
 def create_awskey_table(db_name, table_name):
@@ -58,8 +58,8 @@ def create_awskey_table(db_name, table_name):
              description text,
              target text,
              PRIMARY KEY(ID))"""
-    create_table(db_name,table_name,sql)
-    print ("created table: {}".format(table_name))
+    create_table(db_name, table_name, sql)
+    print("created table: {}".format(table_name))
 
 
 def create_services_table(db_name, table_name):
@@ -75,8 +75,8 @@ def create_services_table(db_name, table_name):
              checked_at timestamp,
              target text,
              PRIMARY KEY(ID))"""
-    create_table(db_name,table_name,sql)
-    print ("created table: {}".format(table_name))
+    create_table(db_name, table_name, sql)
+    print("created table: {}".format(table_name))
 
 
 def insert_awskey_data(db_name, records):
@@ -85,7 +85,7 @@ def insert_awskey_data(db_name, records):
     '''
     sql = """INSERT INTO AWSKey(AWSKeyID, description, target) VALUES (?,?,?)"""
     for record in records:
-        query(db_name, sql,record)
+        query(db_name, sql, record)
 
 
 def insert_reconservice_data(db_name, records):
@@ -94,7 +94,7 @@ def insert_reconservice_data(db_name, records):
     '''
     sql = """INSERT INTO recon(service, sub_service, AWSKeyID, target, checked_at) VALUES (?,?,?,?,?)"""
     for record in records:
-        query(db_name,sql,record)
+        query(db_name, sql, record)
 
 
 def insert_sub_service_data(db_name, records):
@@ -103,26 +103,26 @@ def insert_sub_service_data(db_name, records):
     '''
     sql = """INSERT INTO services(service, sub_service, sub_service_data, AWSKeyID, target, checked_at) VALUES (?,?,?,?,?,?)"""
     for record in records:
-        query(db_name,sql,record)
+        query(db_name, sql, record)
 
 
-def search_recon_by_key(db_name,AWSKeyID):
+def search_recon_by_key(db_name, AWSKeyID):
     '''
     Function to query services by AWSKey and order them by time
     '''
     with sqlite3.connect(db_name) as db:
         cursor = db.cursor()
-        cursor.execute("""SELECT DISTINCT service, sub_service, checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""",(AWSKeyID,))
+        cursor.execute("""SELECT DISTINCT service, sub_service, checked_at FROM recon WHERE AWSKeyID=? ORDER BY datetime(checked_at)""", (AWSKeyID,))
         results = cursor.fetchall()
         return results
 
 
-def query(db_name,sql,data):
+def query(db_name, sql, data):
     '''
     Generic query function
     '''
     with sqlite3.connect(db_name) as db:
         cursor = db.cursor()
-        #cursor.execute("""PRAGMA foreign_keys = ON""")
-        cursor.execute(sql,data)
+        # cursor.execute("""PRAGMA foreign_keys = ON""")
+        cursor.execute(sql, data)
         db.commit()

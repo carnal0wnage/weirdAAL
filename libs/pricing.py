@@ -9,8 +9,8 @@ import sys
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
-#from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'ap-south-1' ]
+# from http://docs.aws.amazon.com/general/latest/gr/rande.html
+regions = ['us-east-1', 'ap-south-1']
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -21,6 +21,9 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def pricing_describe_services():
+    '''
+    Using pricing service describe services
+    '''
     try:
         for region in regions:
             client = boto3.client('pricing', region_name=region)

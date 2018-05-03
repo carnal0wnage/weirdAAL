@@ -8,7 +8,12 @@ from libs.s3 import *
 
 # maps to available services in boto 1.7.4
 
+
 def module_recon_all():
+    '''
+    Main recon all module - attempt to connect ot each of the services to see if we have some privs
+    python3 weirdAAL.py -m recon_all -t demo
+    '''
     get_accountid()
     check_root_account()
     brute_acm_permissions()
@@ -148,5 +153,4 @@ def module_recon_all():
     #  XRay no functions
 
 #  S3 bucket's while we are here...
-#commented out until s3 id/key shit is fixed in all modules/libs
     get_s3objects_for_account()

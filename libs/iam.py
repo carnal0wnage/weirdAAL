@@ -129,6 +129,7 @@ def get_password_policy():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+
 def get_account_authorization_details():
     '''
     Get the account authoirzation details

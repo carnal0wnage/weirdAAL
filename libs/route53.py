@@ -11,7 +11,7 @@ import sys
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2',  ]
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2']
 
 region_single = ['us-east-1']
 
@@ -24,15 +24,16 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 
 def list_geolocations():
+    '''
+    Route53 list geolocations
+    '''
     print("### Printing Route53 GeoLocations ###")
     try:
-        #cheating because they are all the same for this function call
+        # cheating because they are all the same for this function call
         for region in region_single:
             client = boto3.client('route53', region_name=region)
-
             response = client.list_geo_locations()
-
-            #print response
+            # print(response)
 
             if response.get('GeoLocationDetailsList') is None:
                 print("{} likely does not have EMR permissions\n" .format(AWS_ACCESS_KEY_ID))
@@ -56,4 +57,4 @@ def list_geolocations():
         else:
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
-    	print("CTRL-C received, exiting...")
+        print("CTRL-C received, exiting...")

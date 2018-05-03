@@ -8,4 +8,8 @@ from libs.pricing import *
 
 
 def module_pricing_describe_services():
+    '''
+    Pricing describe services
+    python3 weirdAAL.py -m pricing_describe_services -t yolo
+    '''
     pricing_describe_services()

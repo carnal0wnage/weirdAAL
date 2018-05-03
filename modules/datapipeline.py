@@ -7,6 +7,7 @@ from libs.datapipeline import *
 
 def module_datapipeline_list_pipelines():
     '''
-    List Pipelines
+    List DataPileLine pipelines
+    python3 weirdAAL.py -m datapipeline_list_pipelines -t demo
     '''
-    list_pipelines()
+    datapipeline_list_pipelines()

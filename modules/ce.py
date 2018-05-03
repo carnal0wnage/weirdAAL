@@ -7,5 +7,9 @@ permission to get anything from this
 from libs.ce import *
 
 
-def module_cost_explorer_get_cost_and_usage():
+def module_costexplorer_get_cost_and_usage():
+    '''
+    Attempt to list cost and usage via the Cost Explorer service
+    python3 weirdAAL.py -m costexplorer_get_cost_and_usage -t demo
+    '''
     ce_get_cost_and_usage()

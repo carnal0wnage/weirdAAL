@@ -29,7 +29,6 @@ def firehose_list_delivery_streams():
     try:
         for region in regions:
             client = boto3.client('firehose', region_name=region)
-
             response = client.list_delivery_streams()
 
             # print(response)
@@ -63,7 +62,6 @@ def firehose_describe_delivery_streams():
     try:
         for region in regions:
             client = boto3.client('firehose', region_name=region)
-
             response = client.list_delivery_streams()
 
             # print(response)
@@ -74,9 +72,9 @@ def firehose_describe_delivery_streams():
             else:
                 print("### {} Firehose Delivery Streams ###" .format(region))
                 for stream in response['DeliveryStreamNames']:
-                	details = client.describe_delivery_stream(DeliveryStreamName=stream)
-                	# This just prints the blob, needs to be cleaned up
-                	print(details)
+                    details = client.describe_delivery_stream(DeliveryStreamName=stream)
+                    # This just prints the blob, needs to be cleaned up
+                    print(details)
         print("\n")
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
