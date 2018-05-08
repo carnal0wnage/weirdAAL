@@ -88,6 +88,9 @@ def describe_instances():
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
                     print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
                     sys.exit()
+                elif e.response['Error']['Code'] == 'AuthFailure':
+                    print('{} : (AuthFailure) when calling the DescribeInstances -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
                 else:
                     print(e)
             if len(response['Reservations']) <= 0:
@@ -131,6 +134,9 @@ def describe_instances_basic():
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
                     print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                elif e.response['Error']['Code'] == 'AuthFailure':
+                    print('{} : (AuthFailure) when calling the DescribeInstances -- key is invalid or no permissions for region.' .format(AWS_ACCESS_KEY_ID))
                     sys.exit()
                 else:
                     print(e)

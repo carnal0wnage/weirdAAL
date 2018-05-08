@@ -17,7 +17,7 @@ import builtins
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
 # If you want to use a transparent + supports SSL proxy you can put it here
-# os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:8888'
+# os.environ['HTTPS_PROXY'] = 'https://149.56.108.133:3128'
 
 sys.path.append("modules")
 for module in all_modules:
@@ -67,8 +67,8 @@ def method_create():
 try:
     perform_credential_check()
 except:
-    print("Please supply keys as outlined in our README.md file")
-    # exit(1)
+    print("Check the above error message and fix to use weirdAAL")
+    sys.exit(1)
 
 if (args.list):
     pass
