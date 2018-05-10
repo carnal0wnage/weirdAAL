@@ -20,11 +20,11 @@ credentials = session.get_credentials()
 AWS_ACCESS_KEY_ID = credentials.access_key
 
 
-def describe_stacks():
+def opsworks_describe_stacks():
     '''
     Opsworks decribe stacks
     '''
-    print('#### Listing Stacks ####')
+    print('#### Opsworks Listing Stacks ####')
     try:
         for region in regions:
             client = boto3.client(
@@ -36,10 +36,11 @@ def describe_stacks():
             if response.get('Stacks') is None:
                 print("{} likely does not have Opsworks permissions\n" .format(AWS_ACCESS_KEY_ID))
             elif len(response['Stacks']) <= 0:
-                print("[-] DescribeStacks allowed for {} but no results [-]\n" .format(region))
+                print("[-] DescribeStacks allowed for {} but no results [-]" .format(region))
             else:  # THIS PART IS UNTESTED
                 for r in response['Stacks']:
                     pp.pprint(r)
+        print('\n')
     except botocore.exceptions.EndpointConnectionError as e:
         print("Unexpected error: {}" .format(e))
 
@@ -56,11 +57,11 @@ def describe_stacks():
         print("CTRL-C received, exiting...")
 
 
-def describe_user_profiles():
+def opsworks_describe_user_profiles():
     '''
     Opsworks describe user profiles
     '''
-    print('#### Listing User Profiles ####')
+    print('#### Opsworks Listing User Profiles ####')
     try:
         for region in regions:
             client = boto3.client(

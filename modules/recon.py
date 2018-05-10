@@ -6,12 +6,18 @@ that have functions that done have arguments if we can access them :-)
 from libs.brute import *
 from libs.s3 import *
 
+# for recon_defaults
+from libs.elasticbeanstalk import *
+from libs.opsworks import *
+from libs.route53 import *
+from libs.sts import *
+
 # maps to available services in boto 1.7.4
 
 
 def module_recon_all():
     '''
-    Main recon all module - attempt to connect ot each of the services to see if we have some privs
+    Main recon all module - attempt to connect to each of the services to see if we have some privs
     python3 weirdAAL.py -m recon_all -t demo
     '''
     get_accountid()
@@ -154,3 +160,17 @@ def module_recon_all():
 
 #  S3 bucket's while we are here...
     get_s3objects_for_account()
+
+
+def module_recon_defaults():
+    '''
+    Recon defaults that every account seems to have minus route53_geolocations (static data)
+    python3 weirdAAL.py -m recon_defaults -t demo
+    '''
+    elasticbeanstalk_describe_applications()
+    elasticbeanstalk_describe_application_versions()
+    elasticbeanstalk_describe_environments()
+    elasticbeanstalk_describe_events()
+    opsworks_describe_stacks()
+    # list_geolocations() # not work looking at, it's static data
+    sts_get_accountid_all()
