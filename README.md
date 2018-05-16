@@ -11,5 +11,5 @@ You will want to copy the `env.sample` file over to a `.env` file in your weirdA
 weirdAAL$ cp env.sample .env
 ```
 
-Better documentation is on the [wiki](https://github.com/carnal0wnage/weirdAAL/wiki).
+Better documentation available on the [wiki](https://github.com/carnal0wnage/weirdAAL/wiki).
 
