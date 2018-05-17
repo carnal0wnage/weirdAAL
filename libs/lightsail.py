@@ -40,8 +40,8 @@ def lightsail_get_instances():
                     print('{} : (AuthFailure) when calling the Get Instances -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID))
                     sys.exit()
                 elif e.response['Error']['Code'] == 'AccessDeniedException':
-                	print('{} : (AccessDeniedException) no permissions.' .format(AWS_ACCESS_KEY_ID))
-                	sys.exit()
+                    print('{} : (AccessDeniedException) no permissions.' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
 
                 else:
                     print(e)
@@ -49,10 +49,10 @@ def lightsail_get_instances():
                 print("[-] get_instances allowed for {} but no results [-]" .format(region))
             else:
                 print("[+] Listing instances for region: {} [+]" .format(region))
-                #db_logger = []
+                # db_logger = []
                 for r in response['instances']:
                     # db_logger.append(['ec2', 'DescribeInstances', str(r), AWS_ACCESS_KEY_ID, target, datetime.datetime.now()])
-                    #for i in r['Instances']:
+                    # for i in r['Instances']:
                     pp.pprint(r)
                 # logging to db here
                 # try:
