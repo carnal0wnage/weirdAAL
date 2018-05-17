@@ -4,6 +4,7 @@ S3 functions for WeirdAAL
 
 import boto3
 import botocore
+import os
 import pprint
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
@@ -17,9 +18,10 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 AWS_SECRET_ACCESS_KEY = credentials.secret_key
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2','us-west-1', 'us-west-2', 'ca-central-1', 'ap-south-1', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-southeast-1', 'ap-southeast-2', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1']
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'ap-south-1', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-southeast-1', 'ap-southeast-2', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1']
 
 region = 'us-east-1'
+
 
 def s3_get_bucket_policy(bucket):
     try:
@@ -34,8 +36,8 @@ def s3_get_bucket_policy(bucket):
             # Create a paginator to pull 1000 objects at a time
                 paginator = client.get_paginator('list_objects')
                 pageresponse = paginator.paginate(Bucket=thebucket)
-    
-                # PageResponse Holds 1000 objects at a time and will continue to repeat in chunks of 1000. 
+
+                # PageResponse Holds 1000 objects at a time and will continue to repeat in chunks of 1000.
                 for pageobject in pageresponse:
                     for file in pageobject["Contents"]:
                         print(file["Key"])
@@ -50,10 +52,10 @@ def s3_get_bucket_policy(bucket):
             elif e.response['Error']['Code'] == 'AllAccessDisabled':
                 print('{} : cant list s3 bucket [AllAccessDisabled]' .format(AWS_ACCESS_KEY_ID))
             else:
-                print ("Unexpected error: {}" .format(e))
+                print("Unexpected error: {}" .format(e))
         except KeyboardInterrupt:
             print("CTRL-C received, exiting...")
-            
+
         try:
             policy = client.get_bucket_policy(Bucket=bucket)
             if policy:
@@ -73,7 +75,7 @@ def s3_get_bucket_policy(bucket):
             elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
                 print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
             else:
-                print("Unexpected error: {}" .format(e))  
+                print("Unexpected error: {}" .format(e))
         try:
             acl = client.get_bucket_acl(Bucket=bucket)
             if acl:
@@ -107,15 +109,52 @@ def s3_get_bucket_policy(bucket):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-# specifically get the acl on a file in a buckeet
-def get_s3object_acl(bucket, myfile, region):
-    client = boto3.client('s3',region_name=region)
-    
+
+def s3_list_bucket_contents(bucket):
     try:
+        client = boto3.client('s3', region_name=region)
+        print('\n#### Attempting to list s3 bucket contents for {} ####'.format(bucket))
+
+        try:
+            for key in client.list_objects(Bucket=bucket)['Contents']:
+                print(key['Key'])
+
+            '''
+            # Create a paginator to pull 1000 objects at a time
+                paginator = client.get_paginator('list_objects')
+                pageresponse = paginator.paginate(Bucket=thebucket)
+
+                # PageResponse Holds 1000 objects at a time and will continue to repeat in chunks of 1000.
+                for pageobject in pageresponse:
+                    for file in pageobject["Contents"]:
+                        print(file["Key"])
+            '''
+        except KeyError as e:
+                print("Bucket: {} is empty".format(bucket))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : cant list s3 bucket [AccessDenied]'.format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'NoSuchBucketPolicy':
+            print('%s: Has No S3 Policy!' % bucket['Name'])
+        elif e.response['Error']['Code'] == 'AllAccessDisabled':
+            print('{} : cant list s3 bucket [AllAccessDisabled]'.format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def get_s3object_acl(bucket, myfile, region):
+    '''
+    # specifically get the acl on a file in a buckeet
+
+    '''
+    try:
+        client = boto3.client('s3', region_name=region)
         print('#### Trying to enumate s3 ACL for {}:{} ####\n '.format(bucket, myfile))
-        acl = client.get_object_acl(Bucket=bucket,Key=myfile)
+        acl = client.get_object_acl(Bucket=bucket, Key=myfile)
         print(acl)
-        
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -128,7 +167,7 @@ def get_s3object_acl(bucket, myfile, region):
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
-# given an aws keypair what s3 assets does it have permission to
+
 def s3_get_objects_for_account():
     '''
     list s3 buckets for an account
@@ -139,7 +178,7 @@ def s3_get_objects_for_account():
         print('#### Trying to list s3 bucketsfor {} ####\n '.format(AWS_ACCESS_KEY_ID))
         for bucket in client.buckets.all():
             print(bucket.name)
-        
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -166,7 +205,7 @@ def s3_get_objects_for_account_detailed():
         for bucket in client.buckets.all():
             print(bucket.name)
             s3_get_bucket_policy(bucket.name)
-        
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
@@ -198,6 +237,56 @@ def s3_get_bucket_objects_from_file(file):
         print("{} not found".format(file))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'NotSignedUp':
+            print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def s3_download_file(bucket, file):
+    '''
+    download a file from a S3 bucket
+    '''
+    try:
+        client = boto3.resource('s3', region_name=region)
+        client.Bucket(bucket).download_file(file, '{}/loot/{}'.format(os.getcwd(), file))
+        print("file downloaded to: {}/loot/{}".format(os.getcwd(), file))
+
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            print("{} object does not exist.".format(file))
+        elif e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'NotSignedUp':
+            print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def s3_upload_file(bucket, source_file, dest_file):
+    '''
+    upload a file to a S3 bucket
+    '''
+    try:
+        client = boto3.resource('s3', region_name=region)
+        client.meta.client.upload_file(source_file, bucket, dest_file)
+
+        print("{} uploaded to: {}/{}".format(source_file, bucket, dest_file))
+    except FileNotFoundError as e:
+        print("[-] {} not found [-]".format(source_file))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            print("{} object does not exist.".format(file))
+        elif e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
             print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
