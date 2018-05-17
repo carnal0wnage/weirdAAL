@@ -159,7 +159,7 @@ def module_recon_all():
     #  XRay no functions
 
 #  S3 bucket's while we are here...
-    get_s3objects_for_account()
+    s3_get_objects_for_account()
 
 
 def module_recon_defaults():
