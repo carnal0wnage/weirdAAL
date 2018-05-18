@@ -59,3 +59,11 @@ def module_s3_list_buckets_from_file(*args):
     python3 weirdAAL.py -m s3_list_buckets_from_file -a 'bucket_list.txt' -t yolo
     '''
     s3_get_bucket_objects_from_file(args[0][0])
+
+
+def module_s3_get_file_acl(*args):
+    '''
+    S3 get the ACL on a file
+    python3 weirdAAL.py -m s3_get_file_acl -a 'bucket','file' -t yolo
+    '''
+    s3_get_file_acl(args[0][0], args[0][1])

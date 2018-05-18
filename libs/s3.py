@@ -296,3 +296,29 @@ def s3_upload_file(bucket, source_file, dest_file):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
+def s3_get_file_acl(bucket, file):
+    '''
+    get file in a s3 bucket ACL
+    '''
+    try:
+        client = boto3.client('s3', region_name=region)
+        object_acl = client.get_object_acl(Bucket=bucket, Key=file)
+        if object_acl:
+            print("{} ACL:\n".format(file))
+            print("{}".format(object_acl['Grants']))
+    except FileNotFoundError as e:
+        print("[-] {} not found [-]".format(file))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            print("{} object does not exist.".format(file))
+        elif e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        elif e.response['Error']['Code'] == 'NotSignedUp':
+            print('{} : doesnt have s3 access' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
