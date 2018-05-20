@@ -57,3 +57,22 @@ def list_sns_subscribers(topic,region):
             print("Unexpected error: {}" .format(e))
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
+
+def delete_sns_topic(topic, region):
+    try:
+        client = boto3.client('sns', region_name=region)
+        action = client.delete_topic(TopicArn=topic)
+        print("Deleted Topic: {}".format(topic))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("The AWS KEY IS INVALID. Exiting")
+        if e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'InvalidParameter':
+            print('The region you provided ({}) is invalid for the Topic ARN. Are you sure this topic exists in this region?'.format(region))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
