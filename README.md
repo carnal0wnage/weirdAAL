@@ -5,5 +5,5 @@ WeirdAAL (AWS Attack Library)
 
 
 
-Better documentation available on the [wiki](https://github.com/carnal0wnage/weirdAAL/wiki).
+Documentation available on the [wiki](https://github.com/carnal0wnage/weirdAAL/wiki).
 
