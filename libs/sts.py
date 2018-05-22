@@ -33,7 +33,7 @@ def sts_get_accountid():
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'EndpointConnectionError':
-            print("[-] Cant connect to the {} endpoint [-]" .format(region))
+            print("[-] Cant connect to the region endpoint [-]")
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
@@ -60,7 +60,7 @@ def sts_get_accountid_all():
         if e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'EndpointConnectionError':
-            print("[-] Cant connect to the {} endpoint [-]" .format(region))
+            print("[-] Cant connect to the region endpoint [-]")
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
