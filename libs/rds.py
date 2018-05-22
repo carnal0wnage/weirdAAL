@@ -5,6 +5,7 @@ RDS functions for WeirdAAL
 import boto3
 import botocore
 import pprint
+import sys
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
