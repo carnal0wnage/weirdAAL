@@ -6,6 +6,7 @@ import boto3
 import botocore
 import os
 import pprint
+import sys
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
