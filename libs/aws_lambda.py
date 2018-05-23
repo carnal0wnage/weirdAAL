@@ -132,7 +132,7 @@ def lambda_get_account_settings():
         if response.get('AccountLimit') is None:
             print("{} likely does not have Lambda permissions\n" .format(AWS_ACCESS_KEY_ID))
         elif len(response['AccountLimit']) <= 0:
-            print("[-] GetAccountSettings allowed for {} but no results [-]" .format(region))
+            print("[-] GetAccountSettings allowed for {} but no results [-]" .format(AWS_ACCESS_KEY_ID))
         else:
             print("AccountLimit:")
             pp.pprint(response['AccountLimit'])
