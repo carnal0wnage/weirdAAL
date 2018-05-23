@@ -286,7 +286,7 @@ def s3_upload_file(bucket, source_file, dest_file):
         print("[-] {} not found [-]".format(source_file))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
-            print("{} object does not exist.".format(file))
+            print("{} object does not exist.".format(source_file))
         elif e.response['Error']['Code'] == 'InvalidClientTokenId':
             sys.exit("The AWS KEY IS INVALID. Exiting")
         elif e.response['Error']['Code'] == 'NotSignedUp':
