@@ -22,6 +22,13 @@ def module_sns_list_subscribers(*args):
     except IndexError:
         print("Please provide a topic arn *AND* region, ex: -a arn:aws:sns:us-east-1:123456789123:sometopic,us-east-1")
 
+def module_sns_list_all_subscribers():
+    '''
+    Rather than listing a single topics subscribers, we'll list all topics and all subscribersself.
+    python3 weirdAAL.py -m sns_list_all_subscribers
+    '''
+    list_all_sns_subscribers()
+
 def module_sns_delete_topic(*args):
     '''
     SNS delete a topic. Takes two arguments - the topic arn and the region.
