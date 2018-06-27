@@ -45,10 +45,10 @@ def module_list_services_by_key():
     Show services for a given key service:sub_service
     example: elasticbeanstalk:DescribeEvents
     '''
-    results = search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)
+    results = ["{}.{}".format(r[0], r[1]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
     print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
-    for result in results:
-        print("{}:{}".format(result[0], result[1]))
+    for result in sorted(results):
+        print(result)
 
 
 # for a key, what services does it have listed in the DB and the date
@@ -59,7 +59,7 @@ def module_list_services_by_key_with_date():
     Show services for a given key service:sub_service with date
     example: elasticbeanstalk:DescribeEvents -> Date: 2018-04-18 20:36:41.791780
     '''
-    results = search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)
+    results = [("{}.{}".format(r[0], r[1]), r[2]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
     print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
-    for result in results:
-        print("{}:{} -> Date: {}".format(result[0], result[1], result[2]))
+    for result, date in sorted(results, key=lambda r: r[0]):
+        print("{} -> Date: {}".format(result, date))
