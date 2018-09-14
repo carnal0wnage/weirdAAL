@@ -19,10 +19,11 @@ os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
 
-sys.path.append("modules/aws/")
-for module in all_modules:
-    exec("from %s import *" % module)
+sys.path.append("modules")
+#for module in all_modules:
+#    exec("from %s import *" % module)
 
+from modules import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-m", "--module", help="list the module you would like to run", action="store", type=str, required=True)
@@ -56,6 +57,7 @@ def perform_credential_check():
 
 def method_create():
     try:
+        print(globals())
         arg = globals()["module_" + args.module]
         return arg
     except KeyError:
