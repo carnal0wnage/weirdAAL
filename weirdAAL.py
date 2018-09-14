@@ -19,7 +19,7 @@ os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
 
-sys.path.append("modules")
+sys.path.append("modules/aws/")
 for module in all_modules:
     exec("from %s import *" % module)
 
