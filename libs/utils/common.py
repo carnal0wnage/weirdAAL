@@ -5,8 +5,13 @@ def list_all_files(directory):
 
   array = []
 
-  for file in list_of_files:
-      filename_and_ext = os.path.splitext(file)
-      if (filename_and_ext[1] == ".py") and not (filename_and_ext[0].startswith("__")):
-          array.append(filename_and_ext[0])
+  path ="modules"
+  for (dirpath, dirnames, filenames) in os.walk(path):
+      if ( not (dirpath == os.path.basename(directory)) and
+      (os.path.isdir(dirpath))
+      and not (os.path.basename(dirpath).startswith('__')) ):
+        if filenames:
+            list_path_name = dirpath.split('/')
+            array.append(".".join(list_path_name))
+            #array.append(directory.split)
   return array
