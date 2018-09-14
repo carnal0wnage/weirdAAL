@@ -20,10 +20,9 @@ os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
 
 sys.path.append("modules")
-#for module in all_modules:
-#    exec("from %s import *" % module)
+for module in all_modules:
+    exec("from %s import *" % module)
 
-from modules import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-m", "--module", help="list the module you would like to run", action="store", type=str, required=True)
