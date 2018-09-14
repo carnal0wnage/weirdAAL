@@ -56,7 +56,6 @@ def perform_credential_check():
 
 def method_create():
     try:
-        print(globals())
         arg = globals()["module_" + args.module]
         return arg
     except KeyError:
