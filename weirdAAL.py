@@ -25,18 +25,15 @@ for module in all_modules:
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-m", "--module", help="list the module you would like to run", action="store", type=str, required=True)
-parser.add_argument("-t", "--target", help="Give your target a name so we can track results", action="store", type=str, required=True)
+parser.add_argument("-m", "--module", help="list the module you would like to run", action="store", type=str, required=False)
+parser.add_argument("-t", "--target", help="Give your target a name so we can track results", action="store", type=str, required=False)
 parser.add_argument("-a", "--arguments", help="Provide a list of arguments, comma separated. Ex: arg1,arg2,arg3", action="store", type=str, required=False)
-parser.add_argument("-l", "--list", help="list modules", action="store_true")
+parser.add_argument("-l", "--list", help="list modules", required=False, action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
 args = parser.parse_args()
 
 # Provides us with a global var "db_name" we can access anywhere
 builtins.db_name = "weirdAAL.db"
-
-# Provides us with a global var "target" we can access anywhere
-builtins.target = args.target
 
 def perform_credential_check():
     '''
@@ -71,7 +68,7 @@ except:
     sys.exit(1)
 
 if (args.list):
-    pass
+    print(all_modules)
 
 
 # arg_list has to be defined otherwise will cause an exception
@@ -82,12 +79,18 @@ if (args.arguments):
 
 # We need the user to tell us the module they want to proceed on
 if (args.module):
-    arg = method_create()
-    if callable(arg):
-        if arg_list:
-            arg(arg_list)
-        else:
-            arg()
+    if not (args.target):
+        print("Use -t to give your target a name so we can track results!!!")
+        sys.exit(1)
+    else:
+        # Provides us with a global var "target" we can access anywhere
+        builtins.target = args.target
+        arg = method_create()
+        if callable(arg):
+            if arg_list:
+                arg(arg_list)
+            else:
+                arg()
 
 
 # Allow the user to specify verbosity for debugging
