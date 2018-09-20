@@ -12,5 +12,6 @@ def list_all_files(directory):
       and not (os.path.basename(dirpath).startswith('__')) ):
         for file in filenames:
             list_path_name = dirpath.split('/')
-            array.append(".".join(list_path_name) + "." + os.path.splitext(file)[0])
+            if not (file.startswith('.')):
+                array.append(".".join(list_path_name) + "." + os.path.splitext(file)[0])
   return array
