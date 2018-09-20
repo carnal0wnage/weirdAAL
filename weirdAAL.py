@@ -69,7 +69,7 @@ except:
 
 if (args.list):
     for module in all_modules:
-        print(module)
+        print(dir(module))
 
 
 # arg_list has to be defined otherwise will cause an exception
