@@ -68,7 +68,8 @@ except:
     sys.exit(1)
 
 if (args.list):
-    print(all_modules)
+    for module in all_modules:
+        print(module)
 
 
 # arg_list has to be defined otherwise will cause an exception
