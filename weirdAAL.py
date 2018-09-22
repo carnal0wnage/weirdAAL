@@ -13,6 +13,7 @@ from botocore.exceptions import ClientError
 from modules import *
 import sys
 import builtins
+import re
 
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
@@ -22,6 +23,7 @@ os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 sys.path.append("modules")
 for module in all_modules:
     exec("from %s import *" % module)
+
 
 
 parser = argparse.ArgumentParser()
@@ -34,6 +36,7 @@ args = parser.parse_args()
 
 # Provides us with a global var "db_name" we can access anywhere
 builtins.db_name = "weirdAAL.db"
+
 
 def perform_credential_check():
     '''
@@ -59,6 +62,48 @@ def method_create():
         print("That module does not exist")
         exit(1)
 
+builtins.aws_module_methods_info = {}
+builtins.gcp_module_methods_info = {}
+
+def get_methods_for_classname(classname):
+    methods = []
+    all_methods = dir(sys.modules[classname])
+    for meth in all_methods:
+        if meth.startswith("module_"):
+            narg = "{}.__doc__".format(meth)
+            narg = eval(narg)
+            nhash = {}
+            nhash[meth] = narg
+            methods.append(nhash)
+    return methods
+
+
+def make_list_of_methods(cloud_service, mod):
+    meths = get_methods_for_classname(mod)
+    if cloud_service == 'aws':
+        new_mod_name = re.sub("modules.aws.", "", mod)
+        aws_module_methods_info[new_mod_name.upper()] = meths
+    elif cloud_service == 'gcp':
+        new_mod_name = re.sub("modules.gcp.", "", mod)
+        gcp_module_methods_info[new_mod_name.upper()] = meths
+
+
+def make_the_list():
+    for m in sys.modules.keys():
+        if (m.startswith("modules.aws")
+        and not (m == "modules.aws")):
+            make_list_of_methods("aws", m)
+        elif ((m.startswith("modules.gcp"))
+        and not (m == "modules.gcp")):
+            make_list_of_methods("gcp", m)
+
+def print_the_list():
+    print("AWS")
+    print("---")
+    for (k) in aws_module_methods_info:
+        print(k)
+        print(aws_module_methods_info[k])
+        print("....")
 
 # Need to figure out if we have keys in the ENV or not
 try:
@@ -68,8 +113,8 @@ except:
     sys.exit(1)
 
 if (args.list):
-    for module in all_modules:
-        print(dir(module))
+    make_the_list()
+    print_the_list()
 
 
 # arg_list has to be defined otherwise will cause an exception
