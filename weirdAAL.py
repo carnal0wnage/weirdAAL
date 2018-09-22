@@ -14,6 +14,8 @@ from modules import *
 import sys
 import builtins
 import re
+from tabulate import tabulate
+import textwrap
 
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
@@ -97,13 +99,28 @@ def make_the_list():
         and not (m == "modules.gcp")):
             make_list_of_methods("gcp", m)
 
+def normalize_comments(string):
+    string = textwrap.fill(string.strip(), 40)
+    return string
+
+
+def make_tabulate_rows(hash, cloud_provider):
+    entire_contents = []
+    for (key) in hash:
+        for item in hash[key]:
+            for (k,v) in item.items():
+                normalized_comment = normalize_comments(v)
+                entire_contents.append([cloud_provider, key, k, normalized_comment])
+
+    return entire_contents
+
+
+
 def print_the_list():
-    print("AWS")
-    print("---")
-    for (k) in aws_module_methods_info:
-        print(k)
-        print(aws_module_methods_info[k])
-        print("....")
+    aws_rows = make_tabulate_rows(aws_module_methods_info, 'AWS')
+    gcp_rows = make_tabulate_rows(gcp_module_methods_info, 'GCP')
+    print(tabulate(aws_rows, headers=['Cloud Provider', 'Service', 'Mod', 'Desc']))
+    print(tabulate(gcp_rows, headers=['Cloud Provider', 'Service', 'Mod', 'Desc']))
 
 # Need to figure out if we have keys in the ENV or not
 try:
