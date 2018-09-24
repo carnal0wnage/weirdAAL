@@ -13,6 +13,9 @@ from botocore.exceptions import ClientError
 from modules import *
 import sys
 import builtins
+import re
+from tabulate import tabulate
+import textwrap
 
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
@@ -24,19 +27,18 @@ for module in all_modules:
     exec("from %s import *" % module)
 
 
+
 parser = argparse.ArgumentParser()
-parser.add_argument("-m", "--module", help="list the module you would like to run", action="store", type=str, required=True)
-parser.add_argument("-t", "--target", help="Give your target a name so we can track results", action="store", type=str, required=True)
+parser.add_argument("-m", "--module", help="list the module you would like to run", action="store", type=str, required=False)
+parser.add_argument("-t", "--target", help="Give your target a name so we can track results", action="store", type=str, required=False)
 parser.add_argument("-a", "--arguments", help="Provide a list of arguments, comma separated. Ex: arg1,arg2,arg3", action="store", type=str, required=False)
-parser.add_argument("-l", "--list", help="list modules", action="store_true")
+parser.add_argument("-l", "--list", help="list modules", required=False, action="store_true")
 parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
 args = parser.parse_args()
 
 # Provides us with a global var "db_name" we can access anywhere
 builtins.db_name = "weirdAAL.db"
 
-# Provides us with a global var "target" we can access anywhere
-builtins.target = args.target
 
 def perform_credential_check():
     '''
@@ -62,6 +64,63 @@ def method_create():
         print("That module does not exist")
         exit(1)
 
+builtins.aws_module_methods_info = {}
+builtins.gcp_module_methods_info = {}
+
+def get_methods_for_classname(classname):
+    methods = []
+    all_methods = dir(sys.modules[classname])
+    for meth in all_methods:
+        if meth.startswith("module_"):
+            narg = "{}.__doc__".format(meth)
+            narg = eval(narg)
+            nhash = {}
+            nhash[meth] = narg
+            methods.append(nhash)
+    return methods
+
+
+def make_list_of_methods(cloud_service, mod):
+    meths = get_methods_for_classname(mod)
+    if cloud_service == 'aws':
+        new_mod_name = re.sub("modules.aws.", "", mod)
+        aws_module_methods_info[new_mod_name.upper()] = meths
+    elif cloud_service == 'gcp':
+        new_mod_name = re.sub("modules.gcp.", "", mod)
+        gcp_module_methods_info[new_mod_name.upper()] = meths
+
+
+def make_the_list():
+    for m in sys.modules.keys():
+        if (m.startswith("modules.aws")
+        and not (m == "modules.aws")):
+            make_list_of_methods("aws", m)
+        elif ((m.startswith("modules.gcp"))
+        and not (m == "modules.gcp")):
+            make_list_of_methods("gcp", m)
+
+def normalize_comments(string):
+    string = textwrap.fill(string.strip(), 40)
+    return string
+
+
+def make_tabulate_rows(hash, cloud_provider):
+    entire_contents = []
+    for (key) in hash:
+        for item in hash[key]:
+            for (k,v) in item.items():
+                normalized_comment = normalize_comments(v)
+                entire_contents.append([cloud_provider, key, k, normalized_comment])
+
+    return entire_contents
+
+
+
+def print_the_list():
+    aws_rows = make_tabulate_rows(aws_module_methods_info, 'AWS')
+    gcp_rows = make_tabulate_rows(gcp_module_methods_info, 'GCP')
+    print(tabulate(aws_rows, headers=['Cloud Provider', 'Service', 'Mod', 'Desc']))
+    print(tabulate(gcp_rows, headers=['Cloud Provider', 'Service', 'Mod', 'Desc']))
 
 # Need to figure out if we have keys in the ENV or not
 try:
@@ -71,7 +130,8 @@ except:
     sys.exit(1)
 
 if (args.list):
-    pass
+    make_the_list()
+    print_the_list()
 
 
 # arg_list has to be defined otherwise will cause an exception
@@ -82,12 +142,18 @@ if (args.arguments):
 
 # We need the user to tell us the module they want to proceed on
 if (args.module):
-    arg = method_create()
-    if callable(arg):
-        if arg_list:
-            arg(arg_list)
-        else:
-            arg()
+    if not (args.target):
+        print("Use -t to give your target a name so we can track results!!!")
+        sys.exit(1)
+    else:
+        # Provides us with a global var "target" we can access anywhere
+        builtins.target = args.target
+        arg = method_create()
+        if callable(arg):
+            if arg_list:
+                arg(arg_list)
+            else:
+                arg()
 
 
 # Allow the user to specify verbosity for debugging
