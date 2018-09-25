@@ -6,3 +6,4 @@ python-dateutil==2.6.1
 s3transfer==0.1.11
 six==1.11.0
 virtualenv==15.1.0
+tabulate==0.8.2
