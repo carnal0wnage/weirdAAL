@@ -60,6 +60,12 @@ def module_iam_list_roles():
     '''
     iam_list_roles()
 
+def module_iam_list_roles_assumable():
+    '''
+    Lists the IAM roles that have the specified path prefix. If there are none, the operation returns an empty list.
+    python3 weirdAAL.py -m iam_list_roles -t yolo
+    '''
+    iam_list_roles_assumable()
 
 def module_iam_list_policies():
     '''
