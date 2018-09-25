@@ -2,7 +2,7 @@
 Module for interacting with the config service
 '''
 
-from libs.config import *
+from libs.aws.config import *
 
 
 def module_config_list_all_rules():

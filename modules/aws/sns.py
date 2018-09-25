@@ -2,7 +2,7 @@
 SNS module
 '''
 
-from libs.sns import *
+from libs.aws.sns import *
 
 def module_sns_list_topics():
     '''

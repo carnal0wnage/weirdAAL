@@ -6,7 +6,7 @@ import boto3
 import sqlite3
 from sqlite3 import Error
 
-from libs.sql import *
+from libs.aws.sql import *
 
 session = boto3.Session()
 credentials = session.get_credentials()

@@ -2,7 +2,7 @@
 example calling cloudwatch functions
 decribe alarms, describe alarm history, list metrics
 '''
-from libs.cloudwatch import *
+from libs.aws.cloudwatch import *
 
 
 def module_cloudwatch_describe_alarms():

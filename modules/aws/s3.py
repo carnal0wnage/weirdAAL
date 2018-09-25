@@ -2,7 +2,7 @@
 S3 module
 '''
 
-from libs.s3 import *
+from libs.aws.s3 import *
 
 
 def module_s3_get_bucket_policy(*args):

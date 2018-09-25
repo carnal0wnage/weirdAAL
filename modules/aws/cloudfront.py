@@ -2,7 +2,7 @@
 This file is used to perform some EMR actions
 '''
 
-from libs.cloudfront import *
+from libs.aws.cloudfront import *
 
 
 def module_cloudfront_list_distributions():

@@ -1,7 +1,7 @@
 '''
 This file is used to list lambda functions and event mappings
 '''
-from libs.aws_lambda import *
+from libs.aws.aws_lambda import *
 
 
 def module_lambda_list_functions():

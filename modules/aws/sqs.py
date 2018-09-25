@@ -2,7 +2,7 @@
 SQS Modules
 '''
 
-from libs.sqs import *
+from libs.aws.sqs import *
 
 
 def module_sqs_list_queues():

@@ -1,7 +1,7 @@
 '''
 Firehose functions
 '''
-from libs.firehose import *
+from libs.aws.firehose import *
 
 
 def module_firehose_list_delivery_streams():
