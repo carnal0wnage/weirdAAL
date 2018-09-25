@@ -122,16 +122,17 @@ def print_the_list():
     print(tabulate(aws_rows, headers=['Cloud Provider', 'Service', 'Mod', 'Desc']))
     print(tabulate(gcp_rows, headers=['Cloud Provider', 'Service', 'Mod', 'Desc']))
 
+if (args.list):
+    make_the_list()
+    print_the_list()
+    sys.exit(1)
+
 # Need to figure out if we have keys in the ENV or not
 try:
     perform_credential_check()
 except:
     print("Check the above error message and fix to use weirdAAL")
     sys.exit(1)
-
-if (args.list):
-    make_the_list()
-    print_the_list()
 
 
 # arg_list has to be defined otherwise will cause an exception
