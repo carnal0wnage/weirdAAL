@@ -2,7 +2,7 @@
 This file is used to perform some EMR actions
 '''
 
-from libs.emr import *
+from libs.aws.emr import *
 
 
 def module_emr_list_clusters():

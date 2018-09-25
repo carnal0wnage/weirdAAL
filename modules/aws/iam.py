@@ -2,7 +2,7 @@
 IAM recon functions
 '''
 
-from libs.iam import *
+from libs.aws.iam import *
 
 
 def module_iam_list_groups():

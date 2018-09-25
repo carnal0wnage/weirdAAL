@@ -3,14 +3,14 @@ This module handles the core recon functionality by asking all the services
 that have functions that done have arguments if we can access them :-)
 '''
 
-from libs.brute import *
-from libs.s3 import *
+from libs.aws.brute import *
+from libs.aws.s3 import *
 
 # for recon_defaults
-from libs.elasticbeanstalk import *
-from libs.opsworks import *
-from libs.route53 import *
-from libs.sts import *
+from libs.aws.elasticbeanstalk import *
+from libs.aws.opsworks import *
+from libs.aws.route53 import *
+from libs.aws.sts import *
 
 # maps to available services in boto 1.7.4
 

@@ -6,7 +6,7 @@ import builtins
 import sqlite3
 from sqlite3 import Error
 
-from libs.sql import *
+from libs.aws.sql import *
 
 
 

@@ -4,7 +4,7 @@ usually have to be root or be specifically assigned the
 permission to get anything from this
 '''
 
-from libs.pricing import *
+from libs.aws.pricing import *
 
 
 def module_pricing_describe_services():

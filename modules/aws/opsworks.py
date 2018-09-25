@@ -1,4 +1,4 @@
-from libs.opsworks import *
+from libs.aws.opsworks import *
 
 
 def module_opsworks_describe_stacks():

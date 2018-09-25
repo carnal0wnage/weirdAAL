@@ -2,7 +2,7 @@
 Translate module
 '''
 
-from libs.translate import *
+from libs.aws.translate import *
 
 
 def module_translate_translate_text(*text):
