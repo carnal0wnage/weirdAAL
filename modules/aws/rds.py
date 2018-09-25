@@ -2,7 +2,7 @@
 RDS module
 '''
 
-from libs.rds import *
+from libs.aws.rds import *
 
 
 def module_rds_describe_db_instances():

@@ -2,7 +2,7 @@
 SES module
 '''
 
-from libs.ses import *
+from libs.aws.ses import *
 
 
 def module_ses_list_identities():

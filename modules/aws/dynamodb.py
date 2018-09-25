@@ -1,7 +1,7 @@
 '''
 dynamoDB examples
 '''
-from libs.dynamodb import *
+from libs.aws.dynamodb import *
 
 
 def module_dynamodb_list_tables():

@@ -2,7 +2,7 @@
 Module for interacting with the lightsail
 '''
 
-from libs.lightsail import *
+from libs.aws.lightsail import *
 
 
 def module_lightsail_get_instances():

@@ -2,7 +2,7 @@
 This file is used to perform some EMR actions
 '''
 
-from libs.sts import *
+from libs.aws.sts import *
 
 
 def module_sts_get_accountid():

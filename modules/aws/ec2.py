@@ -2,7 +2,7 @@
 This file is used to perform various EC2 operations
 '''
 
-from libs.ec2 import *
+from libs.aws.ec2 import *
 
 
 def module_ec2_describe_instances_basic():

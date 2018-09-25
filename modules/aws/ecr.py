@@ -2,7 +2,7 @@
 ECR functions
 '''
 
-from libs.ecr import *
+from libs.aws.ecr import *
 
 
 def module_ecr_describe_repos():

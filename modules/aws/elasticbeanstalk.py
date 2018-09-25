@@ -1,7 +1,7 @@
 '''
 This file is used to perform some ElasticBeanstalk actions
 '''
-from libs.elasticbeanstalk import *
+from libs.aws.elasticbeanstalk import *
 
 
 '''

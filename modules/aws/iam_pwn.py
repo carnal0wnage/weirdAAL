@@ -2,8 +2,8 @@
 Functions specifically related to IAM account takeover if you have root or IAM access gather user info,
 manipulate access keys or passwords, make backdoor account
 '''
-from libs.iam import *
-from libs.sts import *
+from libs.aws.iam import *
+from libs.aws.sts import *
 
 
 def module_iam_get_account_summary():

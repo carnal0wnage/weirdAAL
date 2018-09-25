@@ -2,7 +2,7 @@
 datapipeline modules
 '''
 
-from libs.datapipeline import *
+from libs.aws.datapipeline import *
 
 
 def module_datapipeline_list_pipelines():

@@ -1,7 +1,7 @@
 '''
 This file is used to perform cloudtrail actions
 '''
-from libs.cloudtrail import *
+from libs.aws.cloudtrail import *
 
 
 def module_cloudtrail_describe_trails():

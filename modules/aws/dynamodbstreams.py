@@ -1,7 +1,7 @@
 '''
 dynamoDBstreams examples
 '''
-from libs.dynamodbstreams import *
+from libs.aws.dynamodbstreams import *
 
 
 def module_dynamodbstreams_list_streams():

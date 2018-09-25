@@ -10,7 +10,7 @@ import pprint
 import sys
 import time
 
-from libs.sql import *
+from libs.aws.sql import *
 
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
