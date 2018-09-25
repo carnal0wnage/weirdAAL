@@ -462,7 +462,7 @@ def iam_list_roles_assumable():
     print("### Roles that can be Assumed by AWS Principals ###")
     try:
         for region in regions:
-            client = boto3.client('iam', region_name="us-east-1")
+            client = boto3.client('iam', region_name=region)
             response = client.list_roles()
             roles = response.get("Roles")
             for role in roles:
