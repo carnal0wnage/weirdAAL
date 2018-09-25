@@ -457,7 +457,7 @@ def iam_list_roles():
 
 def iam_list_roles_assumable():
     '''
-    Lists the IAM roles that have the specified path prefix. If there are none, the operation returns an empty list
+    Lists IAM roles that are assumable by AWS Principals and excludes roles that are assumable by Services
     '''
     print("### Roles that can be Assumed by AWS Principals ###")
     try:

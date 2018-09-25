@@ -62,8 +62,8 @@ def module_iam_list_roles():
 
 def module_iam_list_roles_assumable():
     '''
-    Lists the IAM roles that have the specified path prefix. If there are none, the operation returns an empty list.
-    python3 weirdAAL.py -m iam_list_roles -t yolo
+    Lists the IAM roles that have the specified path prefix that are assumable by AWS principals and excludes roles assumable by AWS services. If there are none, the operation returns an empty list.
+    python3 weirdAAL.py -m iam_list_roles_assumable -t yolo
     '''
     iam_list_roles_assumable()
 
