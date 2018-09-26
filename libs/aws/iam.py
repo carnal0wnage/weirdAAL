@@ -455,6 +455,33 @@ def iam_list_roles():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+def iam_list_roles_assumable():
+    '''
+    Lists IAM roles that are assumable by AWS Principals and excludes roles that are assumable by Services
+    '''
+    print("### Roles that can be Assumed by AWS Principals ###")
+    try:
+        for region in regions:
+            client = boto3.client('iam', region_name=region)
+            response = client.list_roles()
+            roles = response.get("Roles")
+            for role in roles:
+                if "AWS" in role["AssumeRolePolicyDocument"]["Statement"][0]["Principal"]:
+                    print(role["RoleId"] + " " + role["RoleName"])
+                    print(role["AssumeRolePolicyDocument"]["Statement"][0]["Principal"]["AWS"])
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'InvalidClientTokenId':
+            sys.exit("{} : The AWS KEY IS INVALID. Exiting" .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'AccessDenied':
+            print('{} : Is NOT a root/IAM key' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'OptInRequired':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print("Unexpected error: {}" .format(e))
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
 
 def iam_list_policies():
     '''
