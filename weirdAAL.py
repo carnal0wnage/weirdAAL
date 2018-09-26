@@ -29,7 +29,7 @@ from google.cloud.exceptions import *
 
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp_keys/4.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp_keys/34.json'
 
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'

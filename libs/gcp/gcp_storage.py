@@ -35,5 +35,5 @@ def gcp_storage_list_blobs(credentials, bucket_name):
     blobs = bucket.list_blobs()
 
     for blob in blobs:
-        print(blob.name)
+        print('\t{}'.format(blob.name))
     print('\n')

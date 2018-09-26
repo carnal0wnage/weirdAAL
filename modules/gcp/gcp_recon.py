@@ -7,6 +7,7 @@ that have functions that done have arguments if we can access them :-)
 
 from libs.gcp.gcp_iam import *
 from libs.gcp.gcp_storage import *
+from libs.gcp.gcp_bigquery import *
 
 credentials = service_account.Credentials.from_service_account_file(
     filename=os.environ['GOOGLE_APPLICATION_CREDENTIALS'],
@@ -27,9 +28,9 @@ def module_gcp_recon_all():
     except HttpError as e:
         # print(e)
         if e.resp.status in [403, 500, 503]:
-            print("\tGCP IAM access denied for {}".format(credentials.service_account_email))
+            print("\tGCP IAM access denied for {}\n".format(credentials.service_account_email))
         else:
-            print(e)
+            print('{}\n'.format(e))
     except google.auth.exceptions.RefreshError as f:
         print(f)
         print("Service key is invalid exiting")
@@ -42,9 +43,9 @@ def module_gcp_recon_all():
     except HttpError as e:
         # print(e)
         if e.resp.status in [403, 500, 503]:
-            print("\tIAM access denied for {}".format(credentials.service_account_email))
+            print("\tIAM access denied for {}\n".format(credentials.service_account_email))
         else:
-            print(e)
+            print('{}\n'.format(e))
     except google.auth.exceptions.RefreshError as f:
         print(f)
         print("Service key is invalid exiting")
@@ -54,19 +55,35 @@ def module_gcp_recon_all():
     Storage bucket access checks
     '''
     try:
-        print("Checking for storage buckets")
+        print("GCP Storage check")
         buckets = gcp_storage_list_buckets(credentials)
         if buckets:
-            print("\nAttempting to list bucket contents")
+            print("\nAttempting to list bucket contents:")
             for a in buckets:
-                print(a)
+                print('Bucket: {}'.format(a))
                 gcp_storage_list_blobs(credentials, a)
     except googleapiclient.errors.HttpError as e:
-        print(e)
+        print('{}\n'.format(e))
     except exceptions.Forbidden as e:
-            print("Forbidden")
-            print(e)
+        print("\t Forbidden")
+        print('{}\n'.format(e))
     except exceptions.PermissionDenied as e:
-            print("PermissionDenied")
+        print("\t PermissionDenied")
+    except google.auth.exceptions.RefreshError as f:
+        print(f)
+
+    '''
+    BigQuery access checks
+    ''' 
+    try:
+        print("GCP BigQuery check")
+        gcp_bigquery_list_datasets(credentials.project_id, credentials)
+    except googleapiclient.errors.HttpError as e:
+        print('{}\n'.format(e))
+    except exceptions.Forbidden as e:
+        print("\t Forbidden")
+        print('{}\n'.format(e))
+    except exceptions.PermissionDenied as e:
+            print("\t PermissionDenied")
     except google.auth.exceptions.RefreshError as f:
         print(f)
