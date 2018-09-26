@@ -67,6 +67,9 @@ def perform_credential_check():
     except ClientError as e:
         print("The AWS Access Keys are not valid/active")
         sys.exit(1)
+    # excepetion to catch the lack of aws cred here - temp fix
+    except Exception as e:
+        print('\t {}'.format(e))
 
 def method_create():
     try:
