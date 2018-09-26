@@ -29,7 +29,7 @@ from google.cloud.exceptions import *
 
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp_keys/4.json'
 
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
@@ -69,7 +69,7 @@ def perform_credential_check():
         sys.exit(1)
     # excepetion to catch the lack of aws cred here - temp fix
     except Exception as e:
-        print('\t {}'.format(e))
+        print('\t -')
 
 def method_create():
     try:

@@ -14,7 +14,7 @@ from googleapiclient.errors import HttpError
 
 
 # [START iam_list_keys]
-def gcp_iam_list_keys(service_account_email,service):
+def gcp_iam_list_keys(service_account_email, service):
     """Lists all keys for a service account."""
 
     # pylint: disable=no-member
@@ -27,7 +27,7 @@ def gcp_iam_list_keys(service_account_email,service):
 
 
 # [START iam_list_service_accounts]
-def gcp_iam_list_service_accounts(project_id):
+def gcp_iam_list_service_accounts(project_id, service):
     """Lists all service accounts for the current project."""
 
     # pylint: disable=no-member
