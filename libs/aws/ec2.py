@@ -144,7 +144,7 @@ def describe_instances_basic():
                     continue
                 elif e.response['Error']['Code'] == 'OptInRequired':
                      print('{} : (OptInRequired) Has permissions but isnt signed up for service in ({})- ' .format(AWS_ACCESS_KEY_ID, region))
-                    continue
+                     continue
                 else:
                     print(e)
                     continue
