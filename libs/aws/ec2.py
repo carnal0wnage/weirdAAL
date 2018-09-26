@@ -86,13 +86,17 @@ def describe_instances():
                 # print(response)
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
-                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
-                    sys.exit()
+                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances in ({}) -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
                 elif e.response['Error']['Code'] == 'AuthFailure':
-                    print('{} : (AuthFailure) when calling the DescribeInstances -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID))
-                    sys.exit()
+                    print('{} : (AuthFailure) when calling the DescribeInstances in ({}) -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
+                elif e.response['Error']['Code'] == 'OptInRequired':
+                    print('{} : (OptInRequired) Has permissions but isnt signed up for service in ({})- ' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
                 else:
                     print(e)
+                    continue
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
@@ -133,13 +137,17 @@ def describe_instances_basic():
                 response = client.describe_instances()
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
-                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
-                    sys.exit()
+                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances in ({}) -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
                 elif e.response['Error']['Code'] == 'AuthFailure':
-                    print('{} : (AuthFailure) when calling the DescribeInstances -- key is invalid or no permissions for region.' .format(AWS_ACCESS_KEY_ID))
-                    sys.exit()
+                    print('{} : (AuthFailure) when calling the DescribeInstances in ({}) -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
+                elif e.response['Error']['Code'] == 'OptInRequired':
+                     print('{} : (OptInRequired) Has permissions but isnt signed up for service in ({})- ' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
                 else:
                     print(e)
+                    continue
             if len(response['Reservations']) <= 0:
                 print("[-] List instances allowed for {} but no results [-]" .format(region))
             else:
