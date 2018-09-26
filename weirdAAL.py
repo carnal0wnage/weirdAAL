@@ -17,7 +17,19 @@ import re
 from tabulate import tabulate
 import textwrap
 
+# not pythonic but keeping google imports separate for now
+import google.auth
+import googleapiclient.discovery
+
+from google.oauth2 import service_account
+from googleapiclient.errors import HttpError
+
+from google.cloud import storage, exceptions
+from google.cloud.exceptions import *
+
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
 
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
