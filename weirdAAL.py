@@ -110,6 +110,7 @@ def make_tabulate_rows(hash, cloud_provider):
         for item in hash[key]:
             for (k,v) in item.items():
                 normalized_comment = normalize_comments(v)
+                k = re.sub("module_", "", k)
                 entire_contents.append([cloud_provider, key, k, normalized_comment])
 
     return entire_contents
