@@ -42,8 +42,17 @@ builtins.db_name = "weirdAAL.db"
 
 def perform_credential_check():
     '''
-    Check that the AWS keys work before we go any further. It picks the keys up from the local .env file
-    We are letting boto3 do all the work that way we can handle session tokens natively
+    Depending on the module, we determine which type of
+    credential check we perform.
+    '''
+    pass
+
+def aws_cred_check():
+    '''
+    Check that the AWS keys work before we go any further.
+    It picks the keys up from the local .env file
+    We are letting boto3 do all the work that way we can
+    handle session tokens natively
     '''
 
     try:
@@ -55,6 +64,9 @@ def perform_credential_check():
     except ClientError as e:
         print("The AWS Access Keys are not valid/active")
         sys.exit(1)
+
+def gcp_cred_check():
+    pass
 
 def method_create():
     try:
