@@ -40,6 +40,14 @@ def module_ec2_get_instance_volume_details():
     get_instance_volume_details()
 
 
+def module_ec2_get_instance_userdata():
+    '''
+    Show userData sorted by instanceId
+    python3 weirdAAL.py -m ec2_get_instance_userdata -t demo
+    '''
+    get_instance_userdata()
+
+
 def module_ec2_get_instance_volume_details2():
     '''
     Show volumes by instanceId but instanceID->volume1 of ID, instanceID->volume2 of ID but more details.

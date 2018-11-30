@@ -143,8 +143,8 @@ def describe_instances_basic():
                     print('{} : (AuthFailure) when calling the DescribeInstances in ({}) -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID, region))
                     continue
                 elif e.response['Error']['Code'] == 'OptInRequired':
-                     print('{} : (OptInRequired) Has permissions but isnt signed up for service in ({})- ' .format(AWS_ACCESS_KEY_ID, region))
-                     continue
+                    print('{} : (OptInRequired) Has permissions but isnt signed up for service in ({})- ' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
                 else:
                     print(e)
                     continue
@@ -342,6 +342,56 @@ def get_instance_volume_details():
                     volumes = client.describe_instance_attribute(InstanceId=i['InstanceId'], Attribute='blockDeviceMapping')
                     print("Instance ID: {} \n" .format(i['InstanceId']))
                     pp.pprint(volumes)
+
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+
+def get_instance_userdata():
+    '''
+    show volumes sorted by instanceId ex: instanceID-->multiple volumes  less detail than get_instance_volume_details2
+    '''
+    try:
+        for region in regions:
+            try:
+                client = boto3.client('ec2', region_name=region)
+                instances = client.describe_instances()
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling the DescribeInstances in ({}) -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
+                elif e.response['Error']['Code'] == 'AuthFailure':
+                    print('{} : (AuthFailure) when calling the DescribeInstances in ({}) -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
+                elif e.response['Error']['Code'] == 'OptInRequired':
+                    print('{} : (OptInRequired) Has permissions but isnt signed up for service in ({})- ' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
+                else:
+                    print(e)
+                    continue
+            if len(instances['Reservations']) <= 0:
+                print("[-] List instances allowed for {} but no results [-]" .format(region))
+            else:
+                for r in instances['Reservations']:
+                    for i in r['Instances']:
+                        try:
+                            userData = client.describe_instance_attribute(InstanceId=i['InstanceId'], Attribute='userData')
+                            print("Instance ID: {} \n" .format(i['InstanceId']))
+                            if len(userData['UserData']['Value']) >= 0:
+                                print("Decoded Userdata values:")
+                                pp.pprint(base64.b64decode(userData['UserData']['Value']).decode("utf-8"))
+                                print("\n")
+                            else:
+                                print("no Userdata for: {}\n".format(i['InstanceId']))
+                        except KeyError:
+                            next
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
