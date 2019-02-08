@@ -17,7 +17,10 @@ import re
 from tabulate import tabulate
 import textwrap
 
-os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
+# Let a user set .aws/credentials or another file as the credentials source
+# If user-defined, must be an absolute path
+if 'AWS_SHARED_CREDENTIALS_FILE' not in os.environ:
+    os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
 
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
