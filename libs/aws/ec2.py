@@ -472,6 +472,45 @@ def describe_elastic_addresses():
     except KeyboardInterrupt:
         print("CTRL-C received, exiting...")
 
+def describe_publicips():
+    '''
+    Describe EC2 Public IPs (loop through all regions)
+    '''
+    try:
+        for region in regions:
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_network_interfaces()
+                # print(response)
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling describe_network_interfaces -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
+            if response.get('NetworkInterfaces') is None:
+                print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['NetworkInterfaces']) <= 0:
+                print("[-] DescribeNetworkInterfaces allowed for {} but no results [-]" .format(region))
+            else:
+                # print(response)
+                print("[+] Listing Public IPs for region: {} [+]" .format(region))
+                for r in response['NetworkInterfaces']:
+                    if 'Association' in r:
+                        pp.pprint(r['Association']['PublicIp'])
+                    else:
+                        #pp.pprint(r)
+                        next
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the describe_network_interfaces-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
 
 def describe_network_interfaces():
     '''
@@ -485,7 +524,7 @@ def describe_network_interfaces():
                 # print(response)
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
-                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    print('{} : (UnauthorizedOperation) when calling describe_network_interfaces -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
                     sys.exit()
                 else:
                     print(e)
@@ -500,7 +539,7 @@ def describe_network_interfaces():
                     pp.pprint(r)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
-            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+            print('{} : (UnauthorizedOperation) when calling the describe_network_interfaces -- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:

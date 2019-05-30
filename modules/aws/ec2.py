@@ -79,6 +79,12 @@ def module_ec2_describe_network_interfaces():
     '''
     describe_network_interfaces()
 
+def module_ec2_describe_publicips():
+    '''
+    This function is used to describe ec2 network interfaces.
+    python3 weirdAAL.py -m ec2_describe_publicips -t demo
+    '''
+    describe_publicips()
 
 def module_ec2_describe_route_tables():
     '''
