@@ -64,12 +64,12 @@ def module_ec2_review_encrypted_volumes():
     review_encrypted_volumes()
 
 
-def module_ec2_describe_addresses():
+def module_ec2_describe_elastic_addresses():
     '''
     This function is used to describe ec2 network addresses.
     python3 weirdAAL.py -m ec2_describe_addresses -t demo
     '''
-    describe_addresses()
+    describe_elastic_addresses()
 
 
 def module_ec2_describe_network_interfaces():

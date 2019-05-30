@@ -438,9 +438,9 @@ def get_instance_volume_details2():
         print("CTRL-C received, exiting...")
 
 
-def describe_addresses():
+def describe_elastic_addresses():
     '''
-    Describe EC2 addresses (loop through all regions)
+    Describe EC2 elastic addresses (loop through all regions)
     '''
     try:
         for region in regions:
