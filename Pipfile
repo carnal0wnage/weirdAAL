@@ -7,13 +7,8 @@ verify_ssl = true
 
 [packages]
 boto3 = "*"
-botocore = "*"
-docutils = "*"
-jmespath = "*"
-python-dateutil = "*"
-s3transfer = "*"
-six = "*"
 tabulate = "*"
+botocore = "*"
 
 [requires]
 python_version = "3.6"
