@@ -113,3 +113,9 @@ ENV/
 
 # mkdocs documentation
 /site
+
+# intellij
+.idea
+
+# vscode
+.vscode
