@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # This file will help to serve as a starting point for using the rest of the tools
 # Things we want to figure out
 # 1) Is your key active?
@@ -9,6 +11,7 @@
 import boto3
 import argparse
 import os
+import sys
 from botocore.exceptions import ClientError
 from modules import *
 import sys
@@ -19,8 +22,22 @@ import textwrap
 
 # Let a user set .aws/credentials or another file as the credentials source
 # If user-defined, must be an absolute path
-if 'AWS_SHARED_CREDENTIALS_FILE' not in os.environ:
-    os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
+AWS_SHARED_CREDS_PATH='.env'
+if 'AWS_SHARED_CREDENTIALS_FILE' not in os.environ and os.path.exists(AWS_SHARED_CREDS_PATH):
+    os.environ['AWS_SHARED_CREDENTIALS_FILE'] = AWS_SHARED_CREDS_PATH
+else:
+    print('No Key Information available. Place creds in .env file or export variables.')
+    print('Shared Creds Example File:')
+    print('[default]\n\
+aws_access_key_id = YOUR_AWS_ACCESS_KEY_ID\n\
+aws_secret_access_key = YOUR_AWS_SECRET_ACCESS_KEY')
+    print()
+    print('Or to export them in running shell:')
+    print('export AWS_ACCESS_KEY_ID=<hereyourkeyid>')
+    print('export AWS_SECRET_ACCESS_KEY=<hereyoursecretaccesskey>')
+    print()
+    sys.exit(1)
+
 
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
