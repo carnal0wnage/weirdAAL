@@ -190,3 +190,20 @@ def module_ec2_list_owner_ami():
     python3 weirdAAL.py -m ec2_list_owner_ami -t demo
     '''
     ec2_list_owner_ami()
+
+
+def module_ec2_get_snapshots():
+    '''
+    This function will attempt to get all snapshots for the key owner (loops through all regions)
+    python3 weirdAAL.py -m ec2_get_snapshots -t demo
+    '''
+    ec2_get_snapshots()
+
+
+def module_ec2_get_snapshots_by_accountid(*text):
+    '''
+    This function will attempt to get all PUBLIC snapshots for the provided accountid (loops through all regions)
+    Useful if you found an accountid and want to see if they have snapshots publicly exposed
+    python3 weirdAAL.py -m ec2_get_snapshots -a 123456789123 -t demo
+    '''
+    ec2_get_snapshots_by_accountid(text[0][0])

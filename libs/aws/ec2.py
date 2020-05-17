@@ -560,7 +560,7 @@ def describe_route_tables():
                 # print(response)
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
-                    print('{} : (UnauthorizedOperation) when calling get_console_screenshot -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    print('{} : (UnauthorizedOperation) when calling describe_route_tables -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
                     sys.exit()
                 else:
                     print(e)
@@ -941,6 +941,85 @@ def get_console_output_all_region_list(file, region):
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeVolumes -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def ec2_get_snapshots():
+    '''
+    Describe snapshots in the account (loop through all regions)
+    '''
+    try:
+        client = boto3.client("sts")
+        account_id = client.get_caller_identity()["Account"]
+        print("Account Id: {}" .format(account_id))
+        for region in regions:
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_snapshots(OwnerIds=[account_id],)
+                # print(response)
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling describe_snapshots -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                else:
+                    print(e)
+            if response.get('Snapshots') is None:
+                print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Snapshots']) <= 0:
+                print("[-] DescribeSnapshots allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing Snapshots for region: {} [+]" .format(region))
+                for r in response['Snapshots']:
+                    pp.pprint(r)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+        elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
+            print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
+        else:
+            print(e)
+    except KeyboardInterrupt:
+        print("CTRL-C received, exiting...")
+
+def ec2_get_snapshots_by_accountid(account_id):
+    '''
+    Describe PUBLIC snapshots in the provided accounti (loop through all regions)
+    '''
+    try:
+        #client = boto3.client("sts")
+        #account_id = client.get_caller_identity()["Account"]
+        print("Account Id: {}" .format(account_id))
+        for region in regions:
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_snapshots(OwnerIds=[account_id],)
+                # print(response)
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print("{} : (UnauthorizedOperation) when calling describe_snapshots -- sure you have required ec2 permissions?" .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                if e.response['Error']['Code'] == 'InvalidUserID.Malformed':
+                    print("Accountid is malformed - {}" .format(account_id))
+                    sys.exit()
+                else:
+                    print(e)
+            if response.get('Snapshots') is None:
+                print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Snapshots']) <= 0:
+                print("[-] DescribeSnapshots allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing Snapshots for region: {} [+]" .format(region))
+                for r in response['Snapshots']:
+                    pp.pprint(r)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == 'UnauthorizedOperation':
+            print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
         elif e.response['Error']['Code'] == 'SubscriptionRequiredException':
             print('{} : Has permissions but isnt signed up for service - usually means you have a root account' .format(AWS_ACCESS_KEY_ID))
         else:
