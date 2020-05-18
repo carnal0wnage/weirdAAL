@@ -10,6 +10,7 @@ import sys
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
+# https://docs.aws.amazon.com/general/latest/gr/billing.html
 regions = ['us-east-1', ]
 
 '''

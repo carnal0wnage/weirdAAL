@@ -10,6 +10,7 @@ import sys
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
+# cloudfront only supports us-east-1 https://docs.aws.amazon.com/general/latest/gr/cf_region.html
 regions = ['us-east-1']
 
 '''

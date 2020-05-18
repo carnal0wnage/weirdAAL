@@ -15,7 +15,7 @@ from libs.aws.sql import *
 pp = pprint.PrettyPrinter(indent=5, width=80)
 
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
-regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'sa-east-1', 'us-gov-west-1']
+regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'af-south-1', 'ap-east-1', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'eu-south-1', 'eu-north-1', 'me-south-1', 'sa-east-1', 'us-gov-west-1', 'us-gov-east-1']
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -953,9 +953,8 @@ def ec2_get_snapshots():
     Describe snapshots in the account (loop through all regions)
     '''
     try:
-        client = boto3.client("sts")
-        account_id = client.get_caller_identity()["Account"]
-        print("Account Id: {}" .format(account_id))
+        '''
+        # commented out - RestorableByUserIds seems to get both owned and shared snapshots
         for region in regions:
             try:
                 client = boto3.client('ec2', region_name=region)
@@ -976,6 +975,31 @@ def ec2_get_snapshots():
                 print("[+] Listing Snapshots for region: {} [+]" .format(region))
                 for r in response['Snapshots']:
                     pp.pprint(r)
+        '''
+        print("Searching for snapshots that are \"RestorableByUserIds\" aka Owned by or Shared with your account ")
+        for region in regions:
+            try:
+                client = boto3.client('ec2', region_name=region)
+                response = client.describe_snapshots(RestorableByUserIds=['self'],)
+                # print(response)
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'UnauthorizedOperation':
+                    print('{} : (UnauthorizedOperation) when calling describe_snapshots -- sure you have required ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
+                    sys.exit()
+                elif e.response['Error']['Code'] == 'AuthFailure':
+                    print('{} : (AuthFailure) when calling the DescribeInstances in ({}) -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
+                else:
+                    print(e)
+            if response.get('Snapshots') is None:
+                print("{} likely does not have EC2 permissions\n" .format(AWS_ACCESS_KEY_ID))
+            elif len(response['Snapshots']) <= 0:
+                print("[-] DescribeSnapshots allowed for {} but no results [-]" .format(region))
+            else:
+                # print (response)
+                print("[+] Listing Shared Snapshots for region: {} [+]" .format(region))
+                for r in response['Snapshots']:
+                    pp.pprint(r)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
@@ -988,7 +1012,7 @@ def ec2_get_snapshots():
 
 def ec2_get_snapshots_by_accountid(account_id):
     '''
-    Describe PUBLIC snapshots in the provided accounti (loop through all regions)
+    Describe PUBLIC snapshots in the provided account (loop through all regions)
     '''
     try:
         #client = boto3.client("sts")
@@ -1003,7 +1027,10 @@ def ec2_get_snapshots_by_accountid(account_id):
                 if e.response['Error']['Code'] == 'UnauthorizedOperation':
                     print("{} : (UnauthorizedOperation) when calling describe_snapshots -- sure you have required ec2 permissions?" .format(AWS_ACCESS_KEY_ID))
                     sys.exit()
-                if e.response['Error']['Code'] == 'InvalidUserID.Malformed':
+                elif e.response['Error']['Code'] == 'AuthFailure':
+                    print('{} : (AuthFailure) when calling the DescribeInstances in ({}) -- key is invalid or no permissions.' .format(AWS_ACCESS_KEY_ID, region))
+                    continue
+                elif e.response['Error']['Code'] == 'InvalidUserID.Malformed':
                     print("Accountid is malformed - {}" .format(account_id))
                     sys.exit()
                 else:
@@ -1017,6 +1044,7 @@ def ec2_get_snapshots_by_accountid(account_id):
                 print("[+] Listing Snapshots for region: {} [+]" .format(region))
                 for r in response['Snapshots']:
                     pp.pprint(r)
+
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'UnauthorizedOperation':
             print('{} : (UnauthorizedOperation) when calling the DescribeInstances-- sure you have ec2 permissions?' .format(AWS_ACCESS_KEY_ID))
