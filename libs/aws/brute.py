@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.ERROR, format='%(message)s', filename='target.
 # from http://docs.aws.amazon.com/general/latest/gr/rande.html
 regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'af-south-1', 'ap-east-1', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ca-central-1', 'cn-north-1', 'cn-northwest-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'eu-south-1', 'eu-north-1', 'me-south-1', 'sa-east-1', 'us-gov-west-1', 'us-gov-east-1']
 
-region = 'us-east-1'
+region = 'us-east-2'
 
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
@@ -257,6 +257,15 @@ def generic_method_bruteforcer_region(service, tests, region_passed):
     return actions
 
 
+def brute_accessanalyzer_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/accessanalyzer.html
+    '''
+    print("### Enumerating AccessAnalyzer Permissions ###")
+    tests = [('ListAnalyzers', 'list_analyzers', (), {}, ), ]
+    return generic_permission_bruteforcer('accessanalyzer', tests)
+
+
 def brute_acm_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/acm.html
@@ -283,6 +292,10 @@ def brute_alexaforbusiness_permissions():
     tests = [('CreateAddressBook', 'create_address_book', (), {'Name': 'Test'}, ), ]
     return generic_permission_bruteforcer('alexaforbusiness', tests)
 
+'''
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/amplify.html
+'''
+
 
 def brute_apigateway_permissions():
     '''
@@ -298,9 +311,18 @@ def brute_apigateway_permissions():
              ('GetUsagePlans', 'get_usage_plans', (), {}, ), ]
     return generic_permission_bruteforcer('apigateway', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/apigatewaymanagementapi.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/apigatewayv2.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appconfig.html
+
 # http://boto3.readthedocs.io/en/latest/reference/services/application-autoscaling.html
 # not seeing any functions that dont take args
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/application-insights.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appmesh.html
 
 def brute_appstream_permissions():
     '''
@@ -351,6 +373,7 @@ def brute_autoscaling_plans_permissions():
     tests = [('DescribeScalingPlans', 'describe_scaling_plans', (), {}, ), ]
     return generic_permission_bruteforcer('autoscaling-plans', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/backup.html
 
 def brute_batch_permissions():
     '''
@@ -377,6 +400,8 @@ def brute_budgets_permissions():
 # http://boto3.readthedocs.io/en/latest/reference/services/ce.html#CostExplorer.Client.get_cost_and_usage
 # shoudl work we just need to generate start and end times each run
 
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/chime.html
 
 def brute_cloud9_permissions():
     '''
@@ -516,6 +541,10 @@ def brute_codedeploy_permissions():
              ('ListOnPremisesInstances', 'list_on_premises_instances', (), {}, ), ]
     return generic_permission_bruteforcer('codedeploy', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguru-reviewer.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguruprofiler.html
+
 
 def brute_codepipeline_permissions():
     '''
@@ -535,6 +564,9 @@ def brute_codestar_permissions():
              ('ListUerProfiles', 'list_user_profiles', (), {}, ), ]
     return generic_permission_bruteforcer('codestar', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codestar-connections.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codestar-notifications.html
 
 def brute_cognitoidentity_permissions():
     '''
@@ -571,6 +603,10 @@ def brute_comprehend_permissions():
     tests = [('ListTopicsDetectionJobs', 'list_topics_detection_jobs', (), {}, ), ]
     return generic_permission_bruteforcer('comprehend', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/comprehendmedical.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/compute-optimizer.html
+
 
 def brute_configservice_permissions():
     '''
@@ -590,6 +626,8 @@ def brute_configservice_permissions():
 # http://boto3.readthedocs.io/en/latest/reference/services/connect.html
 # no functions
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/connectparticipant.html
+
 
 def brute_costandusagereportservice_permissions():
     '''
@@ -600,6 +638,8 @@ def brute_costandusagereportservice_permissions():
     return generic_permission_bruteforcer('cur', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dataexchange.html
+
 def brute_datapipeline_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/datapipeline.html
@@ -607,6 +647,9 @@ def brute_datapipeline_permissions():
     print("### Enumerating DataPipeline Permissions ###")
     tests = [('ListPipelines', 'list_pipelines', (), {}, ), ]
     return generic_permission_bruteforcer('datapipeline', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/datasync.html
 
 
 def brute_dax_permissions():
@@ -621,6 +664,8 @@ def brute_dax_permissions():
              ('DescribeSubnetGroups', 'describe_subnet_groups', (), {}, ), ]
     return generic_permission_bruteforcer('dax', tests)
 
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/detective.html
 
 def brute_devicefarm_permissions():
     '''
@@ -652,6 +697,9 @@ def brute_applicationdiscoveryservice_permissions():
     return generic_permission_bruteforcer_region('discovery', tests, 'us-west-2')
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dlm.html
+
+
 def brute_dms_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/dms.html
@@ -661,6 +709,9 @@ def brute_dms_permissions():
              ('DescribeEvents', 'describe_events', (), {}, ),
              ('DescribeConnections', 'describe_connections', (), {}, ), ]
     return generic_permission_bruteforcer('dms', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/docdb.html
 
 
 def brute_directoryservice_permissions():
@@ -693,6 +744,9 @@ def brute_dynamodbstreams_permissions():
     print("### Enumerating DynamoDBStreamsPermissions ###")
     tests = [('ListStreams', 'list_streams', (), {}, ), ]
     return generic_permission_bruteforcer('dynamodbstreams', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ebs.html
 
 
 def brute_ec2_permissions():
@@ -761,6 +815,9 @@ def brute_ec2_permissions():
     return generic_permission_bruteforcer('ec2', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2-instance-connect.html
+
+
 def brute_ecr_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/ecr.html
@@ -792,6 +849,11 @@ def brute_efs_permissions():
     tests = [('DescribeFileSystems', 'describe_file_systems', (), {}),
              ('DescribeMountTargets', 'describe_mount_targets', (), {}), ]
     return generic_permission_bruteforcer('efs', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elastic-inference.html
 
 
 def brute_elasticache_permissions():
@@ -907,6 +969,15 @@ def brute_fms_permissions():
     return generic_permission_bruteforcer('fms', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/forecast.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/forecastquery.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/frauddetector.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/fsx.html
+
+
 def brute_gamelift_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/gamelift.html
@@ -929,6 +1000,9 @@ def brute_glacier_permissions():
     print("### Enumerating Glacier Permissions ###")
     tests = [('ListVaults', 'list_vaults', (), {}), ]
     return generic_permission_bruteforcer('glacier', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/globalaccelerator.html
 
 
 def brute_glue_permissions():
@@ -958,6 +1032,8 @@ def brute_greengrass_permissions():
              ('ListSubscriptionDefinitions', 'list_subscription_definitions', (), {}), ]
     return generic_permission_bruteforcer('greengrass', tests)
 
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/groundstation.html
 
 def brute_guardduty_permissions():
     '''
@@ -998,6 +1074,9 @@ def brute_iam_permissions():
              ('GetAccountSummary', 'get_account_summary', (), {}),
              ('GetAccountAuthorizationDetails', 'get_account_authorization_details', (), {}), ]
     return generic_permission_bruteforcer('iam', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/imagebuilder.html
 
 
 def brute_importexport_permissions():
@@ -1045,6 +1124,26 @@ def brute_iotdata_permissions():
 # http://boto3.readthedocs.io/en/latest/reference/services/iot-jobs-data.html
 # NO functions to call without data
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iot1click-devices.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iot1click-projects.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotanalytics.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotevents.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotevents-data.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotsecuretunneling.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotsitewise.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotthingsgraph.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kafka.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kendra.html
+
 
 def brute_kinesis_permissions():
     '''
@@ -1060,6 +1159,8 @@ def brute_kinesis_permissions():
 # http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-media.html
 # NO functions to call without data
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesis-video-signaling.html
+
 
 def brute_kinesisanalytics_permissions():
     '''
@@ -1068,6 +1169,9 @@ def brute_kinesisanalytics_permissions():
     print("### Enumerating Kinesis Analytics Permissions ###")
     tests = [('ListApplications', 'list_applications', (), {}), ]
     return generic_permission_bruteforcer('kinesisanalytics', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesisanalyticsv2.html
 
 
 def brute_kinesisvideo_permissions():
@@ -1087,6 +1191,9 @@ def brute_kms_permissions():
     tests = [('ListKeys', 'list_keys', (), {}),
              ('ListAliases', 'list_aliases', (), {}), ]
     return generic_permission_bruteforcer('kms', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/lakeformation.html
 
 
 def brute_lambda_permissions():

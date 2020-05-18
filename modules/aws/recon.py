@@ -100,7 +100,7 @@ def module_recon_all():
     brute_kms_permissions()
     brute_lambda_permissions()
     brute_lexmodels_permissions()
-    #  LexRuntimeService #no functions
+    #  LexRuntimeService no functions
     brute_lightsail_permissions()
     brute_cloudwatchlogs_permissions()
     brute_machinelearning_permissions()
