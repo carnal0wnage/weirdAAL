@@ -1217,7 +1217,7 @@ def brute_lexmodels_permissions():
     return generic_permission_bruteforcer('lex-models', tests)
 
 
-def brute_lexmruntime_permissions():
+def brute_lexruntime_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/lex-runtime.html
     NO functions to call without data
@@ -1225,6 +1225,9 @@ def brute_lexmruntime_permissions():
     print("### Enumerating Lex Runtime Permissions ###")
     tests = [('', '', (), {}), ]
     return generic_permission_bruteforcer('lex-runtime', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/license-manager.html
 
 
 def brute_lightsail_permissions():
@@ -1262,11 +1265,22 @@ def brute_machinelearning_permissions():
              ('DescribeEvaluations', 'describe_evaluations', (), {}), ]
     return generic_permission_bruteforcer('machinelearning', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/macie.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/macie2.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/managedblockchain.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/marketplace-catalog.html
+
+
 # http://boto3.readthedocs.io/en/latest/reference/services/marketplace-entitlement.html
 # NO functions to call without arguements
 
 # http://boto3.readthedocs.io/en/latest/reference/services/marketplacecommerceanalytics.html
 # NO functions to call without arguements
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediaconnect.html
 
 
 def brute_mediaconvert_permissions():
@@ -1302,6 +1316,9 @@ def brute_mediapackage_permissions():
     return generic_permission_bruteforcer('mediapackage', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediapackage-vod.html
+
+
 def brute_mediastore_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/mediastore.html
@@ -1321,6 +1338,9 @@ def brute_mediastore_data_permissions():
     tests = [('ListItems', 'list_items', (), {}), ]
     return generic_permission_bruteforcer('mediastore-data', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediatailor.html
+
+
 # http://boto3.readthedocs.io/en/latest/reference/services/meteringmarketplace.html
 # NO functions to call without arguements
 
@@ -1333,6 +1353,9 @@ def brute_mgh_permissions():
     tests = [('ListMigrationTasks', 'list_migration_tasks', (), {}),
              ('ListProgressUpdateStreams', 'list_progress_update_streams', (), {}), ]
     return generic_permission_bruteforcer_region('mgh', tests, 'us-west-2')
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/migrationhub-config.html
 
 
 def brute_mobile_permissions():
