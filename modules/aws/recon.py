@@ -135,7 +135,9 @@ def module_recon_all():
     #  SageMakerRuntime no functions
     brute_sdb_permissions()
     brute_secretsmanager_permissions()
+    brute_securityhub_permissions()
     brute_serverlessrepo_permissions()
+    brute_servicequotas_permissions()
     brute_servicecatalog_permissions()
     brute_servicediscovery_permissions()
     brute_ses_permissions()

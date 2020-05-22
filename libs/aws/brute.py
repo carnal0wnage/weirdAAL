@@ -1622,7 +1622,20 @@ def brute_secretsmanager_permissions():
     return generic_permission_bruteforcer('secretsmanager', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/securityhub.html
+def brute_securityhub_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/securityhub.html
+    '''
+    print("### Enumerating AWS SecurityHub Permissions ###")
+    tests = [('DescribeHub', 'describe_hub', (), {}),
+             ('DescribeProducts', 'describe_products', (), {}),
+             ('DescribeStandards', 'describe_standards', (), {}),
+             ('GetEnabledStandards', 'get_enabled_standards', (), {}),
+             ('GetFindings', 'get_findings', (), {}),
+             ('GetInsights', 'get_insights', (), {}),
+             ('ListMembers', 'list_members', (), {}),
+    ]
+    return generic_permission_bruteforcer('securityhub', tests)
 
 
 def brute_serverlessrepo_permissions():
@@ -1634,7 +1647,13 @@ def brute_serverlessrepo_permissions():
     return generic_permission_bruteforcer('serverlessrepo', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/service-quotas.html
+def brute_servicequotas_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/service-quotas.html
+    '''
+    print("### Enumerating AWS Service Quotas Permissions ###")
+    tests = [('ListServices', 'list_services', (), {}), ]
+    return generic_permission_bruteforcer('service-quotas', tests)
 
 
 def brute_servicecatalog_permissions():
