@@ -1325,7 +1325,7 @@ def brute_mediastore_permissions():
     '''
     print("### Enumerating AWS Elemental MediaStore Permissions ###")
     tests = [('ListContainers', 'list_containers', (), {}), ]
-    return generic_permission_bruteforcer('mediastore', tests)
+    return generic_permission_bruteforcer_region('mediastore', tests, 'us-west-2')
 
 
 def brute_mediastore_data_permissions():
@@ -1333,10 +1333,12 @@ def brute_mediastore_data_permissions():
     http://boto3.readthedocs.io/en/latest/reference/services/mediastore-data.html
     Could not connect to the endpoint URL: "https://data.mediastore.us-east-1.amazonaws.com/"
     boto3 (1.7.4) bug
+
+    Update May2020 - i cant find an endpoint to connect to - will comment th is out in recon.py
     '''
-    print("### Enumerating AWS Elemental MediaStore Permissions ###")
+    print("### Enumerating AWS Elemental MediaStore Data Permissions ###")
     tests = [('ListItems', 'list_items', (), {}), ]
-    return generic_permission_bruteforcer('mediastore-data', tests)
+    return generic_permission_bruteforcer_region('mediastore-data', tests, 'us-east-1')
 
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediatailor.html
 
@@ -1389,6 +1391,10 @@ def brute_mturk_permissions():
     return generic_permission_bruteforcer('mturk', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/neptune.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/networkmanager.html
+
 def brute_opsworks_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/opsworks.html
@@ -1425,8 +1431,24 @@ def brute_organizations_permissions():
              ('ListRoots', 'list_roots', (), {}), ]
     return generic_permission_bruteforcer('organizations', tests)
 
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/outposts.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-events.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-runtime.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pi.html
+
+
 # http://boto3.readthedocs.io/en/latest/reference/services/pinpoint.html
 # NO functions to call without arguements
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pinpoint-email.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pinpoint-sms-voice.html
 
 
 def brute_polly_permissions():
@@ -1448,6 +1470,15 @@ def brute_pricing_permissions():
     return generic_permission_bruteforcer('pricing', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/qldb.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/qldb-session.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/quicksight.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ram.html
+
+
 def brute_rds_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/rds.html
@@ -1462,6 +1493,9 @@ def brute_rds_permissions():
              ('DescribeEvents', 'describe_events', (), {}),
              ('DescribeReservedDBInstances', 'describe_reserved_db_instances', (), {}), ]
     return generic_permission_bruteforcer('rds', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rds-data.html
 
 
 def brute_redshift_permissions():
@@ -1505,6 +1539,9 @@ def brute_resourcegroupstaggingapi_permissions():
     return generic_permission_bruteforcer('resourcegroupstaggingapi', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/robomaker.html
+
+
 def brute_route53_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/route53.html
@@ -1528,6 +1565,9 @@ def brute_route53domains_permissions():
     return generic_permission_bruteforcer('route53domains', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/route53resolver.html
+
+
 def brute_s3_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/s3.html
@@ -1535,6 +1575,9 @@ def brute_s3_permissions():
     print("### Enumerating S3 Permissions ###")
     tests = [('ListBuckets', 'list_buckets', (), {}), ]
     return generic_permission_bruteforcer('s3', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3control.html
 
 
 def brute_sagemaker_permissions():
@@ -1550,8 +1593,15 @@ def brute_sagemaker_permissions():
              ('ListTrainingJobs', 'list_training_jobs', (), {}), ]
     return generic_permission_bruteforcer('sagemaker', tests)
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sagemaker-a2i-runtime.html
+
+
 # http://boto3.readthedocs.io/en/latest/reference/services/sagemaker-runtime.html
-# no functions
+# No functions
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/savingsplans.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/schemas.html
 
 
 def brute_sdb_permissions():
@@ -1572,6 +1622,9 @@ def brute_secretsmanager_permissions():
     return generic_permission_bruteforcer('secretsmanager', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/securityhub.html
+
+
 def brute_serverlessrepo_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/serverlessrepo.html
@@ -1579,6 +1632,9 @@ def brute_serverlessrepo_permissions():
     print("### Enumerating AWS ServerlessApplicationRepository Permissions ###")
     tests = [('ListApplications', 'list_applications', (), {}), ]
     return generic_permission_bruteforcer('serverlessrepo', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/service-quotas.html
 
 
 def brute_servicecatalog_permissions():
@@ -1612,6 +1668,9 @@ def brute_ses_permissions():
     return generic_permission_bruteforcer('ses', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sesv2.html
+
+
 def brute_shield_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/shield.html
@@ -1623,6 +1682,9 @@ def brute_shield_permissions():
     return generic_permission_bruteforcer('shield', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/signer.html
+
+
 def brute_sms_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/sms.html
@@ -1631,6 +1693,9 @@ def brute_sms_permissions():
     tests = [('GetReplicationJobs', 'get_replication_jobs', (), {}),
              ('GetServers', 'get_servers', (), {}), ]
     return generic_permission_bruteforcer('sms', tests)
+
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sms-voice.html
 
 
 def brute_snowball_permissions():
@@ -1677,6 +1742,10 @@ def brute_ssm_permissions():
              ('ListResourceComplianceSummaries', 'list_resource_compliance_summaries', (), {}), ]
     return generic_permission_bruteforcer('ssm', tests)
 
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sso.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sso-oidc.html
 
 def brute_stepfunctions_permissions():
     '''
@@ -1727,6 +1796,11 @@ def brute_swf_permissions():
     return generic_permission_bruteforcer('swf', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/synthetics.html
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/textract.html
+
+
 def brute_transcribe_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/transcribe.html
@@ -1735,6 +1809,8 @@ def brute_transcribe_permissions():
     tests = [('ListTranscriptionJobs', 'list_transcription_jobs', (), {}),
              ('ListVocabularies', 'list_vocabularies', (), {}), ]
     return generic_permission_bruteforcer('transcribe', tests)
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/transfer.html
 
 
 def brute_translate_permissions():
@@ -1770,6 +1846,9 @@ def brute_waf_regional_permissions():
     return generic_permission_bruteforcer('waf-regional', tests)
 
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/wafv2.html
+
+
 def brute_workdocs_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/workdocs.html
@@ -1779,6 +1858,15 @@ def brute_workdocs_permissions():
     return generic_permission_bruteforcer('workdocs', tests)
 
 
+def brute_worklink_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/worklink.html
+    '''
+    print("### Enumerating Amazon WorkLink Permissions ###")
+    tests = [('ListFleets', 'list_fleets', (), {}), ]
+    return generic_permission_bruteforcer('worklink', tests)
+
+
 def brute_workmail_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/workmail.html
@@ -1786,6 +1874,10 @@ def brute_workmail_permissions():
     print("### Enumerating Amazon WorkMail Permissions ###")
     tests = [('ListOrganizations', 'list_organizations', (), {}), ]
     return generic_permission_bruteforcer('workmail', tests)
+
+
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/workmailmessageflow.html
+#  No functions
 
 
 def brute_workspaces_permissions():

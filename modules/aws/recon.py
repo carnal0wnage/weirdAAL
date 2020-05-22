@@ -22,6 +22,7 @@ def module_recon_all():
     '''
     get_accountid()
     check_root_account()
+    brute_accessanalyzer_permissions()
     brute_acm_permissions()
     brute_acm_pca_permissions()
     brute_alexaforbusiness_permissions()
@@ -110,7 +111,7 @@ def module_recon_all():
     brute_medialive_permissions()
     brute_mediapackage_permissions()
     brute_mediastore_permissions()
-    brute_mediastore_data_permissions()
+    #  brute_mediastore_data_permissions()
     #  MarketplaceMetering no functions
     brute_mgh_permissions()
     brute_mobile_permissions()
@@ -154,7 +155,9 @@ def module_recon_all():
     brute_waf_permissions()
     brute_waf_regional_permissions()
     brute_workdocs_permissions()
+    brute_worklink_permissions()
     brute_workmail_permissions()
+    #  workmailmessageflow no functions
     brute_workspaces_permissions()
     #  XRay no functions
 
