@@ -1668,7 +1668,17 @@ def brute_ses_permissions():
     return generic_permission_bruteforcer('ses', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sesv2.html
+def brute_sesv2_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sesv2.html
+    '''
+    print("### Enumerating Simple Email Service (SESv2) Permissions ###")
+    tests = [('GetAccount', 'get_account', (), {}),
+             ('ListDedicatedIpPools', 'list_dedicated_ip_pools', (), {}),
+             ('ListDeliverabilityTestReports', 'list_deliverability_test_reports', (), {}),
+             ('ListEmailIdentities', 'list_email_identities', (), {}),
+             ('ListConfigurationSets', 'list_configuration_sets', (), {}), ]
+    return generic_permission_bruteforcer('sesv2', tests)
 
 
 def brute_shield_permissions():
@@ -1682,7 +1692,15 @@ def brute_shield_permissions():
     return generic_permission_bruteforcer('shield', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/signer.html
+def brute_signer_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/signer.html
+    '''
+    print("### Enumerating Amazon Signer Permissions ###")
+    tests = [('ListSigningJobs', 'list_signing_jobs', (), {}),
+             ('ListSigningPlatforms', 'list_signing_platforms', (), {}), 
+             ('ListSigningProfiles', 'list_signing_profiles', (), {}), ]
+    return generic_permission_bruteforcer('signer', tests)
 
 
 def brute_sms_permissions():
@@ -1695,7 +1713,8 @@ def brute_sms_permissions():
     return generic_permission_bruteforcer('sms', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sms-voice.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sms-voice.html
+#  Deprecated 
 
 
 def brute_snowball_permissions():
@@ -1743,9 +1762,12 @@ def brute_ssm_permissions():
     return generic_permission_bruteforcer('ssm', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sso.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sso.html
+#  No Functions
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sso-oidc.html
+
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sso-oidc.html
+#  No Functions
 
 def brute_stepfunctions_permissions():
     '''
@@ -1796,9 +1818,16 @@ def brute_swf_permissions():
     return generic_permission_bruteforcer('swf', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/synthetics.html
+def brute_synthetics_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/synthetics.html
+    '''
+    print("### Enumerating Amazon Synthetics Permissions ###")
+    tests = [('DescribeCanaries', 'describe_canaries', (), {}), ]
+    return generic_permission_bruteforcer('synthetics', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/textract.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/textract.html
+#  No functions - requires to pass a document
 
 
 def brute_transcribe_permissions():
@@ -1810,7 +1839,14 @@ def brute_transcribe_permissions():
              ('ListVocabularies', 'list_vocabularies', (), {}), ]
     return generic_permission_bruteforcer('transcribe', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/transfer.html
+
+def brute_transfer_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/transfer.html
+    '''
+    print("### Enumerating Amazon Transfer Family Permissions ###")
+    tests = [('ListServers', 'list_servers', (), {}),]
+    return generic_permission_bruteforcer('transfer', tests)
 
 
 def brute_translate_permissions():
@@ -1846,7 +1882,22 @@ def brute_waf_regional_permissions():
     return generic_permission_bruteforcer('waf-regional', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/wafv2.html
+def brute_wafv2_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/wafv2.html
+    '''
+    print("### Enumerating AWS WAFv2 Permissions ###")
+    tests = [('ListAvailableManagedRuleGroups', 'list_available_managed_rule_groups', (), {'Scope':'CLOUDFRONT',}),
+             ('ListAvailableManagedRuleGroups', 'list_available_managed_rule_groups', (), {'Scope':'REGIONAL',}),
+             ('ListRuleGroups', 'list_rule_groups', (), {'Scope':'CLOUDFRONT'}),
+             ('ListRuleGroups', 'list_rule_groups', (), {'Scope':'REGIONAL'}),
+             ('ListLoggingConfigurations', 'list_logging_configurations', (), {'Scope':'CLOUDFRONT',}),
+             ('ListLoggingConfigurations', 'list_logging_configurations', (), {'Scope':'REGIONAL',}),
+             ('ListIpSets', 'list_ip_sets', (), {'Scope':'CLOUDFRONT',}),
+             ('ListIpSets', 'list_ip_sets', (), {'Scope':'REGIONAL',}), 
+             ('ListWebACLs', 'list_web_acls', (), {'Scope':'CLOUDFRONT',}),
+             ('ListWebACLs', 'list_web_acls', (), {'Scope':'REGIONAL',}),]
+    return generic_permission_bruteforcer('wafv2', tests)
 
 
 def brute_workdocs_permissions():
