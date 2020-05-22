@@ -22,7 +22,7 @@ AWS_ACCESS_KEY_ID = credentials.access_key
 
 def list_identities():
     '''
-    SES List identities
+    SES List Identities
     '''
     print("### Printing SES Identities  ###")
     try:
