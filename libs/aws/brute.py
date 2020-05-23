@@ -1470,13 +1470,43 @@ def brute_pricing_permissions():
     return generic_permission_bruteforcer('pricing', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/qldb.html
+def brute_qldb_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/qldb.html
+    '''
+    print("### Enumerating AWS QLDB Permissions ###")
+    tests = [('ListLedgers', 'list_ledgers', (), {}), 
+             ('ListJournalS3Exports', 'list_journal_s3_exports', (), {}),]
+    return generic_permission_bruteforcer('qldb', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/qldb-session.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/quicksight.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/qldb-session.html
+#  No functions
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ram.html
+
+def brute_quicksight_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/quicksight.html
+    '''
+    print("### Enumerating AWS Quicksight Permissions ###")
+    account_id = get_accountid()
+    tests = [('ListDashboards', 'list_dashboards', (), {'AwsAccountId': account_id}), 
+             ('ListDataSets', 'list_data_sets', (), {'AwsAccountId': account_id}),
+             ('ListUsers', 'list_users', (), {'AwsAccountId': account_id, 'Namespace':'default'}),]
+    return generic_permission_bruteforcer('quicksight', tests)
+
+
+def brute_ram_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ram.html
+    '''
+    print("### Enumerating AWS Ram Permissions ###")
+    tests = [('ListPermissions', 'list_permissions', (), {}), 
+             ('ListPrincipals', 'list_principals', (), {'resourceOwner':'SELF'}),
+             ('ListPrincipals', 'list_principals', (), {'resourceOwner':'OTHER-ACCOUNTS'}),
+             ('ListResources', 'list_resources', (), {'resourceOwner':'SELF'}),
+             ('ListResources', 'list_resources', (), {'resourceOwner':'OTHER-ACCOUNTS'}),]
+    return generic_permission_bruteforcer('ram', tests)
 
 
 def brute_rds_permissions():
@@ -1495,7 +1525,8 @@ def brute_rds_permissions():
     return generic_permission_bruteforcer('rds', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rds-data.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rds-data.html
+#  No Functions
 
 
 def brute_redshift_permissions():
@@ -1539,14 +1570,22 @@ def brute_resourcegroupstaggingapi_permissions():
     return generic_permission_bruteforcer('resourcegroupstaggingapi', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/robomaker.html
-
+def brute_robomaker_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/robomaker.html
+    '''
+    print("### Enumerating AWS Robomaker ###")
+    tests = [('ListFleets', 'list_fleets', (), {}), 
+             ('ListRobots', 'list_robots', (), {}),
+             ('ListSimulationApplications', 'list_simulation_applications', (), {}),
+             ('ListSimulationJobs', 'list_simulation_jobs', (), {}),]
+    return generic_permission_bruteforcer('robomaker', tests)
 
 def brute_route53_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/route53.html
     '''
-    print("### Enumerating Route53 Permissions ###")
+    print("### Enumerating AWS Route53 Permissions ###")
     tests = [('ListHostedZones', 'list_hosted_zones', (), {}),
              ('ListHostedZonesByName', 'list_hosted_zones_by_name', (), {}),
              ('ListGeoLocations', 'list_geo_locations', (), {}),
@@ -1565,7 +1604,14 @@ def brute_route53domains_permissions():
     return generic_permission_bruteforcer('route53domains', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/route53resolver.html
+def brute_route53resolver_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/route53resolver.html
+    '''
+    print("### Enumerating Route53Resolver Permissions ###")
+    tests = [('ListResolverEndpoints', 'list_resolver_endpoints', (), {}),
+             ('ListResolverRules', 'list_resolver_rules', (), {}), ]
+    return generic_permission_bruteforcer('route53resolver', tests)
 
 
 def brute_s3_permissions():
@@ -1577,7 +1623,17 @@ def brute_s3_permissions():
     return generic_permission_bruteforcer('s3', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3control.html
+def brute_s3control_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3control.html
+    May 2020 - this returns yes but doesnt ever return results when digging further - currently
+    commented out
+    '''
+    print("### Enumerating AWS S3 Control Permissions ###")
+    account_id = get_accountid()
+    tests = [('ListAccessPoints', 'list_access_points', (), {'AccountId': account_id}),
+             ('ListJobs', 'list_jobs', (), {'AccountId': account_id}), ]
+    return generic_permission_bruteforcer('s3control', tests)
 
 
 def brute_sagemaker_permissions():
@@ -1593,22 +1649,38 @@ def brute_sagemaker_permissions():
              ('ListTrainingJobs', 'list_training_jobs', (), {}), ]
     return generic_permission_bruteforcer('sagemaker', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sagemaker-a2i-runtime.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sagemaker-a2i-runtime.html
+#  No functions
 
 
-# http://boto3.readthedocs.io/en/latest/reference/services/sagemaker-runtime.html
-# No functions
+#  http://boto3.readthedocs.io/en/latest/reference/services/sagemaker-runtime.html
+#  No functions
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/savingsplans.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/schemas.html
+def brute_savingsplans_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/savingsplans.html
+    '''
+    print("### Enumerating AWS Savings Plans Permissions ###")
+    tests = [('DescribeSavingsPlans', 'describe_savings_plans', (), {}), ]
+    return generic_permission_bruteforcer('savingsplans', tests)
+
+
+def brute_schemas_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/schemas.html
+    '''
+    print("### Enumerating AWS Schemas Permissions ###")
+    tests = [('ListDiscoverers', 'list_discoverers', (), {}),
+             ('ListRegistries', 'list_registries', (), {}), ]
+    return generic_permission_bruteforcer('schemas', tests)
 
 
 def brute_sdb_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/sdb.html
     '''
-    print("### Enumerating SimpleDB Permissions ###")
+    print("### Enumerating AWS SimpleDB Permissions ###")
     tests = [('ListDomains', 'list_domains', (), {}), ]
     return generic_permission_bruteforcer('sdb', tests)
 

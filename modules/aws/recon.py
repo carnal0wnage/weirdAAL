@@ -12,7 +12,7 @@ from libs.aws.opsworks import *
 from libs.aws.route53 import *
 from libs.aws.sts import *
 
-# maps to available services in boto 1.7.4
+# maps to available services in boto 1.13.12
 
 
 def module_recon_all():
@@ -123,16 +123,27 @@ def module_recon_all():
     #  PinPoint no functions
     brute_polly_permissions()
     brute_pricing_permissions()
+    brute_qldb_permissions()
+    #  qldb-session no functions
+    brute_quicksight_permissions()
+    brute_ram_permissions()
     brute_rds_permissions()
+    #  rds-data no functions
     brute_redshift_permissions()
     brute_rekognition_permissions()
     brute_resource_groups_permissions()
     brute_resourcegroupstaggingapi_permissions()
+    brute_robomaker_permissions()
     brute_route53_permissions()
     brute_route53domains_permissions()
+    brute_route53resolver_permissions()
     brute_s3_permissions()
+    #  brute_s3control_permissions() # this seems to always return results :-/
     brute_sagemaker_permissions()
+    #  sagemaker-a2i-runtime no functions
     #  SageMakerRuntime no functions
+    brute_savingsplans_permissions()
+    brute_schemas_permissions()
     brute_sdb_permissions()
     brute_secretsmanager_permissions()
     brute_securityhub_permissions()
