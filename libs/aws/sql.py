@@ -126,6 +126,27 @@ def search_recon_for_targets(db_name, AWSKeyID):
         results = cursor.fetchall()
         return results
 
+def search_list_awskeys_in_database(db_name, AWSKeyID):
+    '''
+    Function to query for all AWSKeys in the database
+    '''
+    with sqlite3.connect(db_name) as db:
+        cursor = db.cursor()
+        cursor.execute("""SELECT DISTINCT AWSKeyID,target from recon""")
+        results = cursor.fetchall()
+        return results
+
+
+def search_list_awskeys_by_target(db_name, target):
+    '''
+    Function to query for all AWSKeys in the database
+    '''
+    with sqlite3.connect(db_name) as db:
+        cursor = db.cursor()
+        cursor.execute("""SELECT DISTINCT AWSKeyID from recon WHERE target=?""", (target,))
+        results = cursor.fetchall()
+        return results
+
 
 def query(db_name, sql, data):
     '''

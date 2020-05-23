@@ -96,6 +96,7 @@ def module_list_services_by_provided_key_with_date(*text):
 
 # for a key, what services does it have listed in the DB
 
+
 def module_list_services_by_provided_key(*text):
     '''
     Show services for a given key service:sub_service with date
@@ -104,5 +105,34 @@ def module_list_services_by_provided_key(*text):
     AWS_ACCESS_KEY_ID = text[0][0]
     results = ["{}.{}".format(r[0], r[1]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
     print("[+] Services enumerated for {} [+]".format(AWS_ACCESS_KEY_ID))
+    for result in sorted(results):
+        print(result)
+
+
+# Show all AWS Keys in the DB
+
+
+def module_list_awskeys_in_database():
+    '''
+    Show all AWS Keys in the database
+    weirdAAL.py -m list_awskeys_in_database -t demo
+    '''
+    results = [("{}.{}".format(r[0], r[1])) for r in search_list_awskeys_in_database(db_name, AWS_ACCESS_KEY_ID)]
+    print("[+] Listing of AWS Keys in the database [+]")
+    for result in sorted(results):
+        print(result)
+
+
+# List AWS Keys for as specified target
+
+
+def module_list_awskeys_for_target(*text):
+    '''
+    Show all AWS Keys in the database
+    weirdAAL.py -m list_awskeys_for_target -a 'othertarget' -t demo
+    '''
+    target = text[0][0]
+    results = [("{}".format(r[0])) for r in search_list_awskeys_by_target(db_name, target)]
+    print("[+] Listing of AWS Keys for target:{} [+]".format(target))
     for result in sorted(results):
         print(result)
