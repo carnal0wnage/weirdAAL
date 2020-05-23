@@ -1443,12 +1443,26 @@ def brute_organizations_permissions():
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pi.html
 
 
-# http://boto3.readthedocs.io/en/latest/reference/services/pinpoint.html
-# NO functions to call without arguements
+def brute_pinpoint_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pinpoint.html
+    '''
+    print("### Enumerating Pinpoint Service Permissions ###")
+    tests = [('GetApps', 'get_apps', (), {}), ]
+    return generic_permission_bruteforcer('pinpoint', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pinpoint-email.html
+def brute_pinpoint_email_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pinpoint-email.html
+    '''
+    print("### Enumerating Pinpoint Email Service Permissions ###")
+    tests = [('GetAccount', 'get_account', (), {}),
+             ('ListConfigurationSets', 'list_configuration_sets', (), {}),
+             ('ListEmailIdentities', 'list_email_identities', (), {}), ]
+    return generic_permission_bruteforcer('pinpoint-email', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pinpoint-sms-voice.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pinpoint-sms-voice.html
+#  No functions
 
 
 def brute_polly_permissions():

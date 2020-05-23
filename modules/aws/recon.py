@@ -120,7 +120,9 @@ def module_recon_all():
     brute_opsworks_permissions()
     brute_opsworkscm_permissions()
     brute_organizations_permissions()
-    #  PinPoint no functions
+    brute_pinpoint_permissions()
+    brute_pinpoint_email_permissions()
+    #  pinpoint-sms-voice no functions
     brute_polly_permissions()
     brute_pricing_permissions()
     brute_qldb_permissions()
