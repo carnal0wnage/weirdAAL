@@ -17,9 +17,22 @@ regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'af-south-1', 'ap
 '''
 Code to get the AWS_ACCESS_KEY_ID from boto3
 '''
-session = boto3.Session()
-credentials = session.get_credentials()
-AWS_ACCESS_KEY_ID = credentials.access_key
+try:
+    session = boto3.Session()
+    credentials = session.get_credentials()
+    AWS_ACCESS_KEY_ID = credentials.access_key
+
+#  Little hack to gracefully handle messed up .env/.aws credentials file as this is the first 
+#  library that is loaded
+except AttributeError as e:
+    #print(e)
+    print("[-] WeirdAAL had an eror loading the .env file [-]")
+    print("[-] Make sure .env file exists OR you have at least one entry in .env [-]")
+    sys.exit(1)
+except botocore.exceptions.ConfigParseError as e:
+    print("[-] {} [-]".format(e))
+    print("[-] Make sure you dont have duplicate entries in your .env file [-]")
+    sys.exit(1)
 
 
 def describe_trails():

@@ -292,9 +292,9 @@ def brute_alexaforbusiness_permissions():
     tests = [('CreateAddressBook', 'create_address_book', (), {'Name': 'Test'}, ), ]
     return generic_permission_bruteforcer('alexaforbusiness', tests)
 
-'''
-https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/amplify.html
-'''
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/amplify.html
+
 
 
 def brute_apigateway_permissions():
@@ -1156,8 +1156,8 @@ def brute_kinesis_permissions():
 # http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-archived-media.html
 # NO functions to call without data
 
-# http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-media.html
-# NO functions to call without data
+#  http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-media.html
+#  NO functions to call without data
 
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesis-video-signaling.html
 
@@ -1343,8 +1343,8 @@ def brute_mediastore_data_permissions():
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediatailor.html
 
 
-# http://boto3.readthedocs.io/en/latest/reference/services/meteringmarketplace.html
-# NO functions to call without arguements
+#  http://boto3.readthedocs.io/en/latest/reference/services/meteringmarketplace.html
+#  NO functions to call without arguements
 
 
 def brute_mgh_permissions():

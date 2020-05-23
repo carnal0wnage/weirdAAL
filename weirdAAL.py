@@ -10,6 +10,7 @@ import boto3
 import argparse
 import os
 from botocore.exceptions import ClientError
+from botocore.exceptions import ConfigParseError
 from modules import *
 import sys
 import builtins
@@ -20,7 +21,12 @@ import textwrap
 # Let a user set .aws/credentials or another file as the credentials source
 # If user-defined, must be an absolute path
 if 'AWS_SHARED_CREDENTIALS_FILE' not in os.environ:
-    os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
+    try:
+        #  print("loading .env into our ENV")
+        os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '.env'
+    except Exception as e:
+        print("Error: {}".format(e))
+        sys.exit("fix your credentials file -exiting...")
 
 # If you want to use a transparent + supports SSL proxy you can put it here
 # os.environ['HTTPS_PROXY'] = 'https://127.0.0.1:3128'
@@ -52,12 +58,13 @@ def perform_credential_check():
     try:
         client = boto3.client("sts")
         account_id = client.get_caller_identity()["Account"]
-    except botocore.exceptions.NoCredentialsError as e:
+    except (botocore.exceptions.NoCredentialsError) as e:
         print("Error: Unable to locate credentials")
         sys.exit("fix your credentials file -exiting...")
     except ClientError as e:
-        print("The AWS Access Keys are not valid/active")
+        print("[X] The AWS Access Keys are not valid/active [X]")
         sys.exit(1)
+    
 
 def method_create():
     try:
@@ -135,7 +142,7 @@ if (args.list):
 try:
     perform_credential_check()
 except:
-    print("Check the above error message and fix to use weirdAAL")
+    print("[-] Check the above error message and fix to use weirdAAL [-]")
     sys.exit(1)
 
 
