@@ -255,8 +255,17 @@ def s3_download_file(bucket, file):
     '''
     try:
         client = boto3.resource('s3', region_name=region)
-        client.Bucket(bucket).download_file(file, '{}/loot/{}'.format(os.getcwd(), file))
-        print("file downloaded to: {}/loot/{}".format(os.getcwd(), file))
+        full_path = os.getcwd()+'/loot/'+bucket+'/'+file
+        a = os.path.split(os.path.abspath(full_path))
+        if not os.path.exists(a[0]):
+            print("[-] Making folder for download [-]")
+            os.makedirs(a[0])
+            client.Bucket(bucket).download_file(file, full_path)
+            print("[+] File downloaded to: {} ]+]".format(full_path))
+        else:
+            print("[-] Download folder exists... [-]")
+            client.Bucket(bucket).download_file(file, full_path)
+            print("[+] File downloaded to: {} ]+]".format(full_path))
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
