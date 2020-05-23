@@ -126,6 +126,7 @@ def search_recon_for_targets(db_name, AWSKeyID):
         results = cursor.fetchall()
         return results
 
+
 def query(db_name, sql, data):
     '''
     Generic query function

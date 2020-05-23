@@ -77,3 +77,32 @@ def module_list_targets_in_database():
     print("[+] Targets in the database [+]")
     for result in sorted(results):
         print(result)
+
+
+# for a key, what services does it have listed in the DB and the date
+
+
+def module_list_services_by_provided_key_with_date(*text):
+    '''
+    Show services for a given key service:sub_service with date
+    weirdAAL.py -m list_services_by_provided_key_with_date -a 'AKIAEXAMPLE' -t demo
+    '''
+    AWS_ACCESS_KEY_ID = text[0][0]
+    results = [("{}.{}".format(r[0], r[1]), r[2]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
+    print("[+] Services enumerated for {} [+]".format(AWS_ACCESS_KEY_ID))
+    for result, date in sorted(results, key=lambda r: r[0]):
+        print("{} -> Date: {}".format(result, date))
+
+
+# for a key, what services does it have listed in the DB
+
+def module_list_services_by_provided_key(*text):
+    '''
+    Show services for a given key service:sub_service with date
+    weirdAAL.py -m list_services_by_provided_key -a 'AKIAEXAMPLE' -t demo
+    '''
+    AWS_ACCESS_KEY_ID = text[0][0]
+    results = ["{}.{}".format(r[0], r[1]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
+    print("[+] Services enumerated for {} [+]".format(AWS_ACCESS_KEY_ID))
+    for result in sorted(results):
+        print(result)
