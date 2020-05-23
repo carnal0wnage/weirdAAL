@@ -22,7 +22,7 @@ def module_show_services_by_key():
     example: elasticbeanstalk:DescribeEvents
     '''
     results = ["{}.{}".format(r[0], r[1]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
-    print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
+    print("[+] Services enumerated for {} [+]".format(AWS_ACCESS_KEY_ID))
     for result in sorted(results):
         print(result)
 
@@ -33,7 +33,7 @@ def module_show_services_by_key_with_date():
     example: elasticbeanstalk:DescribeEvents -> Date: 2018-04-18 20:36:41.791780
     '''
     results = [("{}.{}".format(r[0], r[1]), r[2]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
-    print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
+    print("[+] Services enumerated for {} [+]".format(AWS_ACCESS_KEY_ID))
     for result, date in sorted(results, key=lambda r: r[0]):
         print("{} -> Date: {}".format(result, date))
 
@@ -46,7 +46,7 @@ def module_list_services_by_key():
     example: elasticbeanstalk:DescribeEvents
     '''
     results = ["{}.{}".format(r[0], r[1]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
-    print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
+    print("[+] Services enumerated for {} [+]".format(AWS_ACCESS_KEY_ID))
     for result in sorted(results):
         print(result)
 
@@ -60,6 +60,20 @@ def module_list_services_by_key_with_date():
     example: elasticbeanstalk:DescribeEvents -> Date: 2018-04-18 20:36:41.791780
     '''
     results = [("{}.{}".format(r[0], r[1]), r[2]) for r in search_recon_by_key(db_name, AWS_ACCESS_KEY_ID)]
-    print("Services enumerated for {}".format(AWS_ACCESS_KEY_ID))
+    print("[+] Services enumerated for {} [+]".format(AWS_ACCESS_KEY_ID))
     for result, date in sorted(results, key=lambda r: r[0]):
         print("{} -> Date: {}".format(result, date))
+
+
+# for a database, show all the targets in the DB
+
+
+def module_list_targets_in_database():
+    '''
+    Show targets in the database
+    python3 weirdAAL.py -m list_targets_in_databse -t demo
+    '''
+    results = ["{}".format(r[0]) for r in search_recon_for_targets(db_name, AWS_ACCESS_KEY_ID)]
+    print("[+] Targets in the database [+]")
+    for result in sorted(results):
+        print(result)

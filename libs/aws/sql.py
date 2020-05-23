@@ -116,6 +116,15 @@ def search_recon_by_key(db_name, AWSKeyID):
         results = cursor.fetchall()
         return results
 
+def search_recon_for_targets(db_name, AWSKeyID):
+    '''
+    Function to query services by AWSKey and order them by time
+    '''
+    with sqlite3.connect(db_name) as db:
+        cursor = db.cursor()
+        cursor.execute("""SELECT DISTINCT target from recon""")
+        results = cursor.fetchall()
+        return results
 
 def query(db_name, sql, data):
     '''
