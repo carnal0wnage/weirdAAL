@@ -4,6 +4,9 @@ Brute functions for WeirdAAL
 This is the main brute library so that we can get an idea what services a particular
 key has access to. We do this by asking if we have permission on as many services &
 subfunctions as we can. Printed to screen and logged to db.
+
+https://docs.aws.amazon.com/general/latest/gr/aws-service-information.html
+
 '''
 
 import boto3
@@ -293,8 +296,13 @@ def brute_alexaforbusiness_permissions():
     return generic_permission_bruteforcer('alexaforbusiness', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/amplify.html
-
+def brute_amplify_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/amplify.html
+    '''
+    print("### Enumerating AWS Amplify Permissions ###")
+    tests = [('ListApps', 'list_apps', (), {}, ), ]
+    return generic_permission_bruteforcer('amplify', tests)
 
 
 def brute_apigateway_permissions():
@@ -311,18 +319,50 @@ def brute_apigateway_permissions():
              ('GetUsagePlans', 'get_usage_plans', (), {}, ), ]
     return generic_permission_bruteforcer('apigateway', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/apigatewaymanagementapi.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/apigatewayv2.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/apigatewaymanagementapi.html
+#  no functions
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appconfig.html
 
-# http://boto3.readthedocs.io/en/latest/reference/services/application-autoscaling.html
-# not seeing any functions that dont take args
+def brute_apigatewayv2_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/apigatewayv2.html
+    '''
+    print("### Enumerating AmazonApiGatewayV2 Permissions ###")
+    tests = [('GetApis', 'get_apis', (), {}, ), ]
+    return generic_permission_bruteforcer('apigatewayv2', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/application-insights.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appmesh.html
+def brute_appconfig_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appconfig.html
+    '''
+    print("### Enumerating Amazon AppConfig Permissions ###")
+    tests = [('ListApplications', 'list_applications', (), {}, ), ]
+    return generic_permission_bruteforcer('appconfig', tests)
+
+
+#  http://boto3.readthedocs.io/en/latest/reference/services/application-autoscaling.html
+#  not seeing any functions that dont take args
+
+
+def brute_applicationinsights_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/application-insights.html
+    '''
+    print("### Enumerating Amazon CloudWatch Application Insights Permissions ###")
+    tests = [('ListApplications', 'list_applications', (), {}, ), ]
+    return generic_permission_bruteforcer('application-insights', tests)
+
+
+def brute_appmesh_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/appmesh.html
+    '''
+    print("### Enumerating AWS App Mesh Permissions ###")
+    tests = [('ListMeshes', 'list_meshes', (), {}, ), ]
+    return generic_permission_bruteforcer('appmesh', tests)
+
 
 def brute_appstream_permissions():
     '''
@@ -334,8 +374,9 @@ def brute_appstream_permissions():
              ('DescribeStacks', 'describe_stacks', (), {}, ), ]
     return generic_permission_bruteforcer('appstream', tests)
 
-# http://boto3.readthedocs.io/en/latest/reference/services/appsync.html
-# not seeing any functions that dont take args
+
+#  http://boto3.readthedocs.io/en/latest/reference/services/appsync.html
+#  not seeing any functions that dont take args
 
 
 def brute_athena_permissions():
@@ -373,7 +414,17 @@ def brute_autoscaling_plans_permissions():
     tests = [('DescribeScalingPlans', 'describe_scaling_plans', (), {}, ), ]
     return generic_permission_bruteforcer('autoscaling-plans', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/backup.html
+
+def brute_backup_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/backup.html
+    '''
+    print("### Enumerating AWS Backup Permissions ###")
+    tests = [('ListBackupJobs', 'list_backup_jobs', (), {}, ),
+             ('ListBackupPlans', 'list_backup_plans', (), {}, ),
+             ('ListBackupVaults', 'list_backup_vaults', (), {}, ), ]
+    return generic_permission_bruteforcer('backup', tests)
+
 
 def brute_batch_permissions():
     '''
@@ -395,13 +446,21 @@ def brute_budgets_permissions():
     tests = [('DescribeBudgets', 'describe_budgets', (), {'AccountId': account_id}, ), ]
     return generic_permission_bruteforcer('budgets', tests)
 
-# http://boto3.readthedocs.io/en/latest/reference/services/ce.html
-# TODO
-# http://boto3.readthedocs.io/en/latest/reference/services/ce.html#CostExplorer.Client.get_cost_and_usage
-# shoudl work we just need to generate start and end times each run
+#  http://boto3.readthedocs.io/en/latest/reference/services/ce.html
+#  TODO
+#  http://boto3.readthedocs.io/en/latest/reference/services/ce.html#CostExplorer.Client.get_cost_and_usage
+#  should work we just need to generate start and end times each run
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/chime.html
+def brute_chime_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/chime.html
+    '''
+    print("### Enumerating Chime Permissions ###")
+    tests = [('ListAccounts', 'list_accounts', (), {}, ), 
+             ('GetGlobalSettings', 'get_global_settings', (), {}, ), ]
+    return generic_permission_bruteforcer('chime', tests)
+
 
 def brute_cloud9_permissions():
     '''
@@ -541,9 +600,24 @@ def brute_codedeploy_permissions():
              ('ListOnPremisesInstances', 'list_on_premises_instances', (), {}, ), ]
     return generic_permission_bruteforcer('codedeploy', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguru-reviewer.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguruprofiler.html
+def brute_codegurureviewer_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguru-reviewer.html
+    '''
+    print("### Enumerating Amazon CodeGuru Reviewer Permissions ###")
+    tests = [('ListCodeReviews', 'list_code_reviews', (), {'Type':'PullRequest'}, ), 
+             ('ListCodeReviews', 'list_code_reviews', (), {'Type':'RepositoryAnalysis'}, ), ]
+    return generic_permission_bruteforcer('codeguru-reviewer', tests)
+
+
+def brute_codeguruprofiler_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codeguruprofiler.html
+    '''
+    print("### Enumerating Amazon CodeGuru Profiler Permissions ###")
+    tests = [('ListProfilingGroups', 'list_profiling_groups', (), {}, ), ]
+    return generic_permission_bruteforcer('codeguruprofiler', tests)
 
 
 def brute_codepipeline_permissions():
@@ -561,12 +635,31 @@ def brute_codestar_permissions():
     '''
     print("### Enumerating CodeStar Permissions ###")
     tests = [('ListProjects', 'list_projects', (), {}, ),
-             ('ListUerProfiles', 'list_user_profiles', (), {}, ), ]
+             ('ListUserProfiles', 'list_user_profiles', (), {}, ), ]
     return generic_permission_bruteforcer('codestar', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codestar-connections.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codestar-notifications.html
+def brute_codestarconnections_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codestar-connections.html
+    '''
+    print("### Enumerating AWS CodeStar Connections Permissions ###")
+    tests = [('ListConnections', 'list_connections', (), {}, ),
+             #('ListHosts', 'list_hosts', (), {}, ), 
+             ]
+    return generic_permission_bruteforcer('codestar-connections', tests)
+
+
+def brute_codestarnotifications_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codestar-notifications.html
+    '''
+    print("### Enumerating AWS CodeStar Notifications Permissions ###")
+    tests = [('ListNotificationRules', 'list_notification_rules', (), {}, ),
+             ('ListTargets', 'list_targets', (), {}, ), 
+             ]
+    return generic_permission_bruteforcer('codestar-notifications', tests)
+
 
 def brute_cognitoidentity_permissions():
     '''
@@ -603,9 +696,26 @@ def brute_comprehend_permissions():
     tests = [('ListTopicsDetectionJobs', 'list_topics_detection_jobs', (), {}, ), ]
     return generic_permission_bruteforcer('comprehend', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/comprehendmedical.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/compute-optimizer.html
+def brute_comprehendmedical_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/comprehendmedical.html
+    '''
+    print("### Enumerating AWS Comprehend Medical Permissions ###")
+    tests = [('ListEntitiesDetectionv2Jobs', 'list_entities_detection_v2_jobs', (), {}, ), 
+             ('ListIcd10cmInferenceJobs', 'list_icd10_cm_inference_jobs', (), {}, ),
+             ('listPhiDetectionJobs', 'list_phi_detection_jobs', (), {}, ),
+             ('listRxNormInferenceJobs', 'list_rx_norm_inference_jobs', (), {}, ), ]
+    return generic_permission_bruteforcer('comprehendmedical', tests)
+
+
+def brute_computeoptimizer_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/compute-optimizer.html
+    '''
+    print("### Enumerating AWS Compute Optimizer Permissions ###")
+    tests = [('GetRecommendationSummaries', 'get_recommendation_summaries', (), {}, ), ]
+    return generic_permission_bruteforcer('compute-optimizer', tests)
 
 
 def brute_configservice_permissions():
@@ -623,10 +733,11 @@ def brute_configservice_permissions():
              ('DescribeDeliveryChannels', 'describe_delivery_channels', (), {}, ), ]
     return generic_permission_bruteforcer('config', tests)
 
-# http://boto3.readthedocs.io/en/latest/reference/services/connect.html
-# no functions
+#  http://boto3.readthedocs.io/en/latest/reference/services/connect.html
+#  no functions
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/connectparticipant.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/connectparticipant.html
+#  no functions
 
 
 def brute_costandusagereportservice_permissions():
@@ -638,7 +749,15 @@ def brute_costandusagereportservice_permissions():
     return generic_permission_bruteforcer('cur', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dataexchange.html
+def brute_dataexchange_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dataexchange.html
+    '''
+    print("### Enumerating AWS Data Exchange Permissions ###")
+    tests = [('ListDataSets', 'list_data_sets', (), {}, ), 
+             ('ListJobs', 'list_jobs', (), {}, ), ] 
+    return generic_permission_bruteforcer('dataexchange', tests)
+
 
 def brute_datapipeline_permissions():
     '''
@@ -649,7 +768,14 @@ def brute_datapipeline_permissions():
     return generic_permission_bruteforcer('datapipeline', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/datasync.html
+def brute_datasync_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/datasync.html
+    '''
+    print("### Enumerating  AWS DataSync Permissions ###")
+    tests = [('ListAgents', 'list_agents', (), {}, ), 
+             ('ListTasks', 'list_tasks', (), {}, ), ] 
+    return generic_permission_bruteforcer('datasync', tests)
 
 
 def brute_dax_permissions():
@@ -665,7 +791,14 @@ def brute_dax_permissions():
     return generic_permission_bruteforcer('dax', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/detective.html
+def brute_detective_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/detective.html
+    '''
+    print("### Enumerating Amazon Detective Permissions ###")
+    tests = [('ListGraphs', 'list_graphs', (), {}, ), ]
+    return generic_permission_bruteforcer('detective', tests)
+
 
 def brute_devicefarm_permissions():
     '''
@@ -697,7 +830,13 @@ def brute_applicationdiscoveryservice_permissions():
     return generic_permission_bruteforcer_region('discovery', tests, 'us-west-2')
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dlm.html
+def brute_dlm_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dlm.html
+    '''
+    print("### Enumerating DatabaseMigrationService Permissions ###")
+    tests = [('GetLifecyclePolicies', 'get_lifecycle_policies', (), {}, ), ]
+    return generic_permission_bruteforcer('dlm', tests)
 
 
 def brute_dms_permissions():
@@ -711,7 +850,15 @@ def brute_dms_permissions():
     return generic_permission_bruteforcer('dms', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/docdb.html
+def brute_docdb_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/docdb.html
+    '''
+    print("### Enumerating DocumentDB with MongoDB Permissions ###")
+    tests = [('DescribeDBClusters', 'describe_db_clusters', (), {}, ),
+             ('DescribeDBInstances', 'describe_db_instances', (), {}, ),
+             ('DescribeDBEngineVersions', 'describe_db_engine_versions', (), {}, ), ]
+    return generic_permission_bruteforcer('docdb', tests)
 
 
 def brute_directoryservice_permissions():
@@ -746,7 +893,8 @@ def brute_dynamodbstreams_permissions():
     return generic_permission_bruteforcer('dynamodbstreams', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ebs.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ebs.html
+#  no functions that dont require a SnapshotId 
 
 
 def brute_ec2_permissions():
@@ -815,7 +963,8 @@ def brute_ec2_permissions():
     return generic_permission_bruteforcer('ec2', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2-instance-connect.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2-instance-connect.html
+#  no functions
 
 
 def brute_ecr_permissions():
@@ -851,9 +1000,22 @@ def brute_efs_permissions():
     return generic_permission_bruteforcer('efs', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks.html
+def brute_eks_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks.html
+    '''
+    print("### Enumerating Amazon Elastic Kubernetes Service (EKS) Permissions ###")
+    tests = [('ListClusters', 'list_clusters', (), {}), ]
+    return generic_permission_bruteforcer('eks', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elastic-inference.html
+
+def brute_elasticinference_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elastic-inference.html
+    '''
+    print("### Enumerating Amazon Elastic Inference Permissions ###")
+    tests = [('DescribeAccelerators', 'describe_accelerators', (), {}), ]
+    return generic_permission_bruteforcer('elastic-inference', tests)
 
 
 def brute_elasticache_permissions():
@@ -969,13 +1131,39 @@ def brute_fms_permissions():
     return generic_permission_bruteforcer('fms', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/forecast.html
+def brute_forecast_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/forecast.html
+    '''
+    print("### Enumerating Amazon Forecast Permissions ###")
+    tests = [('ListDatasets', 'list_datasets', (), {}),
+             ('ListForecasts', 'list_forecasts', (), {}), 
+             ('ListPredictors', 'list_predictors', (), {}), ]
+    return generic_permission_bruteforcer('forecast', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/forecastquery.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/frauddetector.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/forecastquery.html
+#  no functions
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/fsx.html
+
+def brute_frauddetector_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/frauddetector.html
+    '''
+    print("### Enumerating Amazon Fraud Detector Permissions ###")
+    tests = [('GetDetectors', 'get_detectors', (), {}), ]
+    return generic_permission_bruteforcer('frauddetector', tests)
+
+
+def brute_fsx_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/fsx.html
+    '''
+    print("### Enumerating FSx Permissions ###")
+    tests = [('DescribeBackups', 'describe_backups', (), {}),
+             ('DescribeDataRepositoryTasks', 'describe_data_repository_tasks', (), {}),
+             ('DescribeFileSystems', 'describe_file_systems', (), {}), ]
+    return generic_permission_bruteforcer('fsx', tests)
 
 
 def brute_gamelift_permissions():
@@ -1002,7 +1190,13 @@ def brute_glacier_permissions():
     return generic_permission_bruteforcer('glacier', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/globalaccelerator.html
+def brute_globalaccelerator_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/globalaccelerator.html
+    '''
+    print("### Enumerating global Accelerator Permissions ###")
+    tests = [('ListAccelerators', 'list_accelerators', (), {}), ]
+    return generic_permission_bruteforcer_region('globalaccelerator', tests, 'us-west-2')
 
 
 def brute_glue_permissions():
@@ -1033,7 +1227,15 @@ def brute_greengrass_permissions():
     return generic_permission_bruteforcer('greengrass', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/groundstation.html
+def brute_groundstation_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/groundstation.html
+    '''
+    print("### Enumerating Groundstation Permissions ###")
+    tests = [('ListConfigs', 'list_configs', (), {}),
+             ('ListGroundStations', 'list_ground_stations', (), {}),
+             ('ListSatellites', 'list_satellites', (), {}), ]
+    return generic_permission_bruteforcer_region('groundstation', tests, 'us-west-2')
 
 def brute_guardduty_permissions():
     '''
@@ -1076,7 +1278,18 @@ def brute_iam_permissions():
     return generic_permission_bruteforcer('iam', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/imagebuilder.html
+def brute_imagebuilder_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/imagebuilder.html
+    '''
+    print("### Enumerating Image Builder Permissions ###")
+    tests = [('ListComponents', 'list_components', (), {}), 
+             ('ListDistributionConfigurations', 'list_distribution_configurations', (), {}),
+             ('ListImagePipelines', 'list_image_pipelines', (), {}),
+             ('ListImageRecipes', 'list_image_recipes', (), {}),
+             ('ListImages', 'list_images', (), {}),
+             ('ListInfrastructureConfigurations', 'list_infrastructure_configurations', (), {}), ]
+    return generic_permission_bruteforcer('imagebuilder', tests)
 
 
 def brute_importexport_permissions():
@@ -1124,25 +1337,90 @@ def brute_iotdata_permissions():
 # http://boto3.readthedocs.io/en/latest/reference/services/iot-jobs-data.html
 # NO functions to call without data
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iot1click-devices.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iot1click-projects.html
+def brute_iot1clickdevices_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iot1click-devices.html
+    https://docs.aws.amazon.com/general/latest/gr/1click.html
+    '''
+    print("### Enumerating AWS IoT 1-Click Devices Service Permissions ###")
+    tests = [('ListDevices', 'list_devices', (), {}), ]
+    return generic_permission_bruteforcer_region('iot1click-devices', tests, 'us-west-2')
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotanalytics.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotevents.html
+def brute_iot1clickprojects_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iot1click-projects.html
+    '''
+    print("### Enumerating AWS IoT 1-Click Projects Service Permissions ###")
+    tests = [('ListProjects', 'list_projects', (), {}), ]
+    return generic_permission_bruteforcer_region('iot1click-projects', tests, 'us-west-2')
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotevents-data.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotsecuretunneling.html
+def brute_iotanalytics_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotanalytics.html
+    '''
+    print("### Enumerating AWS IoT 1-Click Projects Service Permissions ###")
+    tests = [('ListChannels', 'list_channels', (), {}), 
+             ('ListDatasets', 'list_datasets', (), {}),
+             ('ListDatastores', 'list_datastores', (), {}),
+             ('ListPipelines', 'list_pipelines', (), {}), ]
+    return generic_permission_bruteforcer_region('iotanalytics', tests, 'us-west-2')
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotsitewise.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotthingsgraph.html
+def brute_iotevents_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotevents.html
+    '''
+    print("### Enumerating AWS IoT Events Service Permissions ###")
+    tests = [('ListDetectorModels', 'list_detector_models', (), {}), 
+             ('ListInputs', 'list_inputs', (), {}), ]
+    return generic_permission_bruteforcer_region('iotevents', tests, 'us-west-2')
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kafka.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotevents-data.html
+#  need detectorID
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kendra.html
+
+def brute_iotsecuretunneling_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotsecuretunneling.html
+    '''
+    print("### Enumerating AWS  IoT Secure Tunneling Permissions ###")
+    tests = [('ListTunnels', 'list_tunnels', (), {}), ]
+    return generic_permission_bruteforcer_region('iotsecuretunneling', tests, 'us-west-2')
+
+
+def brute_iotsitewise_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotsitewise.html
+    '''
+    print("### Enumerating AWS IoT Sitewise Permissions ###")
+    tests = [('ListAssets', 'list_assets', (), {}), 
+             ('ListPortals', 'list_portals', (), {}), 
+             ('ListGateways', 'list_gateways', (), {}), ]
+    return generic_permission_bruteforcer_region('iotsitewise', tests, 'us-west-2')
+
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iotthingsgraph.html
+#  no functions
+
+
+def brute_kafka_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kafka.html
+    '''
+    print("### Enumerating Kafka Permissions ###")
+    tests = [('ListClusters', 'list_clusters', (), {}), ]
+    return generic_permission_bruteforcer('kafka', tests)
+
+
+def brute_kendra_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kendra.html
+    '''
+    print("### Enumerating Kendra Frontend Service Permissions ###")
+    tests = [('ListIndices', 'list_indices', (), {}), ]
+    return generic_permission_bruteforcer('kendra', tests)
 
 
 def brute_kinesis_permissions():
@@ -1153,14 +1431,14 @@ def brute_kinesis_permissions():
     tests = [('ListStreams', 'list_streams', (), {}), ]
     return generic_permission_bruteforcer('kinesis', tests)
 
-# http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-archived-media.html
-# NO functions to call without data
+#  http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-archived-media.html
+#  NO functions to call without data
 
 #  http://boto3.readthedocs.io/en/latest/reference/services/kinesis-video-media.html
 #  NO functions to call without data
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesis-video-signaling.html
-
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesis-video-signaling.html
+#  NO functions to call without data
 
 def brute_kinesisanalytics_permissions():
     '''
@@ -1171,7 +1449,13 @@ def brute_kinesisanalytics_permissions():
     return generic_permission_bruteforcer('kinesisanalytics', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesisanalyticsv2.html
+def brute_kinesisanalyticsv2_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesisanalyticsv2.html
+    '''
+    print("### Enumerating Kinesis Analytics v2 Permissions ###")
+    tests = [('ListApplications', 'list_applications', (), {}), ]
+    return generic_permission_bruteforcer('kinesisanalyticsv2', tests)
 
 
 def brute_kinesisvideo_permissions():
@@ -1193,7 +1477,14 @@ def brute_kms_permissions():
     return generic_permission_bruteforcer('kms', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/lakeformation.html
+def brute_lakeformation_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/lakeformation.html
+    '''
+    print("### Enumerating Lake Formation Permissions ###")
+    tests = [('ListPermissions', 'list_permissions', (), {}),
+             ('ListResources', 'list_resources', (), {}), ]
+    return generic_permission_bruteforcer('lakeformation', tests)
 
 
 def brute_lambda_permissions():
@@ -1227,7 +1518,13 @@ def brute_lexruntime_permissions():
     return generic_permission_bruteforcer('lex-runtime', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/license-manager.html
+def brute_licensemanager_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/license-manager.html
+    '''
+    print("### Enumerating License Manager Permissions ###")
+    tests = [('ListLicenseConfigurations', 'list_license_configurations', (), {}), ]
+    return generic_permission_bruteforcer('license-manager', tests)
 
 
 def brute_lightsail_permissions():
@@ -1265,22 +1562,60 @@ def brute_machinelearning_permissions():
              ('DescribeEvaluations', 'describe_evaluations', (), {}), ]
     return generic_permission_bruteforcer('machinelearning', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/macie.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/macie2.html
+def brute_macie_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/macie.html
+    '''
+    print("### Enumerating Macie Permissions ###")
+    tests = [('ListMemberAccounts', 'list_member_accounts', (), {}),
+             ('ListS3Resources', 'list_s3_resources', (), {}), ]
+    return generic_permission_bruteforcer('macie', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/managedblockchain.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/marketplace-catalog.html
+def brute_macie2_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/macie2.html
+    '''
+    print("### Enumerating Macie2 Permissions ###")
+    tests = [('DescribeBuckets', 'describe_buckets', (), {}),
+             ('ListFindings', 'list_findings', (), {}), 
+             ('Listmembers', 'list_members', (), {}),]
+    return generic_permission_bruteforcer('macie2', tests)
 
+def brute_managedblockchain_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/managedblockchain.html
+    '''
+    print("### Enumerating Managed Blockchain Permissions ###")
+    tests = [('ListNetworks', 'list_networks', (), {}), ]
+    return generic_permission_bruteforcer('managedblockchain', tests)
+
+
+def brute_marketplacecatalog_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/marketplace-catalog.html
+    needs an entity type for list_entities ??
+    '''
+    print("### Enumerating Machine Learning Permissions ###")
+    tests = [('ListEntities', 'list_entities', (), {}), ]
+    return generic_permission_bruteforcer('marketplace-catalog', tests)
 
 # http://boto3.readthedocs.io/en/latest/reference/services/marketplace-entitlement.html
-# NO functions to call without arguements
+# NO functions to call without arguments
 
 # http://boto3.readthedocs.io/en/latest/reference/services/marketplacecommerceanalytics.html
-# NO functions to call without arguements
+# NO functions to call without arguments
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediaconnect.html
+
+def brute_mediaconnect_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediaconnect.html
+    '''
+    print("### Enumerating MediaConnect Permissions ###")
+    tests = [('ListEntitlements', 'list_entitlements', (), {}),
+             ('ListFlows', 'list_flows', (), {}), ]
+    return generic_permission_bruteforcer('mediaconnect', tests)
 
 
 def brute_mediaconvert_permissions():
@@ -1316,7 +1651,14 @@ def brute_mediapackage_permissions():
     return generic_permission_bruteforcer('mediapackage', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediapackage-vod.html
+def brute_mediapackagevod_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediapackage-vod.html
+    '''
+    print("### Enumerating MediaPackage VOD Permissions ###")
+    tests = [('ListAssets', 'list_assets', (), {}), 
+             ('ListPackagingGroups', 'list_packaging_groups', (), {}), ]
+    return generic_permission_bruteforcer('mediapackage-vod', tests)
 
 
 def brute_mediastore_permissions():
@@ -1332,19 +1674,27 @@ def brute_mediastore_data_permissions():
     '''
     http://boto3.readthedocs.io/en/latest/reference/services/mediastore-data.html
     Could not connect to the endpoint URL: "https://data.mediastore.us-east-1.amazonaws.com/"
-    boto3 (1.7.4) bug
+    https://docs.aws.amazon.com/general/latest/gr/mediastore.html
 
-    Update May2020 - i cant find an endpoint to connect to - will comment th is out in recon.py
+    Update Sep2020 - i cant find an endpoint to connect to tried us-east-1/us-west-2
+    will comment this out in recon.py
     '''
     print("### Enumerating AWS Elemental MediaStore Data Permissions ###")
     tests = [('ListItems', 'list_items', (), {}), ]
-    return generic_permission_bruteforcer_region('mediastore-data', tests, 'us-east-1')
+    return generic_permission_bruteforcer_region('mediastore-data', tests, 'us-west-2')
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediatailor.html
+
+def brute_mediatailor_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mediatailor.html
+    '''
+    print("### Enumerating MediaTailor Permissions ###")
+    tests = [('ListPlaybackConfigurations', 'list_playback_configurations', (), {}), ]
+    return generic_permission_bruteforcer('mediatailor', tests)
 
 
 #  http://boto3.readthedocs.io/en/latest/reference/services/meteringmarketplace.html
-#  NO functions to call without arguements
+#  NO functions to call without arguments
 
 
 def brute_mgh_permissions():
@@ -1357,7 +1707,13 @@ def brute_mgh_permissions():
     return generic_permission_bruteforcer_region('mgh', tests, 'us-west-2')
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/migrationhub-config.html
+def brute_migrationhubconfig_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/migrationhub-config.html
+    '''
+    print("### Enumerating migrationhub-config Permissions ###")
+    tests = [('DescribeHomeRegionControls', 'describe_home_region_controls', (), {}), ]
+    return generic_permission_bruteforcer('migrationhub-config', tests)
 
 
 def brute_mobile_permissions():
@@ -1391,9 +1747,28 @@ def brute_mturk_permissions():
     return generic_permission_bruteforcer('mturk', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/neptune.html
+def brute_neptune_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/neptune.html
+    '''
+    print("### Enumerating Neptune Permissions ###")
+    tests = [('DescribeDBClusters', 'describe_db_clusters', (), {}), 
+             ('DescribeDBEngineVersions', 'describe_db_engine_versions', (), {}),
+             ('DescribeDBInstances', 'describe_db_instances', (), {}),
+             ('DescribeEvents', 'describe_events', (), {}), ]
+    return generic_permission_bruteforcer('neptune', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/networkmanager.html
+
+def brute_networkmanager_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/networkmanager.html
+    Other functions needs the Global Network ID
+    https://docs.aws.amazon.com/general/latest/gr/network_manager.html
+    '''
+    print("### Enumerating Network Manager Permissions ###")
+    tests = [('DescribeGlobalNetworks', 'describe_global_networks', (), {}), ]
+    return generic_permission_bruteforcer_region('networkmanager', tests, 'us-west-2')
+
 
 def brute_opsworks_permissions():
     '''
@@ -1432,16 +1807,36 @@ def brute_organizations_permissions():
     return generic_permission_bruteforcer('organizations', tests)
 
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/outposts.html
+def brute_outposts_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/outposts.html
+    '''
+    print("### Enumerating Outposts Service Permissions ###")
+    tests = [('ListOutposts', 'list_outposts', (), {}), 
+             ('ListSites', 'list_sites', (), {}),]
+    return generic_permission_bruteforcer('outposts', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize.html
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-events.html
+def brute_personalize_permissions():
+    '''
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize.html
+    '''
+    print("### Enumerating Personalize Service Permissions ###")
+    tests = [('ListCampaigns', 'list_campaigns', (), {}), 
+             ('ListDatasets', 'list_datasets', (), {}), 
+             ('ListRecipes', 'list_recipes', (), {}),]
+    return generic_permission_bruteforcer('personalize', tests)
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-runtime.html
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-events.html
+#  No functions
 
-# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pi.html
 
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-runtime.html
+#  No functions
+
+
+#  https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/pi.html
+#  No functions
 
 def brute_pinpoint_permissions():
     '''
@@ -1450,6 +1845,7 @@ def brute_pinpoint_permissions():
     print("### Enumerating Pinpoint Service Permissions ###")
     tests = [('GetApps', 'get_apps', (), {}), ]
     return generic_permission_bruteforcer('pinpoint', tests)
+
 
 def brute_pinpoint_email_permissions():
     '''

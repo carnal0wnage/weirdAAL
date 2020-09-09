@@ -12,7 +12,7 @@ from libs.aws.opsworks import *
 from libs.aws.route53 import *
 from libs.aws.sts import *
 
-# maps to available services in boto 1.13.12
+# maps to available services in boto 1.14.55
 
 
 def module_recon_all():
@@ -26,16 +26,24 @@ def module_recon_all():
     brute_acm_permissions()
     brute_acm_pca_permissions()
     brute_alexaforbusiness_permissions()
+    brute_amplify_permissions()
     brute_apigateway_permissions()
-    #  Application Auto Scaling - no usable functions
+    #  apigatewaymanagementapi no functions
+    brute_apigatewayv2_permissions()
+    brute_appconfig_permissions()
+    #  application-autoscaling - no functions
+    brute_applicationinsights_permissions()
+    brute_appmesh_permissions()
     brute_appstream_permissions()
-    #  AppSync - no usable functions
+    #  appsync no functions
     brute_athena_permissions()
     brute_autoscaling_permissions()
     brute_autoscaling_plans_permissions()
+    brute_backup_permissions()
     brute_batch_permissions()
     brute_budgets_permissions()
-    #  CostExplorer
+    #  ce (CostExplorer) no functions
+    brute_chime_permissions()
     brute_cloud9_permissions()
     brute_clouddirectory_permissions()
     brute_cloudformation_permissions()
@@ -49,28 +57,44 @@ def module_recon_all():
     brute_codebuild_permissions()
     brute_codecommit_permissions()
     brute_codedeploy_permissions()
+    brute_codegurureviewer_permissions()
+    brute_codeguruprofiler_permissions()
     brute_codepipeline_permissions()
     brute_codestar_permissions()
+    brute_codestarconnections_permissions()
+    brute_codestarnotifications_permissions()
     brute_cognitoidentity_permissions()
     brute_cognitoidp_permissions()
     brute_cognitosync_permissions()
     brute_comprehend_permissions()
+    brute_comprehendmedical_permissions()
+    brute_computeoptimizer_permissions()
     brute_configservice_permissions()
-    # connect no functions
+    #  connect no functions
+    #  connectparticipant no functions
     brute_costandusagereportservice_permissions()
+    brute_dataexchange_permissions()
     brute_datapipeline_permissions()
+    brute_datasync_permissions()
     brute_dax_permissions()
+    brute_detective_permissions()
     brute_devicefarm_permissions()
     brute_directconnect_permissions()
     brute_applicationdiscoveryservice_permissions()
+    brute_dlm_permissions()
     brute_dms_permissions()
+    brute_docdb_permissions()
     brute_directoryservice_permissions()
     brute_dynamodb_permissions()
     brute_dynamodbstreams_permissions()
+    #  ebs no functions
     brute_ec2_permissions()
+    #  ec2-instance-connect no functions
     brute_ecr_permissions()
     brute_ecs_permissions()
     brute_efs_permissions()
+    brute_eks_permissions()
+    brute_elasticinference_permissions()
     brute_elasticache_permissions()
     brute_elasticbeanstalk_permissions()
     brute_elastictranscoder_permissions()
@@ -81,45 +105,81 @@ def module_recon_all():
     brute_cloudwatchevents_permissions()
     brute_firehose_permissions()
     brute_fms_permissions()
+    brute_forecast_permissions()
+    #  forecastquery no functions
+    brute_frauddetector_permissions()
+    brute_fsx_permissions()
     brute_gamelift_permissions()
     brute_glacier_permissions()
+    brute_globalaccelerator_permissions()
     brute_glue_permissions()
     brute_greengrass_permissions()
+    brute_groundstation_permissions()
     brute_guardduty_permissions()
     brute_health_permissions()
     brute_iam_permissions()
+    brute_imagebuilder_permissions()
     brute_importexport_permissions()
     brute_inspector_permissions()
     brute_iot_permissions()
-    #  IoTDataPlane  no functions
-    #  IoTJobsDataPlane no functions
+    #  iot-data no functions
+    #  iot-jobs-data no functions
+    brute_iot1clickdevices_permissions()
+    brute_iot1clickprojects_permissions()
+    brute_iotanalytics_permissions()
+    brute_iotevents_permissions()
+    #  iotevents-data no functions
+    brute_iotsecuretunneling_permissions()
+    brute_iotsitewise_permissions()
+    #  iotthingsgraph no functions
+    brute_kafka_permissions()
+    brute_kendra_permissions()
     brute_kinesis_permissions()
     #  KinesisVideoArchivedMedia no functions
     #  KinesisVideoMedia no functions
+    #  kinesis-video-signaling no functions
     brute_kinesisanalytics_permissions()
+    brute_kinesisanalyticsv2_permissions()
     brute_kinesisvideo_permissions()
     brute_kms_permissions()
+    brute_lakeformation_permissions()
     brute_lambda_permissions()
     brute_lexmodels_permissions()
     #  LexRuntimeService no functions
+    brute_licensemanager_permissions()
     brute_lightsail_permissions()
     brute_cloudwatchlogs_permissions()
     brute_machinelearning_permissions()
+    brute_macie_permissions()
+    brute_macie2_permissions()
+    brute_managedblockchain_permissions()
+    #  marketplace-catalog needs an default entity type
     #  marketplace-entitlement no functions
     #  marketplacecommerceanalytics no functions
+    brute_mediaconnect_permissions()
     brute_mediaconvert_permissions()
     brute_medialive_permissions()
     brute_mediapackage_permissions()
+    brute_mediapackagevod_permissions()
     brute_mediastore_permissions()
-    #  brute_mediastore_data_permissions()
+    #  brute_mediastore_data_permissions() #listed endpoints dont connect
+    brute_mediatailor_permissions()
     #  MarketplaceMetering no functions
     brute_mgh_permissions()
+    brute_migrationhubconfig_permissions()
     brute_mobile_permissions()
     brute_mq_permissions()
     brute_mturk_permissions()
+    brute_neptune_permissions()
+    brute_networkmanager_permissions() #9/3/20 only us-west-2 endpoint
     brute_opsworks_permissions()
     brute_opsworkscm_permissions()
     brute_organizations_permissions()
+    brute_outposts_permissions()
+    brute_personalize_permissions()
+    #  personalize-events no functions
+    #  personalize-runtime no functions
+    #  pi no functions
     brute_pinpoint_permissions()
     brute_pinpoint_email_permissions()
     #  pinpoint-sms-voice no functions
