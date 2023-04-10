@@ -15,7 +15,10 @@ from modules import *
 import sys
 import builtins
 import re
-from tabulate import tabulate
+#from tabulate import tabulate
+from collections.abc import Iterable
+from collections import namedtuple
+
 import textwrap
 
 # Let a user set .aws/credentials or another file as the credentials source
