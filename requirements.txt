@@ -5,5 +5,5 @@ jmespath==0.9.3
 python-dateutil==2.6.1
 s3transfer==0.3.0
 six==1.11.0
-virtualenv==15.1.0
+virtualenv==20.26.6
 tabulate==0.8.2
